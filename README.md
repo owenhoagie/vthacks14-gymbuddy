@@ -148,11 +148,13 @@ an upload completes, between collection cycles.
 
 Live dashboard: **https://gymbuddy-vthacks14.vercel.app**
 
-The hosting configuration uses **Vercel Hobby** for the API and dashboard and **GitHub Actions**
-for scheduled collection. See [docs/HOSTING.md](docs/HOSTING.md) for deployment commands,
+The hosting configuration uses **Vercel Hobby** for the API and dashboard, **Cloudflare Workers Free**
+to trigger collection every five minutes, and **GitHub Actions** to run the collector.
+See [docs/HOSTING.md](docs/HOSTING.md) for deployment commands,
 environment variables, retry-outbox behavior, and cutover checks. No paid Render service is used.
-GitHub requests a run every five minutes, but its scheduler can delay or drop runs. After 60 days
-without repository activity, scheduled workflows are disabled. Staleness remains based on actual
+Cloudflare replaces the GitHub cron trigger that never produced scheduled runs. Runner queues
+can still cause delays. The scheduler token expires September 26, 2026; see
+[rotation instructions](scheduler/README.md). Staleness remains based on actual
 observation time, and the API does not recommend workouts using observations older than 15 minutes.
 
 In Vercel's serverless runtime the API refreshes during requests, at most once per minute per

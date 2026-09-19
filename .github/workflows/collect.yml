@@ -1,8 +1,7 @@
 name: Collect live occupancy
 run-name: Collect live occupancy · ${{ inputs.trigger_source || github.event_name }} ${{ inputs.scheduled_at }}
 on:
-  schedule:
-    - cron: '2-57/5 * * * *'
+  # Cloudflare Workers Free dispatches every five minutes; see scheduler/README.md.
   workflow_dispatch:
     inputs:
       trigger_source:
