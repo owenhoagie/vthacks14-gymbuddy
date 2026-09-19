@@ -67,4 +67,6 @@ the recommendation request without titles, preserving a prior file on invalid re
 and removing imported blocks. Mocked Google UI checks verified connect, refreshed FreeBusy
 requests, blocking recommendations on Google errors, and disconnect/revocation with no
 token in localStorage. These mocks do not establish real Google consent success.
-The production client ID is configured; final account consent remains a user verification step.
+The production client ID is configured. The user confirmed successful real Google consent
+after adding their account as a test user. The production UI confirmed the primary calendar
+was read successfully and returned zero busy blocks in the current four-hour horizon.

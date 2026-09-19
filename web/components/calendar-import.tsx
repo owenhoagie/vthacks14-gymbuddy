@@ -74,6 +74,7 @@ export default function CalendarImport({ ref, disabled, onChange, onBusy }: {
     if (!oauth || !CLIENT_ID) { setError("Google Calendar is not configured yet."); return; }
     setBusy(true); setError("");
     const attempt = ++generation.current;
+    let responseReceived = false;
     const finish = () => { clearTimeout(oauthTimer.current); setBusy(false); };
     oauthTimer.current = setTimeout(() => {
       if (attempt === generation.current) { generation.current++; finish(); setError("Google connection timed out. Try connecting again."); }
@@ -82,7 +83,11 @@ export default function CalendarImport({ ref, disabled, onChange, onBusy }: {
       oauth.initTokenClient({
         client_id: CLIENT_ID, scope: GOOGLE_SCOPE, include_granted_scopes: false,
         callback: async (response) => {
-          if (attempt !== generation.current) return;
+          if (attempt !== generation.current || responseReceived) return;
+          // GIS can report popup closure around token delivery. The token response
+          // is authoritative; a later close event must not overwrite its outcome.
+          responseReceived = true;
+          setError(""); setBusy(true);
           clearTimeout(oauthTimer.current);
           if (!validGoogleToken(response)) { setError("Calendar permission was not granted. You can use an .ics file instead."); finish(); return; }
           token.current = { value: response.access_token!, expires: Date.now() + Number(response.expires_in) * 1000 - 30000 };
@@ -95,7 +100,7 @@ export default function CalendarImport({ ref, disabled, onChange, onBusy }: {
           } catch (err) { if (attempt === generation.current) setError(err instanceof Error ? err.message : "Could not read Google Calendar."); }
           finally { if (attempt === generation.current) finish(); }
         },
-        error_callback: () => { if (attempt === generation.current) { finish(); setError("Google sign-in was closed or blocked. Allow popups and try again."); } },
+        error_callback: () => { if (attempt === generation.current && !responseReceived) { finish(); setError("Google sign-in was closed or blocked. Allow popups and try again."); } },
       }).requestAccessToken({ prompt: "select_account" });
     } catch { finish(); setError("Google sign-in could not open. Try again."); }
   }
