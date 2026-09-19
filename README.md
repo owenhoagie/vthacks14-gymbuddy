@@ -129,7 +129,7 @@ set `DATA_MODE=demo` and restart the API. This leaves real warehouse observation
 
 ### Validation and hosting
 
-Verified September 19, 2026: 77 backend tests, lint, unchanged generated contracts,
+Verified September 19, 2026: 88 backend tests, lint, unchanged generated contracts,
 frontend type checking, and production build pass. Two backfills of the same 22 observations
 left exactly 22 Bronze rows. A subsequent five-minute collection reached Bronze and Gold;
 CSV, warehouse, and running API values matched, including microsecond timestamps. Real SQL
@@ -145,6 +145,8 @@ inline relations and never write test observations to live tables. Run parity ch
 an upload completes, between collection cycles.
 
 ## Free cloud hosting
+
+Live dashboard: **https://gymbuddy-vthacks14.vercel.app**
 
 The hosting configuration uses **Vercel Hobby** for the API and dashboard and **GitHub Actions**
 for scheduled collection. See [docs/HOSTING.md](docs/HOSTING.md) for deployment commands,

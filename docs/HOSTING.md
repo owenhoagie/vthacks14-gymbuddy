@@ -1,5 +1,9 @@
 # Free GymBuddy hosting
 
+Live dashboard: [GymBuddy](https://gymbuddy-vthacks14.vercel.app)
+
+Live API health: [health check](https://gymbuddy-api-umber.vercel.app/health)
+
 ## Architecture
 
 - **Vercel Hobby — API:** `gymbuddy-api`, FastAPI, repository root.
@@ -49,7 +53,7 @@ Production environment:
 
 ```dotenv
 NEXT_PUBLIC_API_URL=/api
-GYMBUDDY_API_URL=https://<verified-production-api-alias>
+GYMBUDDY_API_URL=https://gymbuddy-api-umber.vercel.app
 ```
 
 Deploy using the linked `web/` project. The public production alias is stable across deployments.
@@ -87,8 +91,12 @@ to run when the repository is private. No schedule runs on pull requests.
 
 ```sh
 vercel deploy --prod --scope owens-projects-92ce76bd
-vercel deploy --prod --scope owens-projects-92ce76bd --cwd web
+vercel deploy --prod --scope owens-projects-92ce76bd --cwd web --local-config "$PWD/web/vercel.json"
 ```
+
+Pass the frontend configuration explicitly so the CLI does not inherit the repository-root
+FastAPI configuration. The dashboard currently deploys through the CLI; pushing to GitHub
+runs CI and updates the collector workflow, but does not publish dashboard changes.
 
 Verify the hosted API, three 75-minute dashboard requests, and remote collector runs reaching
 Bronze and Gold. Synchronize the last local outbox before stopping the local collector; never
@@ -98,3 +106,13 @@ collector stopped. Resume local collection only if cloud collection is disabled 
 References: [GitHub scheduling](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows),
 [GitHub free runner usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
 [Vercel FastAPI](https://vercel.com/docs/frameworks/backend/fastapi).
+
+## Verified deployment — September 19, 2026
+
+Both projects deployed successfully on the existing Hobby account. GitHub CI passed all
+88 backend tests, lint, contract drift checking, frontend type checking, and production build.
+The cloud collector fetched both facilities and updated Bronze and Gold with the Mac collector
+stopped. Hosted API counts and microsecond observation timestamps matched the warehouse.
+Three consecutive 75-minute requests through the public dashboard returned valid live
+recommendations. Desktop and 390px mobile checks found no browser errors or horizontal overflow.
+The previous local outbox was fully synchronized before cutover. No paid hosting was provisioned.
