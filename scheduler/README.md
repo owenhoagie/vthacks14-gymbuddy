@@ -64,7 +64,29 @@ Bronze and Gold, and `/forecast` reporting `stale: false`. The API reads a new
 warehouse snapshot at most once per minute, so dashboard freshness can trail
 collection by that amount.
 
+The scheduler test suite includes workerd runtime checks with mocked outbound
+transport, in addition to dispatch/error tests. This catches runtime differences
+from Node, including Cloudflare's requirement to use `redirect: "manual"` and
+reject 3xx responses explicitly.
+
 ## Operations
+
+### Verified September 19, 2026
+
+Cloudflare's Free plan and encrypted `GITHUB_ACTIONS_TOKEN` were confirmed. Two
+consecutive real Cron invocations succeeded (1–2 ms CPU), with no manual dispatch:
+
+| Scheduled tick (UTC) | Successful GitHub run | VT observations (UTC) | Bronze rows |
+| --- | --- | --- | --- |
+| 20:20:06 | [35467066390](https://github.com/owenhoagie/vthacks14-gymbuddy/actions/runs/35467066390) | 20:20:30 | 44 |
+| 20:25:06 | [35467321188](https://github.com/owenhoagie/vthacks14-gymbuddy/actions/runs/35467321188) | 20:25:31 | 46 |
+
+Both runs uploaded both facilities, refreshed Gold, and left an empty retry
+outbox. Gold advanced to the matching observation timestamps with 49 points per
+facility. The hosted dashboard displayed fresh live forecasts and completed a
+75-minute recommendation with a Gemini explanation. CI passed backend tests,
+contracts, frontend tests/type checking/build, and all 20 scheduler checks.
+The old GitHub `schedule` trigger was removed; manual recovery remains available.
 
 GitHub Actions still supplies the runner and artifact outbox. If GitHub runner
 queues are delayed, Cloudflare cannot make them run instantly. The scheduler
