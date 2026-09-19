@@ -34,7 +34,7 @@ Fill in the ignored root `.env`. Only `NEXT_PUBLIC_API_URL` belongs in `web/.env
 
 | Variable | Purpose |
 | --- | --- |
-| `DATA_MODE` | `demo` (synthetic fixtures) or `live` (Databricks with recovery cache) |
+| `DATA_MODE` | `demo` (synthetic historical model) or `live` (Databricks with recovery cache) |
 | `GEMINI_API_KEY`, `GEMINI_MODEL` | Server-side Gemini configuration, reserved for the next integration milestone |
 | `DATABRICKS_HOST` | Workspace URL, including `https://` |
 | `DATABRICKS_TOKEN` | Server-side token with `sql` API scope and warehouse/catalog permissions |
@@ -57,7 +57,7 @@ make contracts     # export FastAPI OpenAPI and regenerate TypeScript types
 make fixtures      # regenerate checked-in synthetic API examples
 ```
 
-Pydantic models in `api/models.py` are authoritative. `fixtures/openapi.json` and `web/lib/api-types.ts` are generated artifacts; regenerate them after contract changes. The JSON demo template and sample requests/responses are in `fixtures/`.
+Pydantic models in `api/models.py` are authoritative. `fixtures/openapi.json` and `web/lib/api-types.ts` are generated artifacts; regenerate them after contract changes. The synthetic history, evaluation report, and sample requests/responses are in `fixtures/`.
 
 | Endpoint | Behavior |
 | --- | --- |
@@ -81,7 +81,7 @@ VT does not supply a verified measurement timestamp. `observed_at` records when 
 
 The [VT hours service](https://apps.students.vt.edu/rshours/) supplies date-specific opening intervals for units `1` and `2`. The adapter preserves exceptions and multiple intervals; unknown hours cannot authorize a recommendation. Live recommendations use these intervals, cached for at most 15 minutes. Failed or expired hours never authorize a workout.
 
-Synthetic demo fixtures use a rolling five-minute anchor and explicit simulated opening intervals so the demo works at any hour. They do not represent actual VT opening hours. Use the dashboard's demo scenario to reproduce a 75-minute recommendation. Genuine cached data always retains its original observation time; synthetic data is never described as cached live data.
+The historical demo fits weekday/time-of-day patterns from 12,096 synthetic observations across nine weeks. It uses a rolling five-minute anchor and fictional opening intervals so a 75-minute scenario works at any hour. Select **Historical demo** or open `/?mode=demo`; see [docs/DEMO_HISTORY.md](docs/DEMO_HISTORY.md) for generation, held-out evaluation, and limitations. These are not actual VT opening hours. Genuine cached data always retains its original observation time; synthetic data is never described as cached live data.
 
 ## Databricks setup and operation
 
@@ -177,10 +177,10 @@ Use the actual Gemini API with deterministic tools for occupancy, forecasts, gym
 ### Next: judging and remaining integrations
 
 Verify the public dashboard and scheduled collection with local processes stopped. Preserve the
-explicitly labeled demo mode for presentations. Gemini grounded tool calls and calendar integration
+explicitly labeled historical demo for presentations. Gemini grounded tool calls
 remain separate milestones.
 
-Calendar imports and Google OAuth are planned subsequent work. Social features, notifications, workout generation, additional facilities, and advanced ML remain outside this migration.
+Calendar imports and Google primary-calendar OAuth are implemented. Social features, notifications, workout generation, additional facilities, and advanced ML remain outside this migration.
 
 ## Personal schedules
 

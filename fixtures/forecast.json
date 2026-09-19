@@ -6,203 +6,203 @@
       "points": [
         {
           "forecast_time": "2026-09-19T17:00:00Z",
-          "predicted_occupancy_pct": 66.0
-        },
-        {
-          "forecast_time": "2026-09-19T17:05:00Z",
-          "predicted_occupancy_pct": 64.67
-        },
-        {
-          "forecast_time": "2026-09-19T17:10:00Z",
-          "predicted_occupancy_pct": 63.33
-        },
-        {
-          "forecast_time": "2026-09-19T17:15:00Z",
-          "predicted_occupancy_pct": 62.0
-        },
-        {
-          "forecast_time": "2026-09-19T17:20:00Z",
-          "predicted_occupancy_pct": 60.67
-        },
-        {
-          "forecast_time": "2026-09-19T17:25:00Z",
-          "predicted_occupancy_pct": 59.33
-        },
-        {
-          "forecast_time": "2026-09-19T17:30:00Z",
-          "predicted_occupancy_pct": 58.0
-        },
-        {
-          "forecast_time": "2026-09-19T17:35:00Z",
-          "predicted_occupancy_pct": 56.0
-        },
-        {
-          "forecast_time": "2026-09-19T17:40:00Z",
-          "predicted_occupancy_pct": 54.0
-        },
-        {
-          "forecast_time": "2026-09-19T17:45:00Z",
-          "predicted_occupancy_pct": 52.0
-        },
-        {
-          "forecast_time": "2026-09-19T17:50:00Z",
-          "predicted_occupancy_pct": 50.0
-        },
-        {
-          "forecast_time": "2026-09-19T17:55:00Z",
-          "predicted_occupancy_pct": 48.0
-        },
-        {
-          "forecast_time": "2026-09-19T18:00:00Z",
-          "predicted_occupancy_pct": 46.0
-        },
-        {
-          "forecast_time": "2026-09-19T18:05:00Z",
           "predicted_occupancy_pct": 43.67
         },
         {
+          "forecast_time": "2026-09-19T17:05:00Z",
+          "predicted_occupancy_pct": 42.71
+        },
+        {
+          "forecast_time": "2026-09-19T17:10:00Z",
+          "predicted_occupancy_pct": 41.76
+        },
+        {
+          "forecast_time": "2026-09-19T17:15:00Z",
+          "predicted_occupancy_pct": 40.83
+        },
+        {
+          "forecast_time": "2026-09-19T17:20:00Z",
+          "predicted_occupancy_pct": 40.29
+        },
+        {
+          "forecast_time": "2026-09-19T17:25:00Z",
+          "predicted_occupancy_pct": 39.76
+        },
+        {
+          "forecast_time": "2026-09-19T17:30:00Z",
+          "predicted_occupancy_pct": 39.23
+        },
+        {
+          "forecast_time": "2026-09-19T17:35:00Z",
+          "predicted_occupancy_pct": 38.95
+        },
+        {
+          "forecast_time": "2026-09-19T17:40:00Z",
+          "predicted_occupancy_pct": 38.67
+        },
+        {
+          "forecast_time": "2026-09-19T17:45:00Z",
+          "predicted_occupancy_pct": 38.4
+        },
+        {
+          "forecast_time": "2026-09-19T17:50:00Z",
+          "predicted_occupancy_pct": 38.21
+        },
+        {
+          "forecast_time": "2026-09-19T17:55:00Z",
+          "predicted_occupancy_pct": 38.02
+        },
+        {
+          "forecast_time": "2026-09-19T18:00:00Z",
+          "predicted_occupancy_pct": 37.84
+        },
+        {
+          "forecast_time": "2026-09-19T18:05:00Z",
+          "predicted_occupancy_pct": 38.05
+        },
+        {
           "forecast_time": "2026-09-19T18:10:00Z",
-          "predicted_occupancy_pct": 41.33
+          "predicted_occupancy_pct": 38.26
         },
         {
           "forecast_time": "2026-09-19T18:15:00Z",
-          "predicted_occupancy_pct": 39.0
+          "predicted_occupancy_pct": 38.48
         },
         {
           "forecast_time": "2026-09-19T18:20:00Z",
-          "predicted_occupancy_pct": 36.67
+          "predicted_occupancy_pct": 39.18
         },
         {
           "forecast_time": "2026-09-19T18:25:00Z",
-          "predicted_occupancy_pct": 34.33
+          "predicted_occupancy_pct": 39.89
         },
         {
           "forecast_time": "2026-09-19T18:30:00Z",
-          "predicted_occupancy_pct": 32.0
+          "predicted_occupancy_pct": 40.6
         },
         {
           "forecast_time": "2026-09-19T18:35:00Z",
-          "predicted_occupancy_pct": 31.17
+          "predicted_occupancy_pct": 41.47
         },
         {
           "forecast_time": "2026-09-19T18:40:00Z",
-          "predicted_occupancy_pct": 30.33
+          "predicted_occupancy_pct": 42.35
         },
         {
           "forecast_time": "2026-09-19T18:45:00Z",
-          "predicted_occupancy_pct": 29.5
+          "predicted_occupancy_pct": 43.23
         },
         {
           "forecast_time": "2026-09-19T18:50:00Z",
-          "predicted_occupancy_pct": 28.67
+          "predicted_occupancy_pct": 44.16
         },
         {
           "forecast_time": "2026-09-19T18:55:00Z",
-          "predicted_occupancy_pct": 27.83
+          "predicted_occupancy_pct": 45.09
         },
         {
           "forecast_time": "2026-09-19T19:00:00Z",
-          "predicted_occupancy_pct": 27.0
+          "predicted_occupancy_pct": 46.03
         },
         {
           "forecast_time": "2026-09-19T19:05:00Z",
-          "predicted_occupancy_pct": 27.67
+          "predicted_occupancy_pct": 46.98
         },
         {
           "forecast_time": "2026-09-19T19:10:00Z",
-          "predicted_occupancy_pct": 28.33
+          "predicted_occupancy_pct": 47.93
         },
         {
           "forecast_time": "2026-09-19T19:15:00Z",
-          "predicted_occupancy_pct": 29.0
+          "predicted_occupancy_pct": 48.89
         },
         {
           "forecast_time": "2026-09-19T19:20:00Z",
-          "predicted_occupancy_pct": 29.67
+          "predicted_occupancy_pct": 49.9
         },
         {
           "forecast_time": "2026-09-19T19:25:00Z",
-          "predicted_occupancy_pct": 30.33
+          "predicted_occupancy_pct": 50.91
         },
         {
           "forecast_time": "2026-09-19T19:30:00Z",
-          "predicted_occupancy_pct": 31.0
+          "predicted_occupancy_pct": 51.93
         },
         {
           "forecast_time": "2026-09-19T19:35:00Z",
-          "predicted_occupancy_pct": 33.17
+          "predicted_occupancy_pct": 52.89
         },
         {
           "forecast_time": "2026-09-19T19:40:00Z",
-          "predicted_occupancy_pct": 35.33
+          "predicted_occupancy_pct": 53.85
         },
         {
           "forecast_time": "2026-09-19T19:45:00Z",
-          "predicted_occupancy_pct": 37.5
+          "predicted_occupancy_pct": 54.82
         },
         {
           "forecast_time": "2026-09-19T19:50:00Z",
-          "predicted_occupancy_pct": 39.67
+          "predicted_occupancy_pct": 55.45
         },
         {
           "forecast_time": "2026-09-19T19:55:00Z",
-          "predicted_occupancy_pct": 41.83
+          "predicted_occupancy_pct": 56.08
         },
         {
           "forecast_time": "2026-09-19T20:00:00Z",
-          "predicted_occupancy_pct": 44.0
+          "predicted_occupancy_pct": 56.71
         },
         {
           "forecast_time": "2026-09-19T20:05:00Z",
-          "predicted_occupancy_pct": 46.0
+          "predicted_occupancy_pct": 57.07
         },
         {
           "forecast_time": "2026-09-19T20:10:00Z",
-          "predicted_occupancy_pct": 48.0
+          "predicted_occupancy_pct": 57.43
         },
         {
           "forecast_time": "2026-09-19T20:15:00Z",
-          "predicted_occupancy_pct": 50.0
+          "predicted_occupancy_pct": 57.8
         },
         {
           "forecast_time": "2026-09-19T20:20:00Z",
-          "predicted_occupancy_pct": 52.0
+          "predicted_occupancy_pct": 58.09
         },
         {
           "forecast_time": "2026-09-19T20:25:00Z",
-          "predicted_occupancy_pct": 54.0
+          "predicted_occupancy_pct": 58.39
         },
         {
           "forecast_time": "2026-09-19T20:30:00Z",
-          "predicted_occupancy_pct": 56.0
+          "predicted_occupancy_pct": 58.69
         },
         {
           "forecast_time": "2026-09-19T20:35:00Z",
-          "predicted_occupancy_pct": 57.17
+          "predicted_occupancy_pct": 58.69
         },
         {
           "forecast_time": "2026-09-19T20:40:00Z",
-          "predicted_occupancy_pct": 58.33
+          "predicted_occupancy_pct": 58.68
         },
         {
           "forecast_time": "2026-09-19T20:45:00Z",
-          "predicted_occupancy_pct": 59.5
+          "predicted_occupancy_pct": 58.68
         },
         {
           "forecast_time": "2026-09-19T20:50:00Z",
-          "predicted_occupancy_pct": 60.67
+          "predicted_occupancy_pct": 58.16
         },
         {
           "forecast_time": "2026-09-19T20:55:00Z",
-          "predicted_occupancy_pct": 61.83
+          "predicted_occupancy_pct": 57.64
         },
         {
           "forecast_time": "2026-09-19T21:00:00Z",
-          "predicted_occupancy_pct": 63.0
+          "predicted_occupancy_pct": 57.12
         },
         {
           "forecast_time": "2026-09-19T21:05:00Z",
-          "predicted_occupancy_pct": 64.0
+          "predicted_occupancy_pct": 56.26
         }
       ],
       "generated_at": "2026-09-19T17:00:00Z",
@@ -217,203 +217,203 @@
       "points": [
         {
           "forecast_time": "2026-09-19T17:00:00Z",
-          "predicted_occupancy_pct": 49.0
+          "predicted_occupancy_pct": 67.42
         },
         {
           "forecast_time": "2026-09-19T17:05:00Z",
-          "predicted_occupancy_pct": 48.17
+          "predicted_occupancy_pct": 67.84
         },
         {
           "forecast_time": "2026-09-19T17:10:00Z",
-          "predicted_occupancy_pct": 47.33
+          "predicted_occupancy_pct": 68.26
         },
         {
           "forecast_time": "2026-09-19T17:15:00Z",
-          "predicted_occupancy_pct": 46.5
+          "predicted_occupancy_pct": 68.68
         },
         {
           "forecast_time": "2026-09-19T17:20:00Z",
-          "predicted_occupancy_pct": 45.67
+          "predicted_occupancy_pct": 68.87
         },
         {
           "forecast_time": "2026-09-19T17:25:00Z",
-          "predicted_occupancy_pct": 44.83
+          "predicted_occupancy_pct": 69.07
         },
         {
           "forecast_time": "2026-09-19T17:30:00Z",
-          "predicted_occupancy_pct": 44.0
+          "predicted_occupancy_pct": 69.26
         },
         {
           "forecast_time": "2026-09-19T17:35:00Z",
-          "predicted_occupancy_pct": 42.5
+          "predicted_occupancy_pct": 69.58
         },
         {
           "forecast_time": "2026-09-19T17:40:00Z",
-          "predicted_occupancy_pct": 41.0
+          "predicted_occupancy_pct": 69.89
         },
         {
           "forecast_time": "2026-09-19T17:45:00Z",
-          "predicted_occupancy_pct": 39.5
+          "predicted_occupancy_pct": 70.21
         },
         {
           "forecast_time": "2026-09-19T17:50:00Z",
-          "predicted_occupancy_pct": 38.0
+          "predicted_occupancy_pct": 70.51
         },
         {
           "forecast_time": "2026-09-19T17:55:00Z",
-          "predicted_occupancy_pct": 36.5
+          "predicted_occupancy_pct": 70.82
         },
         {
           "forecast_time": "2026-09-19T18:00:00Z",
-          "predicted_occupancy_pct": 35.0
+          "predicted_occupancy_pct": 71.12
         },
         {
           "forecast_time": "2026-09-19T18:05:00Z",
-          "predicted_occupancy_pct": 33.17
+          "predicted_occupancy_pct": 71.13
         },
         {
           "forecast_time": "2026-09-19T18:10:00Z",
-          "predicted_occupancy_pct": 31.33
+          "predicted_occupancy_pct": 71.14
         },
         {
           "forecast_time": "2026-09-19T18:15:00Z",
-          "predicted_occupancy_pct": 29.5
+          "predicted_occupancy_pct": 71.15
         },
         {
           "forecast_time": "2026-09-19T18:20:00Z",
-          "predicted_occupancy_pct": 27.67
+          "predicted_occupancy_pct": 71.09
         },
         {
           "forecast_time": "2026-09-19T18:25:00Z",
-          "predicted_occupancy_pct": 25.83
+          "predicted_occupancy_pct": 71.03
         },
         {
           "forecast_time": "2026-09-19T18:30:00Z",
-          "predicted_occupancy_pct": 24.0
+          "predicted_occupancy_pct": 70.98
         },
         {
           "forecast_time": "2026-09-19T18:35:00Z",
-          "predicted_occupancy_pct": 23.67
+          "predicted_occupancy_pct": 70.83
         },
         {
           "forecast_time": "2026-09-19T18:40:00Z",
-          "predicted_occupancy_pct": 23.33
+          "predicted_occupancy_pct": 70.69
         },
         {
           "forecast_time": "2026-09-19T18:45:00Z",
-          "predicted_occupancy_pct": 23.0
+          "predicted_occupancy_pct": 70.54
         },
         {
           "forecast_time": "2026-09-19T18:50:00Z",
-          "predicted_occupancy_pct": 22.67
+          "predicted_occupancy_pct": 70.18
         },
         {
           "forecast_time": "2026-09-19T18:55:00Z",
-          "predicted_occupancy_pct": 22.33
+          "predicted_occupancy_pct": 69.82
         },
         {
           "forecast_time": "2026-09-19T19:00:00Z",
-          "predicted_occupancy_pct": 22.0
+          "predicted_occupancy_pct": 69.47
         },
         {
           "forecast_time": "2026-09-19T19:05:00Z",
-          "predicted_occupancy_pct": 22.5
+          "predicted_occupancy_pct": 68.92
         },
         {
           "forecast_time": "2026-09-19T19:10:00Z",
-          "predicted_occupancy_pct": 23.0
+          "predicted_occupancy_pct": 68.36
         },
         {
           "forecast_time": "2026-09-19T19:15:00Z",
-          "predicted_occupancy_pct": 23.5
+          "predicted_occupancy_pct": 67.81
         },
         {
           "forecast_time": "2026-09-19T19:20:00Z",
-          "predicted_occupancy_pct": 24.0
+          "predicted_occupancy_pct": 67.02
         },
         {
           "forecast_time": "2026-09-19T19:25:00Z",
-          "predicted_occupancy_pct": 24.5
+          "predicted_occupancy_pct": 66.23
         },
         {
           "forecast_time": "2026-09-19T19:30:00Z",
-          "predicted_occupancy_pct": 25.0
+          "predicted_occupancy_pct": 65.44
         },
         {
           "forecast_time": "2026-09-19T19:35:00Z",
-          "predicted_occupancy_pct": 26.0
+          "predicted_occupancy_pct": 64.46
         },
         {
           "forecast_time": "2026-09-19T19:40:00Z",
-          "predicted_occupancy_pct": 27.0
+          "predicted_occupancy_pct": 63.48
         },
         {
           "forecast_time": "2026-09-19T19:45:00Z",
-          "predicted_occupancy_pct": 28.0
+          "predicted_occupancy_pct": 62.5
         },
         {
           "forecast_time": "2026-09-19T19:50:00Z",
-          "predicted_occupancy_pct": 29.0
+          "predicted_occupancy_pct": 61.35
         },
         {
           "forecast_time": "2026-09-19T19:55:00Z",
-          "predicted_occupancy_pct": 30.0
+          "predicted_occupancy_pct": 60.19
         },
         {
           "forecast_time": "2026-09-19T20:00:00Z",
-          "predicted_occupancy_pct": 31.0
+          "predicted_occupancy_pct": 59.03
         },
         {
           "forecast_time": "2026-09-19T20:05:00Z",
-          "predicted_occupancy_pct": 32.33
+          "predicted_occupancy_pct": 57.61
         },
         {
           "forecast_time": "2026-09-19T20:10:00Z",
-          "predicted_occupancy_pct": 33.67
+          "predicted_occupancy_pct": 56.19
         },
         {
           "forecast_time": "2026-09-19T20:15:00Z",
-          "predicted_occupancy_pct": 35.0
+          "predicted_occupancy_pct": 54.78
         },
         {
           "forecast_time": "2026-09-19T20:20:00Z",
-          "predicted_occupancy_pct": 36.33
+          "predicted_occupancy_pct": 53.2
         },
         {
           "forecast_time": "2026-09-19T20:25:00Z",
-          "predicted_occupancy_pct": 37.67
+          "predicted_occupancy_pct": 51.61
         },
         {
           "forecast_time": "2026-09-19T20:30:00Z",
-          "predicted_occupancy_pct": 39.0
+          "predicted_occupancy_pct": 50.03
         },
         {
           "forecast_time": "2026-09-19T20:35:00Z",
-          "predicted_occupancy_pct": 40.17
+          "predicted_occupancy_pct": 48.4
         },
         {
           "forecast_time": "2026-09-19T20:40:00Z",
-          "predicted_occupancy_pct": 41.33
+          "predicted_occupancy_pct": 46.77
         },
         {
           "forecast_time": "2026-09-19T20:45:00Z",
-          "predicted_occupancy_pct": 42.5
+          "predicted_occupancy_pct": 45.14
         },
         {
           "forecast_time": "2026-09-19T20:50:00Z",
-          "predicted_occupancy_pct": 43.67
+          "predicted_occupancy_pct": 43.48
         },
         {
           "forecast_time": "2026-09-19T20:55:00Z",
-          "predicted_occupancy_pct": 44.83
+          "predicted_occupancy_pct": 41.83
         },
         {
           "forecast_time": "2026-09-19T21:00:00Z",
-          "predicted_occupancy_pct": 46.0
+          "predicted_occupancy_pct": 40.17
         },
         {
           "forecast_time": "2026-09-19T21:05:00Z",
-          "predicted_occupancy_pct": 47.0
+          "predicted_occupancy_pct": 38.57
         }
       ],
       "generated_at": "2026-09-19T17:00:00Z",

@@ -35,6 +35,11 @@ build:
 fixtures:
 	.venv/bin/python -m scripts.seed_demo_data
 
+.PHONY: demo-history
+demo-history:
+	.venv/bin/python -m scripts.generate_demo_history
+	.venv/bin/python -m scripts.seed_demo_data
+
 .PHONY: db-init db-backfill db-sync db-check
 
 db-init:

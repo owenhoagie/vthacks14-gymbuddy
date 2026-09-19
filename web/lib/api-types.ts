@@ -321,7 +321,9 @@ export type $defs = Record<string, never>;
 export interface operations {
     health_health_get: {
         parameters: {
-            query?: never;
+            query?: {
+                demo?: boolean;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -359,7 +361,9 @@ export interface operations {
     };
     occupancy_occupancy_get: {
         parameters: {
-            query?: never;
+            query?: {
+                demo?: boolean;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -401,6 +405,7 @@ export interface operations {
                 facility_id?: components["schemas"]["FacilityId"] | null;
                 start_time?: string | null;
                 end_time?: string | null;
+                demo?: boolean;
             };
             header?: never;
             path?: never;
@@ -439,7 +444,9 @@ export interface operations {
     };
     recommendation_recommend_post: {
         parameters: {
-            query?: never;
+            query?: {
+                demo?: boolean;
+            };
             header?: never;
             path?: never;
             cookie?: never;

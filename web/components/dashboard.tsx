@@ -146,7 +146,20 @@ export default function Dashboard() {
   const calendar = useRef<CalendarHandle>(null);
   const sequence = useRef(0);
   const nextId = useRef(3);
-  const demo = occupancy?.data_mode === "demo" || health?.data_mode === "demo";
+  const [mode, setMode] = useState<"live" | "demo">("live");
+  const modeRef = useRef<"live" | "demo">("live");
+  const demo = mode === "demo" || occupancy?.data_mode === "demo" || health?.data_mode === "demo";
+
+  async function requestData<T>(path: string, options?: RequestInit): Promise<T> {
+    const selected = modeRef.current;
+    const response = await apiRequest<T>(
+      selected === "demo" ? `${path}${path.includes("?") ? "&" : "?"}demo=true` : path,
+      options,
+    );
+    if (selected === "demo" && (response as { data_mode?: string }).data_mode !== "demo")
+      throw new Error("The historical demo is not available yet. Try again shortly.");
+    return response;
+  }
 
   async function makeRecommendation(
     currentBlocks: Block[],
@@ -179,7 +192,7 @@ export default function Dashboard() {
         preferred_gyms: settings.preferred,
         crowd_tolerance: settings.tolerance,
       };
-      const recommendation = await apiRequest<RecommendationResponse>(
+      const recommendation = await requestData<RecommendationResponse>(
         "/recommend",
         { method: "POST", body: JSON.stringify(body) },
       );
@@ -203,9 +216,9 @@ export default function Dashboard() {
     const bounds = searchBounds(at);
     const query = new URLSearchParams(bounds).toString();
     const settled = await Promise.allSettled([
-      apiRequest<OccupancyResponse>("/occupancy"),
-      apiRequest<ForecastResponse>(`/forecast?${query}`),
-      apiRequest<HealthResponse>("/health"),
+      requestData<OccupancyResponse>("/occupancy"),
+      requestData<ForecastResponse>(`/forecast?${query}`),
+      requestData<HealthResponse>("/health"),
     ]);
     if (request !== sequence.current) return;
     const [o, f, h] = settled;
@@ -220,6 +233,9 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
+    const selected = new URLSearchParams(window.location.search).get("mode") === "demo" ? "demo" : "live";
+    modeRef.current = selected;
+    setMode(selected);
     const at = new Date();
     const defaults: Block[] = [];
     setNow(at);
@@ -240,6 +256,22 @@ export default function Dashboard() {
       sequence.current++;
     };
   }, []);
+
+  function changeMode(selected: "live" | "demo") {
+    if (planning || calendarWorking || selected === mode) return;
+    modeRef.current = selected;
+    setMode(selected);
+    const url = new URL(window.location.href);
+    if (selected === "demo") url.searchParams.set("mode", "demo");
+    else url.searchParams.delete("mode");
+    window.history.replaceState(null, "", url);
+    setOccupancy(null); setForecast(null); setHealth(null); setResult(null);
+    setPlanError(""); setError("");
+    const at = new Date();
+    setNow(at);
+    void loadData(at);
+    void makeRecommendation(blocks, { duration, preferred, tolerance }, at);
+  }
 
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -311,19 +343,26 @@ export default function Dashboard() {
             </div>
           </div>
         </section>
+        <div className="data-mode-switch" role="group" aria-label="Gym data source">
+          <span>Gym data</span>
+          <button type="button" aria-pressed={mode === "live"} disabled={planning || calendarWorking}
+            onClick={() => changeMode("live")}>Live VT data</button>
+          <button type="button" aria-pressed={mode === "demo"} disabled={planning || calendarWorking}
+            onClick={() => changeMode("demo")}>Historical demo</button>
+        </div>
         {demo ? (
           <div className="demo-banner">
             <span className="demo-tag">DEMO</span>
             <span>
-              You’re exploring synthetic gym data. All times and recommendations
-              are for this demo.
+              Simulated gyms · Forecasts learned from 9 weeks of synthetic history.
+              Occupancy and opening hours are fictional; your schedule still applies.
             </span>
             <button
               type="button"
               onClick={clearDemoSchedule}
               disabled={planning || calendarWorking || loading}
             >
-              Load demo scenario <span aria-hidden="true">↗</span>
+              Reset workout preferences <span aria-hidden="true">↗</span>
             </button>
           </div>
         ) : null}
@@ -720,7 +759,7 @@ export default function Dashboard() {
                       </div>
                       <p className="fetched-time">
                         {gymData?.observed_at
-                          ? `Fetched ${timestampLabel(gymData.observed_at)}${gymData.stale ? " · stale" : ""}`
+                          ? `${demo ? "Simulated at" : "Fetched"} ${timestampLabel(gymData.observed_at)}${gymData.stale ? " · stale" : ""}`
                           : "Awaiting a successful fetch"}
                       </p>
                       {gymData &&
@@ -752,7 +791,7 @@ export default function Dashboard() {
               />
               <p className="forecast-note">
                 {demo
-                  ? "Illustrative forecasts from synthetic demo data."
+                  ? "Historical model: weekday and time-of-day patterns from 12,096 simulated observations, adjusted to the simulated current count. Confidence is low because this is not validated on real gym history."
                   : "Forecasts are estimates, not a guarantee of space."}{" "}
                 {forecast?.facilities.some((f) => f.stale)
                   ? "Some underlying observations are stale. "
@@ -765,7 +804,7 @@ export default function Dashboard() {
                     ? "Forecast unavailable"
                     : `${facility.provenance} · ${facility.confidence} confidence${facility.stale ? " · stale" : ""}`}
                   {facility.generated_at ? ` · Generated ${timestampLabel(facility.generated_at)}` : ""}
-                  {facility.observed_at ? ` · Observation fetched ${timestampLabel(facility.observed_at)}` : ""}
+                  {facility.observed_at ? ` · ${demo ? "Simulated observation" : "Observation fetched"} ${timestampLabel(facility.observed_at)}` : ""}
                 </p>
               ))}
             </section>

@@ -23,7 +23,7 @@ from api.models import (
     RecommendationResponse,
 )
 from api.recommendation import recommend
-from api.repository import Repository, get_repository, utc_now
+from api.repository import Repository, get_demo_repository, get_repository, utc_now
 
 logger = logging.getLogger(__name__)
 
@@ -82,12 +82,18 @@ async def unexpected_error(_request: Request, exc: Exception):
     return error_response(500, "internal_error", "An unexpected server error occurred.")
 
 
-SettingsDependency = Annotated[Settings, Depends(get_settings)]
+def request_settings(settings: Annotated[Settings, Depends(get_settings)], demo: bool = False):
+    return settings.model_copy(update={"data_mode": "demo"}) if demo else settings
+
+
+SettingsDependency = Annotated[Settings, Depends(request_settings)]
 
 
 def request_repository(
-    request: Request, repository: Annotated[Repository, Depends(get_repository)]
+    request: Request, repository: Annotated[Repository, Depends(get_repository)], demo: bool = False
 ):
+    if demo:
+        return get_demo_repository()
     if hasattr(repository, "prepare_request"):
         repository.prepare_request(include_hours=request.url.path.endswith("/recommend"))
     return repository

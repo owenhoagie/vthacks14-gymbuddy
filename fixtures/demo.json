@@ -1,19 +1,24 @@
 {
-  "description": "Synthetic occupancy scenario; all minute offsets are relative to the current UTC five-minute anchor. Explicit demo hours are not real operating hours.",
-  "facilities": [
-    {
-      "facility_id": "mccomas",
-      "occupancy": 198,
-      "capacity": 300,
-      "forecast": [[0,66],[30,58],[60,46],[90,32],[120,27],[150,31],[180,44],[210,56],[240,63],[245,64]],
-      "opening_hours": [[-60,300]]
+  "synthetic": true,
+  "seed": 140926,
+  "rows": 12096,
+  "history_days": 63,
+  "interval_minutes": 15,
+  "training_days": 56,
+  "holdout_days": 7,
+  "start": "2026-07-13T00:00:00-04:00",
+  "end_exclusive": "2026-09-14T00:00:00-04:00",
+  "method": "Eastern weekday and quarter-hour means, adjacent-slot smoothing",
+  "serving": "Refit all 63 days; simulated current residual decays over 90 minutes",
+  "metrics": {
+    "mccomas": {
+      "seasonal_mae_percentage_points": 2.909,
+      "constant_mean_mae_percentage_points": 16.414
     },
-    {
-      "facility_id": "war_memorial",
-      "occupancy": 98,
-      "capacity": 200,
-      "forecast": [[0,49],[30,44],[60,35],[90,24],[120,22],[150,25],[180,31],[210,39],[240,46],[245,47]],
-      "opening_hours": [[-60,300]]
+    "war_memorial": {
+      "seasonal_mae_percentage_points": 4.131,
+      "constant_mean_mae_percentage_points": 15.701
     }
-  ]
+  },
+  "caveat": "Evaluation uses fabricated data only. It is not evidence of real-world forecasting accuracy. Demo opening hours are fictional."
 }

@@ -1284,3 +1284,9 @@ footer > span:last-child > span {
 .calendar-source button, .calendar-disconnect { color: #572036; background: none; border: 0; text-decoration: underline; padding: 6px 0; font-size: 11px; cursor: pointer; }
 .calendar-import .calendar-error { color: #9e253b; }
 .calendar-import ul { padding-left: 16px; }
+
+.data-mode-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin: 0 0 16px; font-size: 12px; }
+.data-mode-switch span { color: #787266; margin-right: 4px; }
+.data-mode-switch button { border: 1px solid #d8cfc4; border-radius: 7px; padding: 9px 13px; background: white; color: #572036; cursor: pointer; font: inherit; }
+.data-mode-switch button[aria-pressed="true"] { background: #572036; color: white; border-color: #572036; }
+.data-mode-switch button:disabled { opacity: .65; cursor: wait; }

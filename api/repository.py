@@ -1,19 +1,17 @@
 """Replaceable data repositories; live mode never falls back to synthetic data."""
 
 import csv
-import json
 import logging
 from datetime import datetime, timedelta, timezone
 from functools import lru_cache
-from pathlib import Path
 from typing import Protocol
 
-from api.config import ROOT, Settings, get_settings
+from api.config import Settings, get_settings
+from api.demo import DemoRepository as DemoRepository
 from api.models import (
     FACILITY_NAMES,
     FacilityForecast,
     FacilityId,
-    ForecastPoint,
     Interval,
     Occupancy,
 )
@@ -25,81 +23,10 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def demo_anchor(now: datetime) -> datetime:
-    return now.astimezone(timezone.utc).replace(
-        second=0, microsecond=0, minute=now.astimezone(timezone.utc).minute // 5 * 5
-    )
-
-
 class Repository(Protocol):
     def occupancy(self, now: datetime) -> list[Occupancy]: ...
     def forecast(self, now: datetime) -> list[FacilityForecast]: ...
     def hours(self, now: datetime) -> dict[FacilityId, list[Interval]]: ...
-
-
-class DemoRepository:
-    def __init__(self, path: Path = ROOT / "fixtures" / "demo.json"):
-        self.template = json.loads(path.read_text())
-
-    def occupancy(self, now: datetime) -> list[Occupancy]:
-        anchor = demo_anchor(now)
-        return [
-            Occupancy(
-                facility_id=f["facility_id"],
-                facility_name=FACILITY_NAMES[FacilityId(f["facility_id"])],
-                occupancy=f["occupancy"],
-                remaining=f["capacity"] - f["occupancy"],
-                capacity=f["capacity"],
-                occupancy_pct=round(100 * f["occupancy"] / f["capacity"], 2),
-                observed_at=anchor,
-                source_updated_at=None,
-                provenance="demo",
-            )
-            for f in self.template["facilities"]
-        ]
-
-    def forecast(self, now: datetime) -> list[FacilityForecast]:
-        anchor = demo_anchor(now)
-        result = []
-        for f in self.template["facilities"]:
-            knots = f["forecast"]
-            points = []
-            for offset in range(knots[0][0], knots[-1][0] + 1, 5):
-                for (x0, y0), (x1, y1) in zip(knots, knots[1:]):
-                    if x0 <= offset <= x1:
-                        points.append(
-                            ForecastPoint(
-                                forecast_time=anchor + timedelta(minutes=offset),
-                                predicted_occupancy_pct=round(
-                                    y0 + (y1 - y0) * (offset - x0) / (x1 - x0), 2
-                                ),
-                            )
-                        )
-                        break
-            result.append(
-                FacilityForecast(
-                    facility_id=f["facility_id"],
-                    facility_name=FACILITY_NAMES[FacilityId(f["facility_id"])],
-                    points=points,
-                    generated_at=anchor,
-                    observed_at=anchor,
-                    confidence="low",
-                    provenance="demo",
-                )
-            )
-        return result
-
-    def hours(self, now: datetime) -> dict[FacilityId, list[Interval]]:
-        anchor = demo_anchor(now)
-        return {
-            FacilityId(f["facility_id"]): [
-                Interval(
-                    start_time=anchor + timedelta(minutes=a), end_time=anchor + timedelta(minutes=b)
-                )
-                for a, b in f["opening_hours"]
-            ]
-            for f in self.template["facilities"]
-        }
 
 
 class LocalRepository:
@@ -167,10 +94,15 @@ class LocalRepository:
 
 
 @lru_cache
+def get_demo_repository() -> DemoRepository:
+    return DemoRepository()
+
+
+@lru_cache
 def get_repository() -> Repository:
     settings = get_settings()
     if settings.data_mode == "demo":
-        return DemoRepository()
+        return get_demo_repository()
     from api.live import LiveRepository
 
     return LiveRepository(settings)
