@@ -1,8 +1,19 @@
 name: Collect live occupancy
+run-name: Collect live occupancy · ${{ inputs.trigger_source || github.event_name }} ${{ inputs.scheduled_at }}
 on:
   schedule:
     - cron: '2-57/5 * * * *'
   workflow_dispatch:
+    inputs:
+      trigger_source:
+        description: Scheduler that started this run
+        type: choice
+        options: [manual, cloudflare]
+        default: manual
+      scheduled_at:
+        description: Cloudflare scheduled tick (UTC)
+        type: string
+        required: false
 permissions:
   contents: read
   actions: write

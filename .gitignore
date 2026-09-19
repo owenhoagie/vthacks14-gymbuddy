@@ -17,3 +17,5 @@ out/
 .vercel/
 artifacts/
 .vercel
+.wrangler/
+.dev.vars*

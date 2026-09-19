@@ -168,7 +168,7 @@ still support the original persistent-process mode.
 | Deterministic recommendations and credential-free demo | Implemented |
 | Gemini grounded tool calls | Validated workout tools + Gemini explanations, deterministic fallback |
 | Calendar import / Google OAuth | Browser .ics import + Google primary-calendar free/busy; see [setup](docs/CALENDARS.md) |
-| Free cloud hosting | Vercel API/dashboard + GitHub Actions collector; see hosting guide |
+| Free cloud hosting | Vercel API/dashboard + Cloudflare schedule + GitHub Actions collector; see hosting guide |
 
 ### Gemini explanations
 

@@ -8,16 +8,17 @@ Live API health: [health check](https://gymbuddy-api-umber.vercel.app/health)
 
 - **Vercel Hobby — API:** `gymbuddy-api`, FastAPI, repository root.
 - **Vercel Hobby — dashboard:** `gymbuddy-vthacks14`, Next.js, `web/` directory.
-- **GitHub Actions — collector:** `Collect live occupancy` in this public repository,
-  standard Ubuntu runner, scheduled every five minutes at minutes 2, 7, 12, …, 57.
+- **Cloudflare Workers Free — scheduler:** Cron Trigger every five minutes, starting the collector through GitHub’s API.
+- **GitHub Actions — collector:** `Collect live occupancy` in this public repository, using a standard Ubuntu runner and durable artifact retry buffer.
 - **Databricks:** existing workspace and SQL warehouse; no new paid resources are provisioned.
 
 The dashboard forwards `/api/*` to server-side `GYMBUDDY_API_URL`. Only the API project
 and collector workflow receive Databricks credentials. Production credentials are not supplied
 to preview deployments. No Render service, paid cron plan, or paid storage is required.
 
-GitHub schedules are best effort: runs can be delayed or dropped, and GitHub disables scheduled
-workflows after 60 days without repository activity. This is not a guaranteed five-minute service.
+GitHub’s original cron trigger produced no scheduled runs. Cloudflare now supplies the trigger;
+see [scheduler setup and operations](../scheduler/README.md). GitHub runner queues can still be
+delayed, so this remains a best-effort five-minute service, not a strict timing guarantee.
 The dashboard uses actual fetch timestamps, marks observations stale after 15 minutes, and
 refuses stale forecasts for recommendations. Account quotas and existing Databricks trial/token
 expiration still apply; there is no automatic paid upgrade.
@@ -63,7 +64,8 @@ validation errors, and exposes only health, occupancy, forecast, and recommendat
 
 ## Scheduled collector
 
-The five existing `DATABRICKS_*` settings are GitHub Actions repository secrets. The workflow:
+Cloudflare dispatches this workflow every five minutes using a repository-scoped Actions token.
+The existing `DATABRICKS_*` settings remain GitHub Actions repository secrets. The workflow:
 
 1. Restores the newest `gymbuddy-outbox` artifact from the default branch.
 2. Fetches both VT facilities and saves each successful observation to CSV immediately.
