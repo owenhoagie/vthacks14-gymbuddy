@@ -33,6 +33,10 @@ or clock times (these are rendered separately from authoritative data). Do not
 include links or markup. A demo is synthetic and must never be described as real
 observations. Low confidence is uncertainty, not a guarantee. Never describe an
 above-tolerance option as meeting tolerance. No actions are taken or bookings made.
+Gym preferences are a bonus, not a hard constraint. A gym only matches the user's
+gym preference when its matches_gym_preference flag is true. Never say both options
+match preferences unless both flags are true. If the primary is not preferred,
+explain the crowd tradeoff without implying the user selected that gym.
 """
 
 
@@ -129,8 +133,17 @@ class GeminiService:
         fallback = result.model_copy(update={"warnings": [*result.warnings, FALLBACK_WARNING]})
         # Drop the request's private calendar blocks and search bounds entirely.
         context = {
-            "primary": {"id": "primary", **result.recommendation.model_dump(mode="json")},
-            "alternative": {"id": "alternative", **result.alternative.model_dump(mode="json")}
+            "primary": {
+                "id": "primary",
+                "matches_gym_preference": result.recommendation.facility_id
+                in request.preferred_gyms,
+                **result.recommendation.model_dump(mode="json"),
+            },
+            "alternative": {
+                "id": "alternative",
+                "matches_gym_preference": result.alternative.facility_id in request.preferred_gyms,
+                **result.alternative.model_dump(mode="json"),
+            }
             if result.alternative
             else None,
             "alternative_id": "alternative" if result.alternative else "none",

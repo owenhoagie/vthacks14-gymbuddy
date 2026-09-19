@@ -108,6 +108,12 @@ def test_real_tool_round_trip_preserves_candidates_and_private_calendar(scenario
     context = second["contents"][2].parts[0].function_response.response
     assert second["contents"][2].role == "user"
     assert "unavailable" not in context and "start_time" not in context
+    assert context["primary"]["matches_gym_preference"] == (
+        result.recommendation.facility_id in request.preferred_gyms
+    )
+    assert context["alternative"]["matches_gym_preference"] == (
+        result.alternative.facility_id in request.preferred_gyms
+    )
     assert (
         context["primary"]["start_time"]
         == result.recommendation.model_dump(mode="json")["start_time"]
