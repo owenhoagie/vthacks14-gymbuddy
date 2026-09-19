@@ -1269,3 +1269,18 @@ footer > span:last-child > span {
     animation: none !important;
   }
 }
+
+.calendar-import { border: 1px solid var(--border, #e5e0d7); border-radius: 12px; padding: 16px; margin: 20px 0 24px; background: #faf8f4; }
+.calendar-import h3 { font-size: 16px; margin: 0 0 8px; }
+.calendar-import p, .calendar-import details, .calendar-import a { font-size: 11px; line-height: 1.65; margin: 8px 0; overflow-wrap: anywhere; }
+.calendar-import .calendar-privacy { color: #716b62; font-size: 10px; }
+.calendar-file { display: block; font-size: 12px; font-weight: 600; margin: 14px 0; }
+.calendar-file input { display: block; width: 100%; font-size: 11px; margin-top: 8px; }
+.calendar-file input::file-selector-button, .calendar-connect { border: 1px solid #d8cfc4; border-radius: 7px; padding: 10px 12px; background: white; color: #572036; cursor: pointer; }
+.calendar-connect { width: 100%; font: inherit; font-size: 12px; }
+.calendar-import button:disabled { opacity: .55; cursor: not-allowed; }
+.calendar-source { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11px; margin-bottom: 12px; overflow-wrap: anywhere; }
+.calendar-source span { min-width: 0; }
+.calendar-source button, .calendar-disconnect { color: #572036; background: none; border: 0; text-decoration: underline; padding: 6px 0; font-size: 11px; cursor: pointer; }
+.calendar-import .calendar-error { color: #9e253b; }
+.calendar-import ul { padding-left: 16px; }

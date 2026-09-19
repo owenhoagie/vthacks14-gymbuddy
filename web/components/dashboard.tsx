@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import ForecastChart from "./forecast-chart";
+import CalendarImport, { type CalendarHandle } from "./calendar-import";
+import { mergeBusy } from "@/lib/calendar";
 import {
   apiRequest,
   type Candidate,
@@ -140,6 +142,8 @@ export default function Dashboard() {
   const [error, setError] = useState("");
   const [planError, setPlanError] = useState("");
   const [dirty, setDirty] = useState(false);
+  const [calendarWorking, setCalendarWorking] = useState(false);
+  const calendar = useRef<CalendarHandle>(null);
   const sequence = useRef(0);
   const nextId = useRef(3);
   const demo = occupancy?.data_mode === "demo" || health?.data_mode === "demo";
@@ -155,8 +159,9 @@ export default function Dashboard() {
   ) {
     setPlanning(true);
     setPlanError("");
+    setResult(null);
     try {
-      const unavailable = currentBlocks.map((b) => {
+      const manual = currentBlocks.map((b) => {
         const start_time = easternInstant(b.day, b.start),
           end_time = easternInstant(b.day, b.end);
         if (end_time <= start_time)
@@ -165,9 +170,11 @@ export default function Dashboard() {
           );
         return { start_time, end_time };
       });
+      const bounds = searchBounds(at);
+      const imported = await calendar.current?.busy(bounds) ?? [];
       const body: RecommendationRequest = {
-        ...searchBounds(at),
-        unavailable,
+        ...bounds,
+        unavailable: mergeBusy([...manual, ...imported], bounds),
         workout_duration_minutes: settings.duration,
         preferred_gyms: settings.preferred,
         crowd_tolerance: settings.tolerance,
@@ -213,12 +220,8 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    const at = new Date(),
-      day = easternDay(at);
-    const defaults = [
-      { id: 1, day, start: "10:00", end: "12:00" },
-      { id: 2, day, start: "16:00", end: "17:15" },
-    ];
+    const at = new Date();
+    const defaults: Block[] = [];
     setNow(at);
     setBlocks(defaults);
     void loadData(at);
@@ -240,6 +243,7 @@ export default function Dashboard() {
 
   function submit(event: FormEvent) {
     event.preventDefault();
+    if (planning || calendarWorking) return;
     const at = new Date();
     setNow(at);
     void loadData(at);
@@ -317,7 +321,7 @@ export default function Dashboard() {
             <button
               type="button"
               onClick={clearDemoSchedule}
-              disabled={planning || loading}
+              disabled={planning || calendarWorking || loading}
             >
               Load demo scenario <span aria-hidden="true">↗</span>
             </button>
@@ -355,6 +359,8 @@ export default function Dashboard() {
             <p className="section-description">
               Tell us when you’re free. We’ll find the gap.
             </p>
+            <CalendarImport ref={calendar} disabled={planning} onBusy={setCalendarWorking}
+              onChange={() => { setDirty(true); setResult(null); setPlanError(""); }} />
             <form onSubmit={submit}>
               <fieldset disabled={planning}>
                 <legend>
@@ -519,13 +525,13 @@ export default function Dashboard() {
               <button
                 type="submit"
                 className="primary-button"
-                disabled={planning || !now}
+                disabled={planning || calendarWorking || !now}
               >
                 {planning ? "Finding your window…" : "Find my gym window"}
                 <Icon name="arrow" size={18} />
               </button>
               <p className="form-footnote">
-                Looking at the next 4 hours · No calendar needed
+                Looking at the next 4 hours · Calendars optional
               </p>
             </form>
           </aside>

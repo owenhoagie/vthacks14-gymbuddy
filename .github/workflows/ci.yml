@@ -25,3 +25,5 @@ jobs:
       - run: git diff --exit-code -- fixtures/openapi.json web/lib/api-types.ts
       - run: npm run typecheck && npm run build
         working-directory: web
+      - run: npm test
+        working-directory: web

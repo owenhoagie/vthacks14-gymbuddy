@@ -167,7 +167,7 @@ still support the original persistent-process mode.
 | Live API, real hours, cached recovery, dashboard refresh | Implemented |
 | Deterministic recommendations and credential-free demo | Implemented |
 | Gemini grounded tool calls | Interface only |
-| Calendar import / Google OAuth | Subsequent milestone |
+| Calendar import / Google OAuth | Browser .ics import + Google primary-calendar free/busy; see [setup](docs/CALENDARS.md) |
 | Free cloud hosting | Vercel API/dashboard + GitHub Actions collector; see hosting guide |
 
 ### Next: Gemini
@@ -181,3 +181,15 @@ explicitly labeled demo mode for presentations. Gemini grounded tool calls and c
 remain separate milestones.
 
 Calendar imports and Google OAuth are planned subsequent work. Social features, notifications, workout generation, additional facilities, and advanced ML remain outside this migration.
+
+## Personal schedules
+
+Use **Bring your schedule** to import an `.ics` export or connect Google Calendar.
+Recurring events, time zones, all-day events, and cancellations become unavailable periods.
+Imported files and Google access stay in tab memory and clear on reload; only merged busy
+start/end times are sent with a recommendation. Google reads the primary calendar and asks
+for free/busy permission only. No event titles or offline access are requested.
+
+Setup, privacy, supported formats, and verification: [docs/CALENDARS.md](docs/CALENDARS.md).
+Set `NEXT_PUBLIC_GOOGLE_CLIENT_ID` on the Vercel **frontend** and rebuild to enable Google.
+Run frontend calendar tests with `cd web && npm test`.
