@@ -18,6 +18,7 @@ import {
   easternInstant,
   searchBounds,
   timeLabel,
+  timestampLabel,
 } from "@/lib/time";
 
 type Block = { id: number; day: string; start: string; end: string };
@@ -188,9 +189,9 @@ export default function Dashboard() {
     }
   }
 
-  async function loadData(at: Date) {
+  async function loadData(at: Date, background = false) {
     const request = ++sequence.current;
-    setLoading(true);
+    if (!background) setLoading(true);
     setError("");
     const bounds = searchBounds(at);
     const query = new URLSearchParams(bounds).toString();
@@ -226,7 +227,13 @@ export default function Dashboard() {
       { duration: 75, preferred: ["mccomas"], tolerance: "low" },
       at,
     );
+    const timer = window.setInterval(() => {
+      const refreshedAt = new Date();
+      setNow(refreshedAt);
+      void loadData(refreshedAt, true);
+    }, 60000);
     return () => {
+      window.clearInterval(timer);
       sequence.current++;
     };
   }, []);
@@ -314,6 +321,12 @@ export default function Dashboard() {
             >
               Load demo scenario <span aria-hidden="true">↗</span>
             </button>
+          </div>
+        ) : null}
+        {!demo && health ? (
+          <div className="demo-banner">
+            <span className="demo-tag">{health.status === "ok" ? "LIVE" : "LIMITED DATA"}</span>
+            <span>VT observations · Databricks forecasts · Refreshes every minute</span>
           </div>
         ) : null}
         {error ? (
@@ -586,7 +599,7 @@ export default function Dashboard() {
                     ? "Synthetic demo"
                     : result.recommendation?.provenance === "cached"
                       ? "Cached data"
-                      : "Live data"}{" "}
+                      : result.status === "data_unavailable" ? "Data unavailable" : "Live data"}{" "}
                   ·{" "}
                   {result.method === "deterministic"
                     ? "Schedule-based ranking"
@@ -595,7 +608,7 @@ export default function Dashboard() {
                   {result.recommendation?.confidence
                     ? `${result.recommendation.confidence} confidence · `
                     : ""}
-                  Updated {timeLabel(result.generated_at)} ET
+                  Generated {timestampLabel(result.generated_at)}
                   {dirty ? " · Settings changed" : ""}
                 </div>
               ) : null}
@@ -696,12 +709,12 @@ export default function Dashboard() {
                             ? "Synthetic"
                             : gymData?.provenance === "cached"
                               ? "Cached"
-                              : ""}
+                              : gymData?.provenance === "live" ? "Live" : ""}
                         </span>
                       </div>
                       <p className="fetched-time">
                         {gymData?.observed_at
-                          ? `Fetched ${timeLabel(gymData.observed_at)} ET${gymData.stale ? " · stale" : ""}`
+                          ? `Fetched ${timestampLabel(gymData.observed_at)}${gymData.stale ? " · stale" : ""}`
                           : "Awaiting a successful fetch"}
                       </p>
                       {gymData &&
@@ -709,7 +722,7 @@ export default function Dashboard() {
                       gymData.observed_at ? (
                         <p className="fetched-time">
                           {gymData.source_updated_at
-                            ? `Source updated ${timeLabel(gymData.source_updated_at)} ET`
+                            ? `Source updated ${timestampLabel(gymData.source_updated_at)}`
                             : "Source update time unavailable"}
                         </p>
                       ) : null}
@@ -740,6 +753,15 @@ export default function Dashboard() {
                   : ""}
                 All times Eastern.
               </p>
+              {forecast?.facilities.map((facility) => (
+                <p className="forecast-note" key={facility.facility_id}>
+                  {facility.facility_name}: {facility.provenance === "unavailable"
+                    ? "Forecast unavailable"
+                    : `${facility.provenance} · ${facility.confidence} confidence${facility.stale ? " · stale" : ""}`}
+                  {facility.generated_at ? ` · Generated ${timestampLabel(facility.generated_at)}` : ""}
+                  {facility.observed_at ? ` · Observation fetched ${timestampLabel(facility.observed_at)}` : ""}
+                </p>
+              ))}
             </section>
           </div>
         </div>

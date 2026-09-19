@@ -1,5 +1,13 @@
 export const TIME_ZONE = "America/New_York";
 
+export function timestampLabel(value: string | Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: TIME_ZONE,
+    year: "numeric", month: "short", day: "numeric",
+    hour: "numeric", minute: "2-digit", timeZoneName: "short",
+  }).format(new Date(value));
+}
+
 export function timeLabel(value: string | Date) {
   return new Intl.DateTimeFormat("en-US", {
     timeZone: TIME_ZONE,

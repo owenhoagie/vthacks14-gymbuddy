@@ -4,6 +4,7 @@ import csv
 import json
 import logging
 from datetime import datetime, timedelta, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Protocol
 
@@ -165,6 +166,11 @@ class LocalRepository:
         return {facility: [] for facility in FACILITY_NAMES}
 
 
+@lru_cache
 def get_repository() -> Repository:
     settings = get_settings()
-    return DemoRepository() if settings.data_mode == "demo" else LocalRepository(settings)
+    if settings.data_mode == "demo":
+        return DemoRepository()
+    from api.live import LiveRepository
+
+    return LiveRepository(settings)

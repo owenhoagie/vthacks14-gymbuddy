@@ -1,7 +1,7 @@
 -- Template: replace {{catalog}} and {{schema}} with validated SQL identifiers.
--- Scaffold only; this has not been run against a workspace.
+-- Repeatable initialization preserves existing observations.
 CREATE SCHEMA IF NOT EXISTS {{catalog}}.{{schema}};
-CREATE TABLE IF NOT EXISTS {{catalog}}.{{schema}}.raw_occupancy (
+CREATE TABLE IF NOT EXISTS {{catalog}}.{{schema}}.`raw_occupancy` (
   facility_id STRING NOT NULL,
   facility_name STRING NOT NULL,
   source_facility_id STRING NOT NULL,

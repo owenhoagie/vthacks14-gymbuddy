@@ -120,7 +120,7 @@ def test_live_never_substitutes_demo_and_configured_integrations_are_honest(clie
     app.dependency_overrides[get_settings] = lambda: settings
     app.dependency_overrides[get_repository] = lambda: LocalRepository(settings)
     health = client.get("/health")
-    assert health.json()["integrations"]["databricks"]["status"] == "not_implemented"
+    assert health.json()["integrations"]["databricks"]["status"] == "unavailable"
     assert "private" not in health.text
     assert all(
         f["provenance"] == "unavailable" for f in client.get("/occupancy").json()["facilities"]

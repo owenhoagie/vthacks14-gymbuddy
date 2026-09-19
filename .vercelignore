@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.venv
+.git
+data
+artifacts
+__pycache__
+.pytest_cache
+.ruff_cache
+*.egg-info
+web
+node_modules
+tests
+docs
+.github

@@ -1,9 +1,9 @@
--- Scaffold baseline: capped +/-0.25 percentage points/minute trend, horizon 4h.
--- Rebuild every five minutes once the Bronze ingestion job is configured.
-CREATE OR REPLACE TABLE {{catalog}}.{{schema}}.occupancy_forecast USING DELTA AS
+-- Baseline: capped +/-0.25 percentage points/minute trend, horizon 4h.
+-- Atomically replaced after successful ingestion by the serialized upload worker.
+CREATE OR REPLACE TABLE {{catalog}}.{{schema}}.`occupancy_forecast` USING DELTA AS
 WITH latest AS (
   SELECT *, ROW_NUMBER() OVER (PARTITION BY facility_id ORDER BY observed_at DESC) AS rownum
-  FROM {{catalog}}.{{schema}}.occupancy_features
+  FROM {{catalog}}.{{schema}}.`occupancy_features`
 ), trend AS (
   SELECT *, CASE
     WHEN sample_count < 3 OR observed_at = first_observed_at THEN 0.0

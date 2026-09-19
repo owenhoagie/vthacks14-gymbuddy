@@ -2,7 +2,7 @@
 
 **When and where should I go to the gym today?**
 
-GymBuddy combines Virginia Tech gym occupancy, short-term forecasts, and a student's available time. This repository is the runnable baseplate: a real occupancy collector and a credential-free, synthetic-demo dashboard backed by FastAPI. Databricks and Gemini integration are the next milestones; adding keys alone does not activate those integrations yet.
+GymBuddy combines Virginia Tech gym occupancy, short-term forecasts, and a student's available time. FastAPI serves a Next.js dashboard with either an explicitly synthetic, credential-free demo or real VT observations and forecasts stored and computed in Databricks. Recommendations use deterministic availability and crowd ranking; Gemini remains a later integration.
 
 ## Run locally
 
@@ -24,7 +24,7 @@ make collect   # real VT observations, every five minutes
 
 `DATA_MODE=demo` is the default: the dashboard works without any credentials and always labels its data as synthetic. The collector independently gathers real data into `data/occupancy_raw.csv`; it does not replace synthetic demo data. Keep the collector running to accumulate history.
 
-`DATA_MODE=live` reads the collector's saved observations with a cached label and their original timestamps. Forecasts and recommendations are unavailable until the Databricks milestone is completed. Live mode never substitutes synthetic observations. Restart the API after changing `.env`; restart Next.js after changing its public API URL.
+`DATA_MODE=live` reads Databricks Bronze observations and Gold forecasts through a background snapshot refreshed every 60 seconds. Recommendations also require verified VT opening hours. During outages, snapshots and newer local observations are labeled cached and keep their original timestamps. Observations older than 15 minutes cannot support recommendations. Live mode never substitutes synthetic observations. Restart the API after changing `.env`; restart Next.js after changing its public API URL.
 
 On this Mac, if Git reports an Xcode license issue, prefix Git commands with `DEVELOPER_DIR=/Library/Developer/CommandLineTools` to use the installed Command Line Tools.
 
@@ -34,17 +34,17 @@ Fill in the ignored root `.env`. Only `NEXT_PUBLIC_API_URL` belongs in `web/.env
 
 | Variable | Purpose |
 | --- | --- |
-| `DATA_MODE` | `demo` (synthetic fixtures) or `live` (collector cache; integrations pending) |
+| `DATA_MODE` | `demo` (synthetic fixtures) or `live` (Databricks with recovery cache) |
 | `GEMINI_API_KEY`, `GEMINI_MODEL` | Server-side Gemini configuration, reserved for the next integration milestone |
 | `DATABRICKS_HOST` | Workspace URL, including `https://` |
-| `DATABRICKS_TOKEN` | Databricks access token; leave blank until available |
+| `DATABRICKS_TOKEN` | Server-side token with `sql` API scope and warehouse/catalog permissions |
 | `DATABRICKS_SQL_WAREHOUSE_ID` | SQL warehouse ID, not a cluster ID |
 | `DATABRICKS_CATALOG`, `DATABRICKS_SCHEMA` | Writable catalog and application schema |
 | `NEXT_PUBLIC_API_URL` | Browser-accessible FastAPI URL; default `http://localhost:8000` |
 | `CORS_ORIGINS` | Comma-separated allowed frontend origins |
 | `COLLECTOR_INTERVAL_SECONDS` | Poll interval; default `300` |
 
-Optional `OCCUPANCY_CSV_PATH` overrides local storage and `STALE_AFTER_MINUTES` overrides the API's 15-minute fetch-age threshold. Missing credentials are normal in the baseplate. `/health` reports configuration and implementation status without returning credentials or claiming connectivity was verified.
+Optional `OCCUPANCY_CSV_PATH` overrides local storage and `STALE_AFTER_MINUTES` overrides the API's 15-minute fetch-age threshold. Demo mode needs no credentials. `/health` reports Databricks connectivity from actual background queries, with degraded status for missing/stale live data; it never returns credentials.
 
 ## Commands and contracts
 
@@ -79,41 +79,103 @@ The collector POSTs directly to [VT RecSports](https://connect.recsports.vt.edu/
 
 VT does not supply a verified measurement timestamp. `observed_at` records when fetching succeeded; `source_updated_at` stays null. A recent fetch does **not** prove that upstream counters changed recently. Counts estimate occupancy from access records. The dashboard reports fetch time rather than claiming measurement freshness.
 
-The [VT hours service](https://apps.students.vt.edu/rshours/) supplies date-specific opening intervals for units `1` and `2`. The adapter preserves exceptions and multiple intervals; unknown hours cannot authorize a recommendation. It will be wired to live recommendations with the Gold forecast reader.
+The [VT hours service](https://apps.students.vt.edu/rshours/) supplies date-specific opening intervals for units `1` and `2`. The adapter preserves exceptions and multiple intervals; unknown hours cannot authorize a recommendation. Live recommendations use these intervals, cached for at most 15 minutes. Failed or expired hours never authorize a workout.
 
 Synthetic demo fixtures use a rolling five-minute anchor and explicit simulated opening intervals so the demo works at any hour. They do not represent actual VT opening hours. Use the dashboard's demo scenario to reproduce a 75-minute recommendation. Genuine cached data always retains its original observation time; synthetic data is never described as cached live data.
 
-## Revised delivery checkpoints
+## Databricks setup and operation
 
-Verified locally on September 19, 2026: 53 Python tests, Python lint, frontend
-type-check, and production build passed. Browser checks passed on desktop and a
-390px viewport, including three consecutive 75-minute recommendations with the
-supplied schedule, a fully blocked day, and API failure/recovery. Screenshot
-evidence is saved locally under ignored `artifacts/`. Databricks, Gemini, and
-external deployment have not been live-verified.
+The configured workspace uses `DATABRICKS_CATALOG=workspace` and `DATABRICKS_SCHEMA=gymbuddy`.
+The token needs the `sql` API scope. Its principal also needs CAN USE on the SQL warehouse,
+USE CATALOG, USE SCHEMA, and SELECT/MODIFY/CREATE TABLE privileges on the application schema
+(including ownership or sufficient privileges to replace the application view and Gold table).
+Use the HTTPS workspace origin for `DATABRICKS_HOST`, without a page path or query string.
 
-| Checkpoint | Baseplate state |
+```sh
+make db-init       # repeatable Bronze table, Silver view, and atomic Gold rebuild
+make db-backfill   # replay real CSV observations; MERGE inserts only missing keys
+make db-check      # counts and latest observation/forecast metadata, no credentials
+make collect      # five-minute collection plus independent upload worker
+```
+
+After backfill and a subsequent collection are verified, set `DATA_MODE=live` in `.env`
+and restart the API. No frontend credentials change. The collector uploads when Databricks
+credentials are configured, independently of whether the dashboard is in demo or live mode.
+`make collect-once` collects and synchronizes once. `make db-sync` retries pending uploads
+and forecast refresh without fetching new VT observations.
+
+The CSV is a durable outbox, not a disposable export. Uploads use batches of at most 100
+observations and a `(facility_id, observed_at)` MERGE key. Ignored, target-specific checkpoints
+advance only after confirmed writes. Malformed rows are skipped with their CSV line numbers
+logged; the original file is retained. Correcting a row causes a safe replay. A failed Gold
+refresh remains pending even when the Bronze upload succeeded. Local file locks serialize
+sync/backfill operations. Run one collector against one CSV per workspace.
+
+Databricks computes a 30-minute rolling mean and caps slope at ±0.25 percentage points per
+minute. Gold contains 49 points per facility, five minutes apart, ending four hours after the
+underlying observation. Fewer than three samples yields a flat mean and low confidence;
+otherwise confidence is medium. These are heuristic estimates, not calibrated probabilities.
+Raw overcapacity values are preserved; forecasts are bounded to 0–100%.
+
+The API serves memory snapshots without warehouse queries in request handlers. It writes
+validated recovery snapshots under ignored `data/`, refreshes every minute, and preserves
+both observation and forecast-generation timestamps during fallback. A stalled refresh
+worker stops claiming live connectivity after two minutes. API startup may briefly show
+unavailable data until the first warehouse refresh completes.
+
+To recover: restore credentials/connectivity, run `make db-sync`, and check `make db-check`
+and `/health`. Do not delete the CSV or reset its timestamps. To return to the synthetic demo,
+set `DATA_MODE=demo` and restart the API. This leaves real warehouse observations intact.
+
+### Validation and hosting
+
+Verified September 19, 2026: 77 backend tests, lint, unchanged generated contracts,
+frontend type checking, and production build pass. Two backfills of the same 22 observations
+left exactly 22 Bronze rows. A subsequent five-minute collection reached Bronze and Gold;
+CSV, warehouse, and running API values matched, including microsecond timestamps. Real SQL
+forecast boundary checks and three consecutive live 75-minute dashboard scenarios passed.
+Desktop and 390px mobile checks found no browser errors or horizontal overflow. Local
+screenshot evidence is under ignored `artifacts/databricks-live-*.png`.
+
+Run `make test`, `make build`, and `make smoke`. `make contracts` regenerates contracts;
+CI verifies they have not drifted. For configured workspaces, run
+`.venv/bin/python -m scripts.verify_databricks` to check actual SQL cold starts, trend caps,
+bounds, duplicate keys, and CSV/Bronze/Gold parity. Synthetic boundary cases use SELECT-only
+inline relations and never write test observations to live tables. Run parity checks after
+an upload completes, between collection cycles.
+
+## Free cloud hosting
+
+The hosting configuration uses **Vercel Hobby** for the API and dashboard and **GitHub Actions**
+for scheduled collection. See [docs/HOSTING.md](docs/HOSTING.md) for deployment commands,
+environment variables, retry-outbox behavior, and cutover checks. No paid Render service is used.
+GitHub requests a run every five minutes, but its scheduler can delay or drop runs. After 60 days
+without repository activity, scheduled workflows are disabled. Staleness remains based on actual
+observation time, and the API does not recommend workouts using observations older than 15 minutes.
+
+In Vercel's serverless runtime the API refreshes during requests, at most once per minute per
+warm instance. It never depends on daemon threads surviving between invocations. Warm-instance
+caches can provide fallback; cold starts require Databricks. Locally, `make api` and `make collect`
+still support the original persistent-process mode.
+
+| Checkpoint | State |
 | --- | --- |
-| VT endpoint → parsed observations → local CSV | Implemented; live collection verified |
-| Frozen contracts → mock-backed API → dashboard | Implemented |
-| Deterministic scheduling and degraded states | Implemented |
-| Databricks Bronze → Silver → Gold | Scaffolded; credential-backed execution pending |
-| Actual Gemini grounded tool calls | Interface only; implementation and live verification pending |
-| Live data → Databricks → Gemini → dashboard | Pending integration |
-| External deployment | Pending; local application is the known-good fallback |
+| VT → durable CSV → duplicate-safe Bronze upload | Implemented |
+| Silver rolling features → atomic Gold forecasts | Implemented |
+| Live API, real hours, cached recovery, dashboard refresh | Implemented |
+| Deterministic recommendations and credential-free demo | Implemented |
+| Gemini grounded tool calls | Interface only |
+| Calendar import / Google OAuth | Subsequent milestone |
+| Free cloud hosting | Vercel API/dashboard + GitHub Actions collector; see hosting guide |
 
-### Next: Databricks
-
-Use the [SQL Statement Execution API](https://docs.databricks.com/aws/en/dev-tools/sql-execution-tutorial) against the configured warehouse. Implement bounded polling of asynchronous statements and parameterized data values. Validate identifier configuration separately. Backfill the CSV with an idempotent `(facility_id, observed_at)` key and retain local observations until writes are verified.
-
-Keep Databricks visibly central: Bronze `raw_occupancy`, Silver `occupancy_features`, Gold `occupancy_forecast`. Produce five-minute predictions over the next four hours using rolling mean plus capped slope, bounded to 0–100%, with low-confidence current-value cold starts. Do not synthesize missing observations. Query Gold through the repository interface and cache successful responses with their original generation and observation times. Start with manual/on-demand transformations; add Jobs only after the full flow works.
-
-### Then: Gemini
+### Next: Gemini
 
 Use the actual Gemini API with deterministic tools for occupancy, forecasts, gym comparison, availability, and candidate ranking. Only pass validated candidates to final selection. Validate returned facility/time selections against those candidates and copy all numeric values from authoritative tool output. Timeout, malformed output, or service failure falls back to the deterministic result with an explicit method label. Do not send secrets in model prompts.
 
-### Finally: deployment and judging
+### Next: judging and remaining integrations
 
-Deploy `web/` to Vercel, FastAPI to Render, and the collector as a separate persistent worker. Configure public API URL, exact CORS origins, server-side credentials, and durable storage. Never run a continuous collector inside a request handler or a Next.js serverless function. Verify a real Databricks row, Gold forecast, Gemini tool call, and external browser flow before calling the MVP live. Repeat the known-good scenario three times; retain the clearly labeled synthetic demo and cached-data fallback.
+Verify the public dashboard and scheduled collection with local processes stopped. Preserve the
+explicitly labeled demo mode for presentations. Gemini grounded tool calls and calendar integration
+remain separate milestones.
 
-Do not add authentication, calendar OAuth, social features, notifications, workout generation, additional facilities, or advanced ML before that end-to-end milestone passes.
+Calendar imports and Google OAuth are planned subsequent work. Social features, notifications, workout generation, additional facilities, and advanced ML remain outside this migration.

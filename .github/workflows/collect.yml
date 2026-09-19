@@ -1,0 +1,81 @@
+name: Collect live occupancy
+on:
+  schedule:
+    - cron: '2-57/5 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: gymbuddy-collector
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - run: python -m pip install .
+      - name: Restore retry outbox
+        id: restore
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const artifacts = await github.paginate(github.rest.actions.listArtifactsForRepo, {
+              ...context.repo, name: 'gymbuddy-outbox', per_page: 100
+            });
+            const latest = artifacts.filter(a => !a.expired && a.workflow_run?.head_branch === context.payload.repository.default_branch)
+              .sort((a, b) => b.id - a.id)[0];
+            if (latest) {
+              const archive = await github.rest.actions.downloadArtifact({
+                ...context.repo, artifact_id: latest.id, archive_format: 'zip'
+              });
+              fs.writeFileSync('outbox.zip', Buffer.from(archive.data));
+            }
+      - name: Unpack retry observations
+        run: |
+          mkdir -p data
+          if [ -f outbox.zip ]; then
+            python - <<'PY'
+          import zipfile
+          from pathlib import Path
+          with zipfile.ZipFile('outbox.zip') as archive:
+              Path('data/occupancy_raw.csv').write_bytes(archive.read('occupancy_raw.csv'))
+          PY
+          fi
+      - name: Fetch VT and update Databricks
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          DATABRICKS_SQL_WAREHOUSE_ID: ${{ secrets.DATABRICKS_SQL_WAREHOUSE_ID }}
+          DATABRICKS_CATALOG: ${{ secrets.DATABRICKS_CATALOG }}
+          DATABRICKS_SCHEMA: ${{ secrets.DATABRICKS_SCHEMA }}
+        run: python -m scripts.cloud_collect
+      - name: Save retry outbox even if upload failed
+        id: save
+        if: always() && steps.restore.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gymbuddy-outbox
+          path: data/occupancy_raw.csv
+          if-no-files-found: error
+          retention-days: 7
+      - name: Bound artifact storage to two outboxes
+        if: always() && steps.save.outcome == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.paginate(github.rest.actions.listArtifactsForRepo, {
+              ...context.repo, name: 'gymbuddy-outbox', per_page: 100
+            });
+            const completed = artifacts.filter(a => a.workflow_run?.head_branch === context.payload.repository.default_branch)
+              .sort((a, b) => b.id - a.id);
+            for (const artifact of completed.slice(2)) {
+              await github.rest.actions.deleteArtifact({...context.repo, artifact_id: artifact.id});
+            }

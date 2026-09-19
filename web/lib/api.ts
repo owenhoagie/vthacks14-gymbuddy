@@ -10,7 +10,7 @@ export type FacilityId = components["schemas"]["FacilityId"];
 export type HealthResponse = components["schemas"]["HealthResponse"];
 
 const API_URL = (
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+  process.env.NEXT_PUBLIC_API_URL || "/api"
 ).replace(/\/$/, "");
 export async function apiRequest<T>(
   path: string,
@@ -19,7 +19,7 @@ export async function apiRequest<T>(
   const response = await fetch(`${API_URL}${path}`, {
     ...options,
     headers: { "Content-Type": "application/json", ...options.headers },
-    signal: options.signal ?? AbortSignal.timeout(20000),
+    signal: options.signal ?? AbortSignal.timeout(90000),
     cache: "no-store",
   });
   if (!response.ok) {

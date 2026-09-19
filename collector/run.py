@@ -209,15 +209,34 @@ def main() -> int:
     if args.interval <= 0:
         parser.error("--interval must be positive")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    worker = None
+    if os.getenv("DATABRICKS_TOKEN"):
+        from collector.sync import UploadWorker
+
+        worker = UploadWorker(args.output)
+        if not args.once:
+            worker.start()
     try:
         while True:
+            started = time.monotonic()
             _, failures = collect_once(args.output)
             if args.once:
+                if worker:
+                    from collector.sync import synchronize
+
+                    try:
+                        synchronize(args.output, worker.warehouse)
+                    except Exception as exc:
+                        log.warning("Upload failed (%s); CSV retained", type(exc).__name__)
+                        return 1
                 return 1 if failures else 0
-            time.sleep(args.interval)
+            time.sleep(max(0, args.interval - (time.monotonic() - started)))
     except KeyboardInterrupt:
         log.info("Collector stopped; saved observations retained")
         return 0
+    finally:
+        if worker and not args.once:
+            worker.stop()
 
 
 if __name__ == "__main__":

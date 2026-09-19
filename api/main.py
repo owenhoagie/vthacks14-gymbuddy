@@ -1,6 +1,7 @@
 """GymBuddy HTTP API. Run with uvicorn api.main:app --reload."""
 
 import logging
+from contextlib import asynccontextmanager
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, Query, Request
@@ -25,9 +26,23 @@ from api.recommendation import recommend
 from api.repository import Repository, get_repository, utc_now
 
 logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def lifespan(application):
+    factory = application.dependency_overrides.get(get_repository, get_repository)
+    repository = factory()
+    if hasattr(repository, "start"):
+        repository.start()
+    yield
+    if hasattr(repository, "stop"):
+        repository.stop()
+
+
 app = FastAPI(
     title="GymBuddy API",
     version="0.1.0",
+    lifespan=lifespan,
     responses={422: {"model": ErrorResponse}, 500: {"model": ErrorResponse}},
 )
 app.add_middleware(
@@ -68,18 +83,32 @@ async def unexpected_error(_request: Request, exc: Exception):
 
 
 SettingsDependency = Annotated[Settings, Depends(get_settings)]
-RepositoryDependency = Annotated[Repository, Depends(get_repository)]
+
+
+def request_repository(
+    request: Request, repository: Annotated[Repository, Depends(get_repository)]
+):
+    if hasattr(repository, "prepare_request"):
+        repository.prepare_request(include_hours=request.url.path.endswith("/recommend"))
+    return repository
+
+
+RepositoryDependency = Annotated[Repository, Depends(request_repository)]
 
 
 @app.get("/health", response_model=HealthResponse)
-def health(settings: SettingsDependency):
+def health(settings: SettingsDependency, repository: RepositoryDependency):
+    now = utc_now()
+    ready = settings.data_mode == "demo" or (hasattr(repository, "ready") and repository.ready(now))
     return HealthResponse(
-        status="ok" if settings.data_mode == "demo" else "degraded",
+        status="ok" if ready else "degraded",
         data_mode=settings.data_mode,
         integrations={
-            "databricks": IntegrationStatus(
+            "databricks": repository.status(now)
+            if hasattr(repository, "status")
+            else IntegrationStatus(
                 configured=settings.databricks_configured,
-                status="not_implemented" if settings.databricks_configured else "not_configured",
+                status="unavailable" if settings.databricks_configured else "not_configured",
             ),
             "gemini": IntegrationStatus(
                 configured=settings.gemini_configured,

@@ -34,3 +34,17 @@ build:
 
 fixtures:
 	.venv/bin/python -m scripts.seed_demo_data
+
+.PHONY: db-init db-backfill db-sync db-check
+
+db-init:
+	.venv/bin/python -m scripts.databricks init
+
+db-backfill:
+	.venv/bin/python -m scripts.databricks backfill
+
+db-sync:
+	.venv/bin/python -m scripts.databricks sync
+
+db-check:
+	.venv/bin/python -m scripts.databricks check
