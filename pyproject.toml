@@ -12,11 +12,11 @@ dependencies = [
   "pydantic>=2.10,<3", "pydantic-settings>=2.7,<3",
   "httpx>=0.28,<1", "beautifulsoup4>=4.12,<5",
   "databricks-sdk==0.140.0",
+  "google-genai==1.75.0",
 ]
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "ruff>=0.11,<1"]
-integrations = ["google-genai>=1,<2"]
 
 [tool.setuptools.packages.find]
 include = ["api*", "collector*", "scripts*"]

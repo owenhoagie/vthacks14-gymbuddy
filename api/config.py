@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     api_runtime: Literal["persistent", "serverless"] = "persistent"
     gemini_api_key: str = ""
     gemini_model: str = ""
+    gemini_timeout_seconds: float = Field(default=12, ge=1, le=20)
     databricks_host: str = ""
     databricks_token: str = ""
     databricks_sql_warehouse_id: str = ""

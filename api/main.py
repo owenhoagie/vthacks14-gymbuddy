@@ -12,6 +12,7 @@ from pydantic import AwareDatetime
 from starlette.exceptions import HTTPException
 
 from api.config import Settings, get_settings
+from api.gemini import get_gemini_service
 from api.models import (
     ErrorResponse,
     FacilityId,
@@ -116,10 +117,9 @@ def health(settings: SettingsDependency, repository: RepositoryDependency):
                 configured=settings.databricks_configured,
                 status="unavailable" if settings.databricks_configured else "not_configured",
             ),
-            "gemini": IntegrationStatus(
-                configured=settings.gemini_configured,
-                status="not_implemented" if settings.gemini_configured else "not_configured",
-            ),
+            "gemini": get_gemini_service(
+                settings.gemini_api_key, settings.gemini_model, settings.gemini_timeout_seconds
+            ).status(),
         },
     )
 
@@ -166,6 +166,9 @@ def recommendation(
     request: RecommendationRequest, repository: RepositoryDependency, settings: SettingsDependency
 ):
     now = utc_now()
-    return recommend(
+    result = recommend(
         request, repository.forecast(now), repository.hours(now), now, settings.data_mode
     )
+    return get_gemini_service(
+        settings.gemini_api_key, settings.gemini_model, settings.gemini_timeout_seconds
+    ).explain(request, result)

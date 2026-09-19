@@ -648,7 +648,7 @@ export default function Dashboard() {
                   ·{" "}
                   {result.method === "deterministic"
                     ? "Schedule-based ranking"
-                    : "Assisted ranking"}{" "}
+                    : "Gemini explanation · Schedule-checked"}{" "}
                   ·{" "}
                   {result.recommendation?.confidence
                     ? `${result.recommendation.confidence} confidence · `

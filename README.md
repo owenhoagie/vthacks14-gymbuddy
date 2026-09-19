@@ -2,7 +2,7 @@
 
 **When and where should I go to the gym today?**
 
-GymBuddy combines Virginia Tech gym occupancy, short-term forecasts, and a student's available time. FastAPI serves a Next.js dashboard with either an explicitly synthetic, credential-free demo or real VT observations and forecasts stored and computed in Databricks. Recommendations use deterministic availability and crowd ranking; Gemini remains a later integration.
+GymBuddy combines Virginia Tech gym occupancy, short-term forecasts, and a student's available time. FastAPI serves a Next.js dashboard with either an explicitly synthetic, credential-free demo or real VT observations and forecasts stored and computed in Databricks. Recommendations use deterministic availability and crowd ranking, with Gemini tool calls providing grounded explanations when configured.
 
 ## Run locally
 
@@ -35,7 +35,7 @@ Fill in the ignored root `.env`. Only `NEXT_PUBLIC_API_URL` belongs in `web/.env
 | Variable | Purpose |
 | --- | --- |
 | `DATA_MODE` | `demo` (synthetic historical model) or `live` (Databricks with recovery cache) |
-| `GEMINI_API_KEY`, `GEMINI_MODEL` | Server-side Gemini configuration, reserved for the next integration milestone |
+| `GEMINI_API_KEY`, `GEMINI_MODEL` | Server-side Gemini configuration; see [setup and fallback behavior](docs/GEMINI.md) |
 | `DATABRICKS_HOST` | Workspace URL, including `https://` |
 | `DATABRICKS_TOKEN` | Server-side token with `sql` API scope and warehouse/catalog permissions |
 | `DATABRICKS_SQL_WAREHOUSE_ID` | SQL warehouse ID, not a cluster ID |
@@ -166,19 +166,23 @@ still support the original persistent-process mode.
 | Silver rolling features → atomic Gold forecasts | Implemented |
 | Live API, real hours, cached recovery, dashboard refresh | Implemented |
 | Deterministic recommendations and credential-free demo | Implemented |
-| Gemini grounded tool calls | Interface only |
+| Gemini grounded tool calls | Validated workout tools + Gemini explanations, deterministic fallback |
 | Calendar import / Google OAuth | Browser .ics import + Google primary-calendar free/busy; see [setup](docs/CALENDARS.md) |
 | Free cloud hosting | Vercel API/dashboard + GitHub Actions collector; see hosting guide |
 
-### Next: Gemini
+### Gemini explanations
 
-Use the actual Gemini API with deterministic tools for occupancy, forecasts, gym comparison, availability, and candidate ranking. Only pass validated candidates to final selection. Validate returned facility/time selections against those candidates and copy all numeric values from authoritative tool output. Timeout, malformed output, or service failure falls back to the deterministic result with an explicit method label. Do not send secrets in model prompts.
+Gemini reads the validated workout options through a tool call and explains the
+primary recommendation. The scheduler retains control over ranking, times,
+occupancy, and calendar conflicts. Failures fall back to the deterministic result.
+Set `GEMINI_API_KEY` and `GEMINI_MODEL` on the API project only.
+See [configuration, privacy, health, and verification](docs/GEMINI.md).
 
 ### Next: judging and remaining integrations
 
 Verify the public dashboard and scheduled collection with local processes stopped. Preserve the
-explicitly labeled historical demo for presentations. Gemini grounded tool calls
-remain separate milestones.
+explicitly labeled historical demo for presentations. Conversational preference parsing
+and calendar write-back remain outside the current integration.
 
 Calendar imports and Google primary-calendar OAuth are implemented. Social features, notifications, workout generation, additional facilities, and advanced ML remain outside this migration.
 
