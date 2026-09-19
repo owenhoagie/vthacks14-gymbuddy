@@ -1,0 +1,27 @@
+name: Baseplate checks
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: python -m pip install -e '.[dev]'
+      - run: ruff check api collector scripts tests
+      - run: python -m pytest -q
+      - run: npm ci
+        working-directory: web
+      - run: python -m scripts.export_contracts
+      - run: npm run generate:types
+        working-directory: web
+      - run: git diff --exit-code -- fixtures/openapi.json web/lib/api-types.ts
+      - run: npm run typecheck && npm run build
+        working-directory: web

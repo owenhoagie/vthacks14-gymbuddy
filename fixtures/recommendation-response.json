@@ -1,0 +1,30 @@
+{
+  "status": "ok",
+  "recommendation": {
+    "start_time": "2026-09-19T18:25:00Z",
+    "end_time": "2026-09-19T19:40:00Z",
+    "facility_id": "war_memorial",
+    "facility_name": "War Memorial Hall",
+    "predicted_occupancy_pct": 23.727666666666668,
+    "confidence": "low",
+    "provenance": "demo",
+    "exceeds_tolerance": false
+  },
+  "alternative": {
+    "start_time": "2026-09-19T18:25:00Z",
+    "end_time": "2026-09-19T19:40:00Z",
+    "facility_id": "mccomas",
+    "facility_name": "McComas Hall",
+    "predicted_occupancy_pct": 30.033333333333335,
+    "confidence": "low",
+    "provenance": "demo",
+    "exceeds_tolerance": false
+  },
+  "explanation": "War Memorial Hall averages 24% occupancy across your entire 75-minute workout. The full window fits your availability and known opening hours.",
+  "method": "deterministic",
+  "warnings": [
+    "Synthetic demo forecasts and opening hours; this is not live gym guidance."
+  ],
+  "generated_at": "2026-09-19T17:00:00Z",
+  "data_mode": "demo"
+}

@@ -1,0 +1,427 @@
+{
+  "facilities": [
+    {
+      "facility_id": "mccomas",
+      "facility_name": "McComas Hall",
+      "points": [
+        {
+          "forecast_time": "2026-09-19T17:00:00Z",
+          "predicted_occupancy_pct": 66.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:05:00Z",
+          "predicted_occupancy_pct": 64.67
+        },
+        {
+          "forecast_time": "2026-09-19T17:10:00Z",
+          "predicted_occupancy_pct": 63.33
+        },
+        {
+          "forecast_time": "2026-09-19T17:15:00Z",
+          "predicted_occupancy_pct": 62.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:20:00Z",
+          "predicted_occupancy_pct": 60.67
+        },
+        {
+          "forecast_time": "2026-09-19T17:25:00Z",
+          "predicted_occupancy_pct": 59.33
+        },
+        {
+          "forecast_time": "2026-09-19T17:30:00Z",
+          "predicted_occupancy_pct": 58.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:35:00Z",
+          "predicted_occupancy_pct": 56.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:40:00Z",
+          "predicted_occupancy_pct": 54.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:45:00Z",
+          "predicted_occupancy_pct": 52.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:50:00Z",
+          "predicted_occupancy_pct": 50.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:55:00Z",
+          "predicted_occupancy_pct": 48.0
+        },
+        {
+          "forecast_time": "2026-09-19T18:00:00Z",
+          "predicted_occupancy_pct": 46.0
+        },
+        {
+          "forecast_time": "2026-09-19T18:05:00Z",
+          "predicted_occupancy_pct": 43.67
+        },
+        {
+          "forecast_time": "2026-09-19T18:10:00Z",
+          "predicted_occupancy_pct": 41.33
+        },
+        {
+          "forecast_time": "2026-09-19T18:15:00Z",
+          "predicted_occupancy_pct": 39.0
+        },
+        {
+          "forecast_time": "2026-09-19T18:20:00Z",
+          "predicted_occupancy_pct": 36.67
+        },
+        {
+          "forecast_time": "2026-09-19T18:25:00Z",
+          "predicted_occupancy_pct": 34.33
+        },
+        {
+          "forecast_time": "2026-09-19T18:30:00Z",
+          "predicted_occupancy_pct": 32.0
+        },
+        {
+          "forecast_time": "2026-09-19T18:35:00Z",
+          "predicted_occupancy_pct": 31.17
+        },
+        {
+          "forecast_time": "2026-09-19T18:40:00Z",
+          "predicted_occupancy_pct": 30.33
+        },
+        {
+          "forecast_time": "2026-09-19T18:45:00Z",
+          "predicted_occupancy_pct": 29.5
+        },
+        {
+          "forecast_time": "2026-09-19T18:50:00Z",
+          "predicted_occupancy_pct": 28.67
+        },
+        {
+          "forecast_time": "2026-09-19T18:55:00Z",
+          "predicted_occupancy_pct": 27.83
+        },
+        {
+          "forecast_time": "2026-09-19T19:00:00Z",
+          "predicted_occupancy_pct": 27.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:05:00Z",
+          "predicted_occupancy_pct": 27.67
+        },
+        {
+          "forecast_time": "2026-09-19T19:10:00Z",
+          "predicted_occupancy_pct": 28.33
+        },
+        {
+          "forecast_time": "2026-09-19T19:15:00Z",
+          "predicted_occupancy_pct": 29.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:20:00Z",
+          "predicted_occupancy_pct": 29.67
+        },
+        {
+          "forecast_time": "2026-09-19T19:25:00Z",
+          "predicted_occupancy_pct": 30.33
+        },
+        {
+          "forecast_time": "2026-09-19T19:30:00Z",
+          "predicted_occupancy_pct": 31.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:35:00Z",
+          "predicted_occupancy_pct": 33.17
+        },
+        {
+          "forecast_time": "2026-09-19T19:40:00Z",
+          "predicted_occupancy_pct": 35.33
+        },
+        {
+          "forecast_time": "2026-09-19T19:45:00Z",
+          "predicted_occupancy_pct": 37.5
+        },
+        {
+          "forecast_time": "2026-09-19T19:50:00Z",
+          "predicted_occupancy_pct": 39.67
+        },
+        {
+          "forecast_time": "2026-09-19T19:55:00Z",
+          "predicted_occupancy_pct": 41.83
+        },
+        {
+          "forecast_time": "2026-09-19T20:00:00Z",
+          "predicted_occupancy_pct": 44.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:05:00Z",
+          "predicted_occupancy_pct": 46.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:10:00Z",
+          "predicted_occupancy_pct": 48.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:15:00Z",
+          "predicted_occupancy_pct": 50.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:20:00Z",
+          "predicted_occupancy_pct": 52.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:25:00Z",
+          "predicted_occupancy_pct": 54.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:30:00Z",
+          "predicted_occupancy_pct": 56.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:35:00Z",
+          "predicted_occupancy_pct": 57.17
+        },
+        {
+          "forecast_time": "2026-09-19T20:40:00Z",
+          "predicted_occupancy_pct": 58.33
+        },
+        {
+          "forecast_time": "2026-09-19T20:45:00Z",
+          "predicted_occupancy_pct": 59.5
+        },
+        {
+          "forecast_time": "2026-09-19T20:50:00Z",
+          "predicted_occupancy_pct": 60.67
+        },
+        {
+          "forecast_time": "2026-09-19T20:55:00Z",
+          "predicted_occupancy_pct": 61.83
+        },
+        {
+          "forecast_time": "2026-09-19T21:00:00Z",
+          "predicted_occupancy_pct": 63.0
+        },
+        {
+          "forecast_time": "2026-09-19T21:05:00Z",
+          "predicted_occupancy_pct": 64.0
+        }
+      ],
+      "generated_at": "2026-09-19T17:00:00Z",
+      "observed_at": "2026-09-19T17:00:00Z",
+      "confidence": "low",
+      "provenance": "demo",
+      "stale": false
+    },
+    {
+      "facility_id": "war_memorial",
+      "facility_name": "War Memorial Hall",
+      "points": [
+        {
+          "forecast_time": "2026-09-19T17:00:00Z",
+          "predicted_occupancy_pct": 49.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:05:00Z",
+          "predicted_occupancy_pct": 48.17
+        },
+        {
+          "forecast_time": "2026-09-19T17:10:00Z",
+          "predicted_occupancy_pct": 47.33
+        },
+        {
+          "forecast_time": "2026-09-19T17:15:00Z",
+          "predicted_occupancy_pct": 46.5
+        },
+        {
+          "forecast_time": "2026-09-19T17:20:00Z",
+          "predicted_occupancy_pct": 45.67
+        },
+        {
+          "forecast_time": "2026-09-19T17:25:00Z",
+          "predicted_occupancy_pct": 44.83
+        },
+        {
+          "forecast_time": "2026-09-19T17:30:00Z",
+          "predicted_occupancy_pct": 44.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:35:00Z",
+          "predicted_occupancy_pct": 42.5
+        },
+        {
+          "forecast_time": "2026-09-19T17:40:00Z",
+          "predicted_occupancy_pct": 41.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:45:00Z",
+          "predicted_occupancy_pct": 39.5
+        },
+        {
+          "forecast_time": "2026-09-19T17:50:00Z",
+          "predicted_occupancy_pct": 38.0
+        },
+        {
+          "forecast_time": "2026-09-19T17:55:00Z",
+          "predicted_occupancy_pct": 36.5
+        },
+        {
+          "forecast_time": "2026-09-19T18:00:00Z",
+          "predicted_occupancy_pct": 35.0
+        },
+        {
+          "forecast_time": "2026-09-19T18:05:00Z",
+          "predicted_occupancy_pct": 33.17
+        },
+        {
+          "forecast_time": "2026-09-19T18:10:00Z",
+          "predicted_occupancy_pct": 31.33
+        },
+        {
+          "forecast_time": "2026-09-19T18:15:00Z",
+          "predicted_occupancy_pct": 29.5
+        },
+        {
+          "forecast_time": "2026-09-19T18:20:00Z",
+          "predicted_occupancy_pct": 27.67
+        },
+        {
+          "forecast_time": "2026-09-19T18:25:00Z",
+          "predicted_occupancy_pct": 25.83
+        },
+        {
+          "forecast_time": "2026-09-19T18:30:00Z",
+          "predicted_occupancy_pct": 24.0
+        },
+        {
+          "forecast_time": "2026-09-19T18:35:00Z",
+          "predicted_occupancy_pct": 23.67
+        },
+        {
+          "forecast_time": "2026-09-19T18:40:00Z",
+          "predicted_occupancy_pct": 23.33
+        },
+        {
+          "forecast_time": "2026-09-19T18:45:00Z",
+          "predicted_occupancy_pct": 23.0
+        },
+        {
+          "forecast_time": "2026-09-19T18:50:00Z",
+          "predicted_occupancy_pct": 22.67
+        },
+        {
+          "forecast_time": "2026-09-19T18:55:00Z",
+          "predicted_occupancy_pct": 22.33
+        },
+        {
+          "forecast_time": "2026-09-19T19:00:00Z",
+          "predicted_occupancy_pct": 22.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:05:00Z",
+          "predicted_occupancy_pct": 22.5
+        },
+        {
+          "forecast_time": "2026-09-19T19:10:00Z",
+          "predicted_occupancy_pct": 23.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:15:00Z",
+          "predicted_occupancy_pct": 23.5
+        },
+        {
+          "forecast_time": "2026-09-19T19:20:00Z",
+          "predicted_occupancy_pct": 24.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:25:00Z",
+          "predicted_occupancy_pct": 24.5
+        },
+        {
+          "forecast_time": "2026-09-19T19:30:00Z",
+          "predicted_occupancy_pct": 25.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:35:00Z",
+          "predicted_occupancy_pct": 26.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:40:00Z",
+          "predicted_occupancy_pct": 27.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:45:00Z",
+          "predicted_occupancy_pct": 28.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:50:00Z",
+          "predicted_occupancy_pct": 29.0
+        },
+        {
+          "forecast_time": "2026-09-19T19:55:00Z",
+          "predicted_occupancy_pct": 30.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:00:00Z",
+          "predicted_occupancy_pct": 31.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:05:00Z",
+          "predicted_occupancy_pct": 32.33
+        },
+        {
+          "forecast_time": "2026-09-19T20:10:00Z",
+          "predicted_occupancy_pct": 33.67
+        },
+        {
+          "forecast_time": "2026-09-19T20:15:00Z",
+          "predicted_occupancy_pct": 35.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:20:00Z",
+          "predicted_occupancy_pct": 36.33
+        },
+        {
+          "forecast_time": "2026-09-19T20:25:00Z",
+          "predicted_occupancy_pct": 37.67
+        },
+        {
+          "forecast_time": "2026-09-19T20:30:00Z",
+          "predicted_occupancy_pct": 39.0
+        },
+        {
+          "forecast_time": "2026-09-19T20:35:00Z",
+          "predicted_occupancy_pct": 40.17
+        },
+        {
+          "forecast_time": "2026-09-19T20:40:00Z",
+          "predicted_occupancy_pct": 41.33
+        },
+        {
+          "forecast_time": "2026-09-19T20:45:00Z",
+          "predicted_occupancy_pct": 42.5
+        },
+        {
+          "forecast_time": "2026-09-19T20:50:00Z",
+          "predicted_occupancy_pct": 43.67
+        },
+        {
+          "forecast_time": "2026-09-19T20:55:00Z",
+          "predicted_occupancy_pct": 44.83
+        },
+        {
+          "forecast_time": "2026-09-19T21:00:00Z",
+          "predicted_occupancy_pct": 46.0
+        },
+        {
+          "forecast_time": "2026-09-19T21:05:00Z",
+          "predicted_occupancy_pct": 47.0
+        }
+      ],
+      "generated_at": "2026-09-19T17:00:00Z",
+      "observed_at": "2026-09-19T17:00:00Z",
+      "confidence": "low",
+      "provenance": "demo",
+      "stale": false
+    }
+  ],
+  "data_mode": "demo"
+}
