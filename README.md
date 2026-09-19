@@ -149,7 +149,7 @@ an upload completes, between collection cycles.
 
 ## Free cloud hosting
 
-Live dashboard: **https://gymbuddy-vthacks14.vercel.app**
+Live dashboard: **https://gymbuddy.work**
 
 The hosting configuration uses **Vercel Hobby** for the API and dashboard, **Cloudflare Workers Free**
 to trigger collection every five minutes, and **GitHub Actions** to run the collector.

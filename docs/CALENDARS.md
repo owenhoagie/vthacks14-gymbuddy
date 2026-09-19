@@ -9,6 +9,7 @@
 3. Under Data Access add only `https://www.googleapis.com/auth/calendar.freebusy`.
 4. Create an OAuth client of type **Web application**, named **GymBuddy Web**.
 5. Add authorized JavaScript origins (no path or trailing slash):
+   - `https://gymbuddy.work` (custom domain; saving this origin is pending owner confirmation)
    - `https://gymbuddy-vthacks14.vercel.app`
    - `http://localhost:3000`
 6. No redirect URI is required for the Google Identity Services token popup model.

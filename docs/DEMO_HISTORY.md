@@ -1,6 +1,6 @@
 # Synthetic historical forecasting demo
 
-Open [Historical demo](https://gymbuddy-vthacks14.vercel.app/?mode=demo), or select
+Open [Historical demo](https://gymbuddy.work/?mode=demo), or select
 **Historical demo** beside **Live VT data**. The default hosted view remains live.
 Calendar connections, imports, manual busy blocks, and workout preferences survive the switch.
 The banner, occupancy cards, forecast note, and recommendation provenance label demo results.

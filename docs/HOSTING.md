@@ -1,8 +1,25 @@
 # Free GymBuddy hosting
 
-Live dashboard: [GymBuddy](https://gymbuddy-vthacks14.vercel.app)
+Live dashboard: [GymBuddy](https://gymbuddy.work)
+
+Fallback Vercel URL: https://gymbuddy-vthacks14.vercel.app
 
 Live API health: [health check](https://gymbuddy-api-umber.vercel.app/health)
+
+## Custom domain
+
+`gymbuddy.work` is registered with Porkbun through the MLH domain offer and attached
+to the existing `gymbuddy-vthacks14` Vercel project. Porkbun hosts its DNS; the root
+A record points to `76.76.21.21` with a 600-second TTL. Vercel provides HTTPS. No
+additional hosting plan or nameserver change is required.
+
+Registration expires September 19, 2027; renewal is separate from free hosting.
+The Google Calendar OAuth client also needs `https://gymbuddy.work` as an authorized
+JavaScript origin. Saving that change is pending owner confirmation; the existing
+Vercel origin remains available for Calendar sign-in. See [calendar setup](CALENDARS.md).
+
+Verified on September 19, 2026: custom-domain HTTPS, live occupancy and forecasts,
+Databricks/Gemini health, and a 75-minute recommendation rendered in the browser.
 
 ## Architecture
 

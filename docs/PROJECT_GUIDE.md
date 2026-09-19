@@ -6,8 +6,8 @@
 
 The question it answers is: **“Given my schedule, where can I fit a full workout with a crowd level I’m comfortable with?”**
 
-- [Open the live app](https://gymbuddy-vthacks14.vercel.app/)
-- [Open the historical demo](https://gymbuddy-vthacks14.vercel.app/?mode=demo)
+- [Open the live app](https://gymbuddy.work/)
+- [Open the historical demo](https://gymbuddy.work/?mode=demo)
 - [View the project on GitHub](https://github.com/owenhoagie/vthacks14-gymbuddy)
 
 ## 1. The problem we are solving
@@ -148,7 +148,7 @@ Google sign-in currently uses testing mode, so demo users must be added as appro
 
 If an attached calendar cannot be read, the app asks for reconnection, retry, or explicit removal rather than silently ignoring the calendar. Some unusual or overly complex calendar exports are rejected instead of interpreted unreliably.
 
-The app includes a [privacy page](https://gymbuddy-vthacks14.vercel.app/privacy). It is not a claim of complete anonymity: hosting providers process ordinary request information, and Gemini processes its limited inputs under Google’s service terms.
+The app includes a [privacy page](https://gymbuddy.work/privacy). It is not a claim of complete anonymity: hosting providers process ordinary request information, and Gemini processes its limited inputs under Google’s service terms.
 
 ## 9. Live mode versus historical demo mode
 
