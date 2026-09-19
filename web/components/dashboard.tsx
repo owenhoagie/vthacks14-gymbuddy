@@ -308,6 +308,7 @@ export default function Dashboard() {
           <span className="brand-period">.</span>
         </a>
         <div className="header-right">
+          <a className="header-link" href="/meal-planner">Meal planner</a>
           <span className="campus-label">MADE FOR HOKIES</span>
           <span className="campus-pill">
             <span className="status-dot" />
@@ -567,6 +568,7 @@ export default function Dashboard() {
           </aside>
           <div className="results-column">
             <section
+              id="recommendation-card"
               className="recommendation-card"
               aria-live="polite"
               aria-busy={planning}
