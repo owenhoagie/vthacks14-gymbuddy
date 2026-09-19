@@ -27,4 +27,5 @@ jobs:
         working-directory: web
       - run: npm test
         working-directory: web
-      - run: node --test scheduler/worker.test.mjs
+      - run: npm ci && npm test
+        working-directory: scheduler

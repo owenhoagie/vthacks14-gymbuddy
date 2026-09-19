@@ -3,9 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test worker.test.mjs",
+    "test": "node --test worker.test.mjs runtime.test.mjs",
     "deploy": "wrangler deploy",
     "logs": "wrangler tail"
   },
-  "devDependencies": { "wrangler": "4.135.0" }
+  "devDependencies": {
+    "miniflare": "5.20260918.0-alpha",
+    "wrangler": "4.135.0"
+  }
 }

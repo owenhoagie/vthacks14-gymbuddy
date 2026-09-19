@@ -22,7 +22,7 @@ test("scheduled tick dispatches only the fixed collector on main, with an audit 
     ref: "main", inputs: { trigger_source: "cloudflare", scheduled_at: "2026-09-19T20:10:00.000Z" },
   });
   assert.equal(calls[1].headers.Authorization, "Bearer test-secret");
-  assert.equal(calls[1].redirect, "error");
+  assert.equal(calls[1].redirect, "manual");
   assert(!logs.join().includes("test-secret"));
 });
 
@@ -48,7 +48,7 @@ test("failed previous collection is retried on the next tick", async () => {
   assert.equal(result.status, "dispatched");
 });
 
-for (const status of [401, 403, 429, 500, 503]) {
+for (const status of [301, 302, 401, 403, 429, 500, 503]) {
   test(`upstream ${status} is observable and is not retried in a loop`, async () => {
     let calls = 0;
     await assert.rejects(dispatchCollection(event, env, async () => {

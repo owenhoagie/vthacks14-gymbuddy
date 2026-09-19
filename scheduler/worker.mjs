@@ -15,7 +15,8 @@ export async function dispatchCollection(event, env, fetcher = fetch, log = cons
   const request = async (url, options = {}) => {
     try {
       return await fetcher(url, {
-        ...options, headers, redirect: "error", signal: AbortSignal.timeout(20000),
+        // Workers supports manual redirects; reject 3xx through the status checks below.
+        ...options, headers, redirect: "manual", signal: AbortSignal.timeout(20000),
       });
     } catch {
       // Never log request headers, raw upstream exceptions, or response bodies.
