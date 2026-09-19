@@ -4,6 +4,9 @@
 
 GymBuddy combines Virginia Tech gym occupancy, short-term forecasts, and a student's available time. FastAPI serves a Next.js dashboard with either an explicitly synthetic, credential-free demo or real VT observations and forecasts stored and computed in Databricks. Recommendations use deterministic availability and crowd ranking, with Gemini tool calls providing grounded explanations when configured.
 
+For a nontechnical project overview and presentation talking points, read the
+[team and speech-writing guide](docs/PROJECT_GUIDE.md).
+
 ## Run locally
 
 Requires Python 3.11+ and Node 20.9+ (Node 22 or 24 recommended).
