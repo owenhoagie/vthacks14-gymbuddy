@@ -34,7 +34,7 @@ export default function ForecastChart({ data, candidate, loading }: Props) {
       <svg
         viewBox="0 0 750 230"
         role="img"
-        aria-label="Predicted gym occupancy over the next four hours. McComas is white; War Memorial is orange. The shaded region is your recommended workout."
+        aria-label="Predicted gym occupancy over the next four hours for McComas Hall and War Memorial Hall. Line colors match the legend. The shaded region is your recommended workout."
       >
         {[0, 25, 50, 75, 100].map((n) => (
           <g key={n}>
@@ -43,7 +43,7 @@ export default function ForecastChart({ data, candidate, loading }: Props) {
               x2="712"
               y1={y(n)}
               y2={y(n)}
-              stroke="var(--line)"
+              stroke="var(--chart-grid)"
               strokeDasharray={n === 0 ? undefined : "3 5"}
             />
             <text x="29" y={y(n) + 4} textAnchor="end" className="chart-label">
@@ -58,8 +58,8 @@ export default function ForecastChart({ data, candidate, loading }: Props) {
             width={x(selectionEnd) - x(selectionStart)}
             height="164"
             rx="6"
-            fill="var(--ink)"
-            opacity=".10"
+            fill="var(--chart-window)"
+            opacity="var(--chart-window-opacity)"
           />
         ) : null}
         {facilities.map((f) => (
@@ -72,7 +72,7 @@ export default function ForecastChart({ data, candidate, loading }: Props) {
               )
               .join(" ")}
             fill="none"
-            stroke={f.facility_id === "mccomas" ? "var(--ink)" : "var(--orange)"}
+            stroke={f.facility_id === "mccomas" ? "var(--chart-primary)" : "var(--chart-secondary)"}
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"

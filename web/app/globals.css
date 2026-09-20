@@ -1,18 +1,21 @@
 @import "tailwindcss";
+@import "./dark-theme.css";
 
 :root {
-  --paper: #65283e;
-  --surface: #4b1d2f;
-  --inset: #391422;
-  --cream: #fff9f4;
-  --on-light: #65283e;
-  --ink: #fff9f4;
-  --muted: #ffc194;
-  --line: #996477;
+  --chart-primary: #6c263f;
+  --chart-secondary: #c88252;
+  --chart-grid: #eae5df;
+  --chart-window: #6b233f;
+  --chart-window-opacity: .055;
+  color-scheme: light;
+  --paper: #f7f6f2;
+  --ink: #282b27;
+  --muted: #85867e;
+  --line: #e6e5de;
   --maroon: #65283e;
-  --orange: #ffad70;
-  --font-sans: var(--font-montserrat), Arial, sans-serif;
-  color-scheme: dark;
+  --orange: #c98050;
+  --green: #537557;
+  --font-sans: Arial, Helvetica, sans-serif;
 }
 * {
   box-sizing: border-box;
@@ -48,7 +51,7 @@ button:disabled {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
-  outline: 3px solid var(--orange);
+  outline: 3px solid #cc8c53;
   outline-offset: 3px;
 }
 button {
@@ -68,8 +71,7 @@ button svg {
   flex-shrink: 0;
 }
 ::selection {
-  background: var(--orange);
-  color: var(--on-light);
+  background: #e7d6dd;
 }
 .site-header {
   height: 91px;
@@ -93,8 +95,8 @@ button svg {
 .brand-icon {
   display: grid;
   place-items: center;
-  background: var(--cream);
-  color: var(--on-light);
+  background: var(--maroon);
+  color: white;
   height: 35px;
   width: 35px;
   border-radius: 9px;
@@ -116,14 +118,14 @@ button svg {
   font-size: 10px;
   letter-spacing: 1.7px;
   font-weight: 600;
-  color: var(--muted);
+  color: #93958b;
 }
 .campus-pill {
-  border: 1px solid var(--line);
+  border: 1px solid #dcded4;
   border-radius: 30px;
   padding: 10px 14px;
   font-size: 11px;
-  color: var(--muted);
+  color: #646b5f;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -132,8 +134,8 @@ button svg {
   height: 6px;
   width: 6px;
   border-radius: 50%;
-  background: var(--orange);
-  box-shadow: 0 0 0 3px #ffad7020;
+  background: #7c926b;
+  box-shadow: 0 0 0 3px #7c926b12;
 }
 main {
   max-width: 1240px;
@@ -152,25 +154,26 @@ main {
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 1.7px;
-  color: var(--muted);
+  color: #8a7b73;
 }
 .eyebrow {
   margin-bottom: 12px;
-  color: var(--muted);
+  color: #956e5c;
 }
 .page-intro h1 {
   font:
-    700 43px/1.15 var(--font-sans);
+    normal 43px/1.15 Georgia,
+    "Times New Roman",
+    serif;
   letter-spacing: -1.45px;
 }
 .page-intro h1 em {
-  font-weight: 700;
-  color: var(--orange);
-  font-style: normal;
+  font-weight: 400;
+  color: var(--maroon);
 }
 .page-intro p {
   margin-top: 13px;
-  color: var(--muted);
+  color: #818178;
   font-size: 12px;
 }
 .today {
@@ -178,14 +181,14 @@ main {
   align-items: center;
   gap: 10px;
   padding-top: 18px;
-  color: var(--muted);
+  color: #7b7d71;
 }
 .today strong {
   font-size: 11px;
   font-weight: 500;
   display: block;
   margin-bottom: 5px;
-  color: var(--ink);
+  color: #4e5248;
 }
 .today span {
   font-size: 10px;
@@ -194,19 +197,19 @@ main {
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 1px solid var(--line);
-  background: var(--inset);
+  border: 1px solid #e7dfce;
+  background: #f2eee4;
   border-radius: 7px;
   padding: 11px 15px;
   margin-bottom: 26px;
   font-size: 10px;
-  color: var(--muted);
+  color: #847558;
 }
 .demo-tag {
   font-size: 8px;
   letter-spacing: 1.5px;
-  background: var(--inset);
-  color: var(--muted);
+  background: #e6dece;
+  color: #76664c;
   font-weight: bold;
   padding: 4px 6px;
   border-radius: 3px;
@@ -216,7 +219,7 @@ main {
   white-space: nowrap;
   background: none;
   font-size: 10px;
-  color: var(--muted);
+  color: #7c613e;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -229,9 +232,9 @@ main {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  border: 1px solid var(--line);
-  background: var(--inset);
-  color: var(--muted);
+  border: 1px solid #d8b5b0;
+  background: #fff1ee;
+  color: #8b3d35;
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 24px;
@@ -239,7 +242,7 @@ main {
   line-height: 1.6;
 }
 .error-banner button {
-  color: var(--muted);
+  color: #8b3d35;
   text-decoration: underline;
   background: none;
 }
@@ -250,7 +253,7 @@ main {
   align-items: start;
 }
 .card {
-  background: var(--surface);
+  background: #fffefa;
   border: 1px solid var(--line);
   border-radius: 11px;
 }
@@ -264,23 +267,24 @@ main {
 }
 .section-heading h2 {
   font:
-    700 27px var(--font-sans);
+    normal 27px Georgia,
+    serif;
   margin-top: 8px;
   letter-spacing: -0.6px;
 }
 .outline-icon {
   width: 38px;
   height: 38px;
-  border: 1px solid var(--line);
+  border: 1px solid #e9e5dc;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: var(--muted);
+  color: #9b917e;
 }
 .section-description {
   font-size: 11px;
   line-height: 1.6;
-  color: var(--muted);
+  color: #8b8c82;
   margin-top: 9px;
 }
 .planner form {
@@ -305,7 +309,7 @@ main {
 }
 .planner legend span {
   font-size: 9px;
-  color: var(--muted);
+  color: #a1a197;
   font-weight: normal;
 }
 .duration-options {
@@ -317,14 +321,14 @@ main {
   border: 1px solid var(--line);
   border-radius: 6px;
   padding: 12px 0;
-  color: var(--ink);
-  background: var(--inset);
+  color: #797b72;
+  background: #fffefa;
   font-size: 12px;
 }
 .duration-options button.active {
-  background: var(--cream);
-  color: var(--on-light);
-  border-color: var(--cream);
+  background: var(--maroon);
+  color: white;
+  border-color: var(--maroon);
 }
 .gym-options {
   display: grid;
@@ -340,12 +344,12 @@ main {
   padding: 11px 9px;
   font-size: 10px;
   cursor: pointer;
-  color: var(--muted);
+  color: #838379;
 }
 .gym-options label.selected {
-  color: var(--orange);
-  border-color: var(--orange);
-  background: var(--inset);
+  color: var(--maroon);
+  border-color: #b5939d;
+  background: #f8f2f3;
 }
 .gym-options input {
   position: absolute;
@@ -353,25 +357,25 @@ main {
   pointer-events: none;
 }
 .gym-options label:has(input:focus-visible) {
-  outline: 3px solid var(--orange);
+  outline: 3px solid #cc8c53;
   outline-offset: 3px;
 }
 .checkbox-mark {
   width: 15px;
   height: 15px;
-  border: 1px solid var(--line);
+  border: 1px solid #d9d9cf;
   border-radius: 3px;
   display: grid;
   place-items: center;
 }
 .selected .checkbox-mark {
-  background: var(--cream);
-  color: var(--on-light);
-  border-color: var(--cream);
+  background: var(--maroon);
+  color: white;
+  border-color: var(--maroon);
 }
 .field-note {
   font-size: 9px;
-  color: var(--muted);
+  color: #a1a095;
   line-height: 1.5;
   margin-top: 9px;
 }
@@ -386,7 +390,7 @@ main {
   border-radius: 6px;
   background: none;
   font-size: 9px;
-  color: var(--muted);
+  color: #929187;
   display: flex;
   flex-direction: column;
   gap: 7px;
@@ -398,9 +402,9 @@ main {
   letter-spacing: 1px;
 }
 .tolerance-options button.active {
-  color: var(--orange);
-  background: var(--inset);
-  border-color: var(--orange);
+  color: var(--maroon);
+  background: #f8f2f3;
+  border-color: #b5939d;
 }
 .unavailable-blocks {
   display: flex;
@@ -408,8 +412,8 @@ main {
   gap: 8px;
 }
 .time-block {
-  border: 1px solid var(--line);
-  background: var(--inset);
+  border: 1px solid #e9e7e0;
+  background: #f8f7f3;
   border-radius: 6px;
   padding: 10px 11px;
 }
@@ -424,14 +428,14 @@ main {
   align-items: center;
   gap: 9px;
   font-size: 9px;
-  color: var(--muted);
+  color: #9a9587;
 }
 .block-date-label input {
   background: none;
   border: 0;
   padding: 0;
   font-size: 9px;
-  color: var(--muted);
+  color: #8b8679;
   width: 110px;
   min-width: 0;
 }
@@ -440,10 +444,10 @@ main {
   place-items: center;
   background: none;
   padding: 2px;
-  color: var(--muted);
+  color: #b2aea3;
 }
 .remove-block:hover {
-  color: var(--ink);
+  color: var(--maroon);
 }
 .time-inputs {
   display: flex;
@@ -455,23 +459,23 @@ main {
   min-width: 0;
   width: 112px;
   font-size: 11px;
-  background: var(--inset);
-  color: var(--ink);
-  border: 1px solid var(--line);
+  background: #fffefa;
+  color: #55594d;
+  border: 1px solid #e6e4db;
   border-radius: 4px;
   padding: 6px;
 }
 .time-inputs > span {
   font-size: 9px;
-  color: var(--muted);
+  color: #aaa797;
 }
 .add-block {
   background: none;
-  border: 1px dashed var(--line);
+  border: 1px dashed #d9d5c9;
   width: 100%;
   padding: 10px;
   border-radius: 6px;
-  color: var(--muted);
+  color: #8b8476;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -480,7 +484,7 @@ main {
   font-size: 10px;
 }
 .add-block:hover {
-  background: var(--surface);
+  background: #f4efe6;
 }
 .primary-button {
   display: flex;
@@ -489,19 +493,18 @@ main {
   gap: 25px;
   width: 100%;
   border-radius: 6px;
-  background: var(--cream);
+  background: var(--maroon);
   padding: 15px 12px;
-  color: var(--on-light);
+  color: #fff9f5;
   font-size: 11px;
-  font-weight: 700;
-  border-color: var(--cream);
+  font-weight: 500;
 }
 .primary-button:hover {
-  background: var(--orange);
+  background: #4c1c2e;
 }
 .form-footnote {
   font-size: 8px;
-  color: var(--muted);
+  color: #a6a294;
   text-align: center;
   margin-top: 12px;
 }
@@ -511,18 +514,13 @@ main {
   gap: 21px;
 }
 .recommendation-card {
-  background: var(--cream);
-  color: var(--ink);
+  background: #64263c;
+  color: #fffbf4;
   border-radius: 11px;
   padding: 26px 29px 20px;
   position: relative;
   overflow: hidden;
   min-height: 287px;
-  --ink: #65283e;
-  --muted: #984318;
-  --line: #c8a797;
-  --orange: #984318;
-  color-scheme: light;
 }
 .recommendation-card:after {
   content: "";
@@ -531,9 +529,11 @@ main {
   top: 35px;
   width: 265px;
   height: 265px;
-  border: 1px solid #65283e14;
+  border: 1px solid #ffffff08;
   border-radius: 50%;
-  box-shadow: 0 0 0 35px #65283e06, 0 0 0 70px #65283e03;
+  box-shadow:
+    0 0 0 35px #ffffff03,
+    0 0 0 70px #ffffff02;
   pointer-events: none;
 }
 .recommendation-top {
@@ -547,7 +547,7 @@ main {
   display: flex;
   align-items: center;
   gap: 9px;
-  color: var(--muted);
+  color: #e1b8bd;
   font-size: 9px;
   letter-spacing: 1.6px;
 }
@@ -555,9 +555,9 @@ main {
   font-size: 7px;
   letter-spacing: 1.3px;
   padding: 7px 8px;
-  border: 1px solid var(--line);
+  border: 1px solid #ffffff25;
   border-radius: 3px;
-  color: var(--muted);
+  color: #ddbfc3;
 }
 .recommendation-headline {
   display: flex;
@@ -570,7 +570,8 @@ main {
 }
 .recommendation-headline h2 {
   font:
-    700 34px var(--font-sans);
+    normal 34px Georgia,
+    serif;
   letter-spacing: -0.65px;
 }
 .rec-percent {
@@ -586,7 +587,7 @@ main {
 .rec-percent > small {
   display: block;
   font-size: 8px;
-  color: var(--muted);
+  color: #d1aeb7;
   letter-spacing: 0.15px;
   margin-top: 6px;
   text-align: right;
@@ -598,7 +599,7 @@ main {
   margin-top: 0px;
 }
 .workout-time > span {
-  color: var(--muted);
+  color: #af778a;
   font-size: 16px;
   padding: 0 6px;
 }
@@ -611,23 +612,23 @@ main {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--muted);
+  color: #dfbfc7;
   font-size: 9px;
 }
 .tiny-dot {
   width: 5px;
   height: 5px;
-  background: var(--orange);
+  background: #c4c69c;
   border-radius: 50%;
 }
 .recommendation-reason {
   margin-top: 24px;
   padding-top: 15px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid #ffffff19;
   display: flex;
   align-items: flex-start;
   gap: 9px;
-  color: var(--muted);
+  color: #e5cbd0;
 }
 .recommendation-reason svg {
   flex-shrink: 0;
@@ -641,7 +642,7 @@ main {
 .rec-meta {
   font-size: 8px;
   line-height: 1.6;
-  color: var(--muted);
+  color: #c89dac;
   margin-top: 11px;
 }
 .recommendation-empty {
@@ -650,20 +651,21 @@ main {
 }
 .recommendation-empty h2 {
   font:
-    700 33px/1.15 var(--font-sans);
+    normal 33px/1.15 Georgia,
+    serif;
   letter-spacing: -0.6px;
 }
 .recommendation-empty p {
   font-size: 11px;
   line-height: 1.7;
-  color: var(--muted);
+  color: #dfbfc7;
   margin-top: 16px;
 }
 .plan-error,
 .recommendation-warnings {
   font-size: 11px;
   line-height: 1.6;
-  color: var(--muted);
+  color: #ffe0b0;
   margin-top: 14px;
 }
 .alternative {
@@ -677,7 +679,7 @@ main {
 .alternative-label {
   font-size: 8px;
   letter-spacing: 1px;
-  color: var(--muted);
+  color: #a59983;
   max-width: 83px;
   line-height: 1.6;
 }
@@ -689,24 +691,24 @@ main {
 .alternative strong {
   font-size: 11px;
   font-weight: 500;
-  color: var(--ink);
+  color: #4e5247;
 }
 .alternative > div > span {
   font-size: 10px;
-  color: var(--muted);
+  color: #969284;
 }
 .alternative-percent {
   margin-left: auto;
-  color: var(--muted);
+  color: #747b60;
   font-size: 19px;
   white-space: nowrap;
 }
 .alternative-percent small {
   font-size: 10px;
-  color: var(--muted);
+  color: #aaa793;
 }
 .alternative > svg {
-  color: var(--muted);
+  color: #9e9d8a;
 }
 .row-heading {
   display: flex;
@@ -722,7 +724,7 @@ main {
 }
 .row-heading h2 > span {
   font-size: 11px;
-  color: var(--muted);
+  color: #a09e91;
   font-weight: normal;
   margin-left: 4px;
 }
@@ -731,7 +733,7 @@ main {
   display: flex;
   align-items: center;
   gap: 5px;
-  color: var(--muted);
+  color: #918c7e;
   font-size: 9px;
   padding: 4px;
 }
@@ -751,32 +753,32 @@ main {
   margin-bottom: 14px;
 }
 .gym-icon {
-  background: var(--cream);
+  background: #f3e9eb;
   border-radius: 7px;
-  color: var(--on-light);
+  color: var(--maroon);
   height: 34px;
   width: 34px;
   display: grid;
   place-items: center;
 }
 .gym-icon.orange-icon {
-  background: var(--orange);
-  color: var(--on-light);
+  background: #f4eade;
+  color: #bb835b;
 }
 .crowd-badge {
   font-size: 8px;
-  background: var(--inset);
-  color: var(--muted);
+  background: #f0f2e8;
+  color: #81906a;
   padding: 6px 7px;
   border-radius: 4px;
 }
 .crowd-badge.busy {
-  background: var(--inset);
-  color: var(--muted);
+  background: #fbede3;
+  color: #b3805a;
 }
 .crowd-badge.muted {
-  background: var(--inset);
-  color: var(--muted);
+  background: #eeece6;
+  color: #989385;
 }
 .gym-card h3 {
   font-size: 13px;
@@ -800,12 +802,12 @@ main {
 }
 .occupancy-number small {
   font-size: 11px;
-  color: var(--muted);
+  color: #a8a497;
   font-weight: normal;
 }
 .occupancy-bar {
   height: 4px;
-  background: var(--line);
+  background: #eeeae2;
   margin-top: 15px;
   border-radius: 5px;
   overflow: hidden;
@@ -813,7 +815,7 @@ main {
 .occupancy-bar > span {
   height: 4px;
   display: block;
-  background: var(--ink);
+  background: var(--maroon);
   border-radius: 5px;
   transition: width 0.5s;
 }
@@ -824,13 +826,13 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: var(--muted);
+  color: #969182;
   font-size: 9px;
   margin-top: 11px;
 }
 .fetched-time {
   font-size: 8px;
-  color: var(--muted);
+  color: #b0aa9d;
   margin-top: 9px;
 }
 .forecast-card {
@@ -839,21 +841,22 @@ main {
 .forecast-card .section-kicker {
   font-size: 8px;
   letter-spacing: 1.4px;
-  color: var(--muted);
+  color: #a29784;
 }
 .forecast-card h2 {
   font:
-    700 22px var(--font-sans);
+    normal 22px Georgia,
+    serif;
   letter-spacing: -0.4px;
   margin-top: 6px;
 }
 .next-hours {
   font-size: 8px;
   letter-spacing: 1px;
-  border: 1px solid var(--line);
+  border: 1px solid #eae6dd;
   border-radius: 4px;
   padding: 7px;
-  color: var(--muted);
+  color: #a19580;
 }
 .chart-wrap {
   width: 100%;
@@ -865,8 +868,9 @@ main {
 }
 .chart-label {
   font:
-    500 9px var(--font-sans);
-  fill: var(--muted);
+    9px Arial,
+    sans-serif;
+  fill: #a49d8f;
 }
 .chart-caption {
   display: flex;
@@ -874,7 +878,7 @@ main {
   justify-content: center;
   gap: 18px;
   font-size: 8px;
-  color: var(--muted);
+  color: #938976;
   margin-top: 4px;
 }
 .chart-caption > span {
@@ -889,18 +893,18 @@ main {
   display: inline-block;
 }
 .legend-dot.primary {
-  background: var(--ink);
+  background: var(--chart-primary);
 }
 .legend-dot.orange {
   background: var(--orange);
 }
 .window-legend {
-  color: var(--muted);
+  color: #aaa28f;
 }
 .forecast-note {
   font-size: 8px;
   text-align: center;
-  color: var(--muted);
+  color: #b0a895;
   margin-top: 14px;
   line-height: 1.6;
 }
@@ -909,7 +913,7 @@ main {
   display: grid;
   place-items: center;
   font-size: 12px;
-  color: var(--muted);
+  color: #a59a85;
   text-align: center;
 }
 .app-shell footer {
@@ -918,16 +922,16 @@ main {
   padding: 23px 0 29px;
   display: flex;
   justify-content: space-between;
-  color: var(--muted);
+  color: #a59d8d;
   font-size: 10px;
 }
 .footer-divider {
-  color: var(--muted);
+  color: #c7bdaa;
   display: inline-block;
   margin: 0 11px;
 }
 footer > span:first-child {
-  color: var(--muted);
+  color: #8c877a;
 }
 footer > span:last-child {
   font-size: 9px;
@@ -1273,23 +1277,29 @@ footer > span:last-child > span {
   }
 }
 
-.calendar-import { border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin: 20px 0 24px; background: var(--inset); }
+.calendar-import { border: 1px solid var(--border, #e5e0d7); border-radius: 12px; padding: 16px; margin: 20px 0 24px; background: #faf8f4; }
 .calendar-import h3 { font-size: 16px; margin: 0 0 8px; }
 .calendar-import p, .calendar-import details, .calendar-import a { font-size: 11px; line-height: 1.65; margin: 8px 0; overflow-wrap: anywhere; }
-.calendar-import .calendar-privacy { color: var(--muted); font-size: 10px; }
+.calendar-import .calendar-privacy { color: #716b62; font-size: 10px; }
 .calendar-file { display: block; font-size: 12px; font-weight: 600; margin: 14px 0; }
 .calendar-file input { display: block; width: 100%; font-size: 11px; margin-top: 8px; }
-.calendar-file input::file-selector-button, .calendar-connect { border: 1px solid var(--line); border-radius: 7px; padding: 10px 12px; background: var(--cream); color: var(--on-light); cursor: pointer; }
+.calendar-file input::file-selector-button, .calendar-connect { border: 1px solid #d8cfc4; border-radius: 7px; padding: 10px 12px; background: white; color: #572036; cursor: pointer; }
 .calendar-connect { width: 100%; font: inherit; font-size: 12px; }
 .calendar-import button:disabled { opacity: .55; cursor: not-allowed; }
 .calendar-source { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11px; margin-bottom: 12px; overflow-wrap: anywhere; }
 .calendar-source span { min-width: 0; }
-.calendar-source button, .calendar-disconnect { color: var(--muted); background: none; border: 0; text-decoration: underline; padding: 6px 0; font-size: 11px; cursor: pointer; }
-.calendar-import .calendar-error { color: var(--muted); }
+.calendar-source button, .calendar-disconnect { color: #572036; background: none; border: 0; text-decoration: underline; padding: 6px 0; font-size: 11px; cursor: pointer; }
+.calendar-import .calendar-error { color: #9e253b; }
 .calendar-import ul { padding-left: 16px; }
 
 .data-mode-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin: 0 0 16px; font-size: 12px; }
-.data-mode-switch span { color: var(--muted); margin-right: 4px; }
-.data-mode-switch button { border: 1px solid var(--line); border-radius: 7px; padding: 9px 13px; background: var(--surface); color: var(--ink); cursor: pointer; font: inherit; }
-.data-mode-switch button[aria-pressed="true"] { background: var(--cream); color: var(--on-light); border-color: var(--cream); }
+.data-mode-switch span { color: #787266; margin-right: 4px; }
+.data-mode-switch button { border: 1px solid #d8cfc4; border-radius: 7px; padding: 9px 13px; background: white; color: #572036; cursor: pointer; font: inherit; }
+.data-mode-switch button[aria-pressed="true"] { background: #572036; color: white; border-color: #572036; }
 .data-mode-switch button:disabled { opacity: .65; cursor: wait; }
+
+.theme-toggle { display: flex; gap: 3px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; flex-shrink: 0; }
+.theme-toggle button { background: transparent; color: var(--ink); border-radius: 999px; padding: 7px 10px; font-size: 11px; font-weight: 600; }
+.theme-toggle button[aria-pressed="true"] { background: var(--maroon); color: #fff9f4; }
+html[data-theme="dark"] .theme-toggle button[aria-pressed="true"] { background: var(--cream); color: var(--on-light); }
+@media (max-width: 760px) { .header-right { gap: 10px; } .theme-toggle button { padding: 7px 8px; font-size: 10px; } .campus-pill { display: none; } }

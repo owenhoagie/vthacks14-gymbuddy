@@ -18,7 +18,19 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={montserrat.variable}>
+    <html
+      lang="en"
+      className={montserrat.variable}
+      data-theme="light"
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try { document.documentElement.dataset.theme = localStorage.getItem("gymbuddy-theme") === "dark" ? "dark" : "light"; } catch {}`,
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
