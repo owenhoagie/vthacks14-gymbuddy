@@ -168,3 +168,37 @@ def test_naive_contract_rejected():
         RecommendationRequest(
             start_time=datetime(2026, 9, 19, 14), end_time=NOW + timedelta(hours=1)
         )
+
+
+def test_occupancy_exposes_verified_closure_even_when_count_is_zero(client):
+    from unittest.mock import Mock
+
+    from api.hours import EASTERN, HoursSchedule
+    from api.models import FacilityId, Interval, Occupancy
+
+    opens = NOW + timedelta(hours=1)
+    repo = Mock()
+    repo.occupancy.return_value = [
+        Occupancy(
+            facility_id="mccomas",
+            facility_name="McComas Hall",
+            occupancy=0,
+            capacity=600,
+            occupancy_pct=0,
+            observed_at=NOW,
+            provenance="cached",
+        )
+    ]
+    repo.hours.return_value = HoursSchedule(
+        {FacilityId.mccomas: [Interval(start_time=opens, end_time=opens + timedelta(hours=3))]},
+        known_days={(FacilityId.mccomas, NOW.astimezone(EASTERN).date())},
+    )
+    app.dependency_overrides[get_repository] = lambda: repo
+    response = client.get("/occupancy")
+    assert response.status_code == 200
+    row = response.json()["facilities"][0]
+    assert row["opening_status"] == "closed"
+    assert row["opens_at"] == "2026-09-19T15:00:00Z"
+    assert row["observed_at"] == "2026-09-19T14:00:00Z"
+    assert row["occupancy"] == 0
+    repo.prepare_request.assert_called_once_with(include_hours=True)

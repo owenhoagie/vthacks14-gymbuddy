@@ -604,6 +604,17 @@ export default function Dashboard() {
                   <p>{result.explanation}</p>
                 </div>
               ) : null}
+              {result?.recommendation && occupancy?.facilities.find(
+                (gym) => gym.facility_id === result.recommendation?.facility_id,
+              )?.opening_status === "closed" ? (
+                <div className="recommendation-warnings">
+                  <p>
+                    Currently closed. {now && Date.parse(result.recommendation.start_time) > now.getTime()
+                      ? "Wait until the recommended time after opening."
+                      : "Find a new gym window before heading out."}
+                  </p>
+                </div>
+              ) : null}
               {planError ? (
                 <p className="plan-error" role="alert">
                   {planError}
@@ -692,27 +703,28 @@ export default function Dashboard() {
                           <Icon name="gym" size={21} />
                         </span>
                         <span
-                          className={`crowd-badge ${unavailable ? "muted" : percent > 65 ? "busy" : ""}`}
+                          className={`crowd-badge ${gymData?.opening_status === "open" ? "" : "muted"}`}
                         >
-                          {unavailable
-                            ? loading
-                              ? "Loading"
-                              : "Unavailable"
-                            : gymData.stale
-                              ? "Stale data"
-                              : gymData.provenance === "cached"
-                                ? "Cached"
-                                : percent <= 40
-                                  ? "Room to move"
-                                  : percent <= 65
-                                    ? "Some activity"
-                                    : "Getting busy"}
+                          {gymData?.opening_status === "closed"
+                            ? "Closed now"
+                            : gymData?.opening_status === "open"
+                              ? "Open now"
+                              : loading ? "Checking hours" : "Hours unavailable"}
                         </span>
                       </div>
                       <h3>{gym.name}</h3>
-                      <div className="occupancy-number">
-                        {unavailable ? "—" : Math.round(percent)}
-                        {!unavailable ? (
+                      <p className="gym-hours">
+                        {gymData?.opening_status === "open" && gymData.closes_at
+                          ? `${demo ? "Demo hours · " : ""}Closes ${timestampLabel(gymData.closes_at)}`
+                          : gymData?.opens_at
+                            ? `Opens ${timestampLabel(gymData.opens_at)}`
+                            : gymData?.opening_status === "closed"
+                              ? "No opening in the next four hours."
+                              : "Opening hours could not be verified."}
+                      </p>
+                      <div className={`occupancy-number ${gymData?.opening_status === "closed" ? "closed-label" : ""}`}>
+                        {gymData?.opening_status === "closed" ? "Closed" : unavailable ? "—" : Math.round(percent)}
+                        {!unavailable && gymData?.opening_status !== "closed" ? (
                           <span>
                             %<small>full</small>
                           </span>
@@ -730,7 +742,7 @@ export default function Dashboard() {
                         <span>
                           {unavailable
                             ? "No observation available"
-                            : `${gymData.occupancy} / ${gymData.capacity} people`}
+                            : `${gymData.opening_status === "closed" ? "Last reported: " : ""}${gymData.occupancy} / ${gymData.capacity} people`}
                         </span>
                         <span>
                           {gymData?.provenance === "demo"

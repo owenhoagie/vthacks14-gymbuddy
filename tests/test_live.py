@@ -177,3 +177,21 @@ def test_serverless_failed_refresh_is_throttled_and_does_not_renew_cache(setup):
     assert warehouse.get_occupancy.call_count == 2
     assert repo.forecast(NOW)[0].provenance == "cached"
     assert repo.forecast(NOW)[0].observed_at == NOW
+
+
+def test_expired_hours_do_not_keep_claiming_closed(setup):
+    from api.hours import EASTERN, HoursSchedule, opening_status
+    from api.models import FacilityId
+
+    settings, warehouse, loader = setup
+    loader.return_value = HoursSchedule(
+        {FacilityId.mccomas: [], FacilityId.war_memorial: []},
+        known_days={(FacilityId.mccomas, NOW.astimezone(EASTERN).date())},
+    )
+    repo = LiveRepository(settings, warehouse, loader)
+    repo.refresh_hours()
+    assert opening_status(repo.hours(NOW), FacilityId.mccomas, NOW)["opening_status"] == "closed"
+    later = NOW + timedelta(minutes=15)
+    assert (
+        opening_status(repo.hours(later), FacilityId.mccomas, later)["opening_status"] == "unknown"
+    )

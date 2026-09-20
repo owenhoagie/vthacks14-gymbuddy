@@ -44,6 +44,9 @@ class Interval(Contract):
 
 
 class Occupancy(Contract):
+    opening_status: Literal["open", "closed", "unknown"] = "unknown"
+    opens_at: AwareDatetime | None = None
+    closes_at: AwareDatetime | None = None
     facility_id: FacilityId
     facility_name: str
     occupancy: int | None = Field(default=None, ge=0)

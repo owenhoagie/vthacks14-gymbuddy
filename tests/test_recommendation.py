@@ -173,3 +173,19 @@ def test_offset_equivalent_time_produces_same_window():
         recommend(original, [forecast()], hours, NOW).recommendation
         == recommend(shifted, [forecast()], hours, NOW).recommendation
     )
+
+
+def test_closed_now_waits_for_opening_and_never_runs_past_closing():
+    hours = {FacilityId.mccomas: [interval(60, 180)]}
+    result = recommend(request(), [forecast(value=0)], hours, NOW)
+    assert result.status == "ok"
+    assert result.recommendation.start_time == NOW + timedelta(minutes=60)
+    for candidate in [result.recommendation, result.alternative]:
+        if candidate:
+            assert candidate.start_time >= NOW + timedelta(minutes=60)
+            assert candidate.end_time <= NOW + timedelta(minutes=180)
+    # A gym opening too late for the full workout cannot be suggested, even at 0%.
+    result = recommend(
+        request(), [forecast(value=0)], {FacilityId.mccomas: [interval(180, 240)]}, NOW
+    )
+    assert result.status == "no_available_window"

@@ -9,7 +9,7 @@ import httpx
 from pydantic import BaseModel, Field, model_validator
 
 from api.databricks import DatabricksConfig, DatabricksRepository
-from api.hours import get_hours
+from api.hours import HoursSchedule, get_hours
 from api.models import FACILITY_NAMES, FacilityForecast, Occupancy
 from api.repository import LocalRepository, utc_now
 from api.storage import atomic_json
@@ -219,7 +219,10 @@ class LiveRepository:
         with self.lock:
             if not self.hours_until or now >= self.hours_until:
                 return {f: [] for f in FACILITY_NAMES}
-            return {f: list(intervals) for f, intervals in self.open_hours.items()}
+            return HoursSchedule(
+                {f: list(intervals) for f, intervals in self.open_hours.items()},
+                known_days=getattr(self.open_hours, "known_days", ()),
+            )
 
     def status(self, now):
         from api.models import IntegrationStatus

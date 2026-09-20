@@ -1606,3 +1606,14 @@ footer > span:last-child > span {
   .section-nav { grid-column: 1 / -1; grid-row: 2; padding: 3px; border: 1px solid var(--line); border-radius: 10px; }
   .section-nav a { flex: 1; text-align: center; padding: 9px 14px; }
 }
+
+.gym-hours {
+  margin-top: 9px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.occupancy-number.closed-label {
+  font-size: 30px;
+  letter-spacing: -0.5px;
+}

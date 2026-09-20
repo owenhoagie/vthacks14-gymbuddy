@@ -13,6 +13,7 @@ from starlette.exceptions import HTTPException
 
 from api.config import Settings, get_settings
 from api.gemini import get_gemini_service
+from api.hours import opening_status
 from api.models import (
     ErrorResponse,
     FacilityId,
@@ -96,7 +97,9 @@ def request_repository(
     if demo:
         return get_demo_repository()
     if hasattr(repository, "prepare_request"):
-        repository.prepare_request(include_hours=request.url.path.endswith("/recommend"))
+        repository.prepare_request(
+            include_hours=request.url.path.endswith(("/recommend", "/occupancy"))
+        )
     return repository
 
 
@@ -134,8 +137,14 @@ def health(settings: SettingsDependency, repository: RepositoryDependency):
 
 @app.get("/occupancy", response_model=OccupancyResponse)
 def occupancy(repository: RepositoryDependency, settings: SettingsDependency):
+    now = utc_now()
+    hours = repository.hours(now)
     return OccupancyResponse(
-        facilities=repository.occupancy(utc_now()), data_mode=settings.data_mode
+        facilities=[
+            row.model_copy(update=opening_status(hours, row.facility_id, now))
+            for row in repository.occupancy(now)
+        ],
+        data_mode=settings.data_mode,
     )
 
 

@@ -22,3 +22,16 @@ The API uses `LIVE_DATA_SOURCE=collector_fallback` to read the public snapshot a
 ## Returning to Databricks
 
 After its quota resets, first verify the warehouse can execute a read. Download the newest `gymbuddy-outbox` artifact and backfill its CSV with `OCCUPANCY_CSV_PATH=PATH python -m scripts.databricks backfill`. Verify Bronze and Gold before setting the API's `LIVE_DATA_SOURCE=databricks` and redeploying. Set workflow `SKIP_DATABRICKS=false` only when warehouse ingestion is confirmed. Replaying observations is idempotent. Keep the free fallback available because five-minute warehouse workloads can exhaust the daily allowance again.
+
+## Opening hours
+
+Live occupancy cards also check VT's public facility-hours service. They show
+Open now, Closed now, or Hours unavailable, plus a known opening or closing time
+in Eastern Time. A closed gym shows Closed instead of a prominent occupancy
+percentage; its last reported headcount and fetch timestamp remain visible.
+Hours are cached for at most 15 minutes. Missing, malformed, or expired hours
+never imply that a gym is open. Explicit closures are distinguished from missing
+schedules. Recommendations still require the entire workout to fit inside a
+verified opening interval, even when the reported occupancy is zero. A future
+recommendation for a currently closed gym explicitly tells the user to wait.
+The historical demo uses its own clearly labeled fictional hours.

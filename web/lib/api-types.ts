@@ -218,6 +218,16 @@ export interface components {
         };
         /** Occupancy */
         Occupancy: {
+            /**
+             * Opening Status
+             * @default unknown
+             * @enum {string}
+             */
+            opening_status: "open" | "closed" | "unknown";
+            /** Opens At */
+            opens_at?: string | null;
+            /** Closes At */
+            closes_at?: string | null;
             facility_id: components["schemas"]["FacilityId"];
             /** Facility Name */
             facility_name: string;
