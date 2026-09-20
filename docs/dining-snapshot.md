@@ -56,8 +56,18 @@ replaces `web/fixtures/dining-snapshot.json`. Review the data and counts, update
 document and snapshot-specific test expectations, commit the file, and redeploy the
 frontend when ready. No automatic refresh is configured.
 
-## Remaining PR work
+## Plate behavior
 
-This change addresses real data and truthful provenance. The previously audited
-meal-page dark mode/mobile styling, saved plate persistence, and repeated servings
-still need work before the full food feature is ready to merge.
+The plate is intentionally temporary. Reloading or leaving the page clears it, and
+the UI states this beside the plate. No meal data is written to local storage.
+The separate site theme preference continues to be remembered.
+
+Adding the same menu item again increments its servings instead of silently doing
+nothing. Items from different halls or portion variants remain separate. Servings
+can be adjusted in half-serving increments from 0.5 to 99; all four macro totals
+scale from the original VT per-serving values. Remove clears that plate item.
+Custom entries receive their own IDs and use the same serving controls.
+
+The meal page supports the same sun/moon theme toggle as the dashboard, and the
+food panels, inputs, and selected states use the matching theme colors. Mobile
+layouts stack the plate and food list and use two-column macro cards/inputs.

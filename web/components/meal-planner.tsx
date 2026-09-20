@@ -3,6 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   DINING_HALLS,
+  addMealToPlate,
+  setMealServings,
+  validServings,
+  MIN_SERVINGS,
+  MAX_SERVINGS,
+  type PlateEntry,
   type DiningMenuResponse,
   summarizeDailyPlan,
   type MealItem,
@@ -20,10 +26,43 @@ function MacroCard({ label, value, suffix }: { label: string; value: number; suf
   );
 }
 
+function ServingControl({ name, quantity, onChange }: { name: string; quantity: number; onChange: (value: number) => void }) {
+  const [draft, setDraft] = useState(String(quantity));
+  useEffect(() => setDraft(String(quantity)), [quantity]);
+
+  return (
+    <div className="serving-control">
+      <span>Servings</span>
+      <div className="serving-stepper">
+        <button type="button" aria-label={`Decrease servings of ${name} by half`} disabled={quantity <= MIN_SERVINGS} onClick={() => onChange(quantity - 0.5)}>−</button>
+        <input
+          type="number"
+          min={MIN_SERVINGS}
+          max={MAX_SERVINGS}
+          step="0.5"
+          inputMode="decimal"
+          aria-label={`Servings of ${name}`}
+          value={draft}
+          onChange={(event) => {
+            setDraft(event.target.value);
+            const value = Number(event.target.value);
+            if (validServings(value)) onChange(value);
+          }}
+          onBlur={() => setDraft(String(quantity))}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") event.currentTarget.blur();
+          }}
+        />
+        <button type="button" aria-label={`Increase servings of ${name} by half`} disabled={quantity >= MAX_SERVINGS} onClick={() => onChange(quantity + 0.5)}>+</button>
+      </div>
+    </div>
+  );
+}
+
 export default function MealPlannerCard() {
   const [hall, setHall] = useState(DINING_HALLS[0].id);
   const [suggestions, setSuggestions] = useState<MealItem[]>([]);
-  const [selectedMeals, setSelectedMeals] = useState<MealItem[]>([]);
+  const [selectedMeals, setSelectedMeals] = useState<PlateEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [menu, setMenu] = useState<DiningMenuResponse | null>(null);
@@ -76,12 +115,11 @@ export default function MealPlannerCard() {
   }, [searchTerm, suggestions]);
 
   function addMeal(meal: MealItem) {
-    if (!meal.nutrition) return;
-    setSelectedMeals((previous) => {
-      if (previous.some((item) => item.id === meal.id || item.name.toLowerCase() === meal.name.toLowerCase()))
-        return previous;
-      return [...previous, meal];
-    });
+    setSelectedMeals((previous) => addMealToPlate(previous, meal));
+  }
+
+  function changeServings(id: string, quantity: number) {
+    setSelectedMeals((previous) => setMealServings(previous, id, quantity));
   }
 
   function removeMeal(id: string) {
@@ -95,7 +133,7 @@ export default function MealPlannerCard() {
     if (!name || values.some((value) => !value.trim() || !Number.isFinite(Number(value)) || Number(value) < 0)) return;
 
     const nextMeal: MealItem = {
-      id: `custom-${Date.now()}`,
+      id: `custom-${crypto.randomUUID()}`,
       name,
       hall: "Entered by you",
       servingSize: "1",
@@ -109,10 +147,7 @@ export default function MealPlannerCard() {
       source: "user_entered",
     };
 
-    setSelectedMeals((previous) => {
-      if (previous.some((item) => item.name.toLowerCase() === name.toLowerCase())) return previous;
-      return [...previous, nextMeal];
-    });
+    addMeal(nextMeal);
     setCustomMealName("");
     setCustomCalories("");
     setCustomProtein("");
@@ -155,7 +190,7 @@ export default function MealPlannerCard() {
 
       {error ? <p className="meal-error">{error}</p> : null}
 
-      <div className="macro-grid">
+      <div className="macro-grid" aria-live="polite" aria-atomic="true">
         <MacroCard label="Calories" value={totals.calories} suffix="kcal" />
         <MacroCard label="Protein" value={totals.protein} suffix="g" />
         <MacroCard label="Carbs" value={totals.carbs} suffix="g" />
@@ -165,6 +200,7 @@ export default function MealPlannerCard() {
       <div className="meal-plan-layout">
         <div className="meal-list-panel">
           <h3>Your plate</h3>
+          <p className="plate-note">Your plate resets when you reload or leave this page.</p>
           <div className="meal-chip-list">
             {selectedMeals.length === 0 ? (
               <p className="empty-state">Add a meal, or type in anything you ate.</p>
@@ -174,12 +210,16 @@ export default function MealPlannerCard() {
                   <div>
                     <strong>{meal.name}</strong>
                     <small>
-                      {meal.hall} · {meal.servingSize} {meal.servingUnit} · {meal.nutrition?.calories} kcal
+                      {meal.hall} · 1 serving = {meal.servingSize} {meal.servingUnit}
                     </small>
                   </div>
-                  <button type="button" onClick={() => removeMeal(meal.id)} aria-label={`Remove ${meal.name}`}>
-                    Remove
-                  </button>
+                  <div className="meal-chip-actions">
+                    <ServingControl name={meal.name} quantity={meal.quantity} onChange={(quantity) => changeServings(meal.id, quantity)} />
+                    <small className="serving-subtotal">{summarizeDailyPlan([meal]).calories} kcal for {meal.quantity} {meal.quantity === 1 ? "serving" : "servings"}</small>
+                    <button type="button" onClick={() => removeMeal(meal.id)} aria-label={`Remove ${meal.name}`}>
+                      Remove
+                    </button>
+                  </div>
                 </div>
               ))
             )}

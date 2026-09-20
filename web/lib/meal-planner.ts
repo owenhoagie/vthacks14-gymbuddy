@@ -18,6 +18,28 @@ export type MealItem = {
   stations?: string[];
 };
 
+export type PlateEntry = MealItem & { quantity: number };
+export const MIN_SERVINGS = 0.5;
+export const MAX_SERVINGS = 99;
+
+export function validServings(value: number): boolean {
+  return Number.isFinite(value) && value >= MIN_SERVINGS && value <= MAX_SERVINGS && Number.isInteger(value * 2);
+}
+
+export function addMealToPlate(plate: PlateEntry[], meal: MealItem): PlateEntry[] {
+  if (!meal.nutrition) return plate;
+  const existing = plate.find((item) => item.id === meal.id);
+  if (existing) {
+    return setMealServings(plate, meal.id, Math.min(MAX_SERVINGS, existing.quantity + 1));
+  }
+  return [...plate, { ...meal, quantity: 1 }];
+}
+
+export function setMealServings(plate: PlateEntry[], id: string, quantity: number): PlateEntry[] {
+  if (!validServings(quantity)) return plate;
+  return plate.map((item) => item.id === id ? { ...item, quantity } : item);
+}
+
 export type DiningFood = MealItem & {
   source: "foodpro";
   recipeId: string;
@@ -62,12 +84,12 @@ export const DINING_HALLS = [
   { id: "18", name: "Squires Food Court" },
 ];
 
-export function summarizeDailyPlan(meals: MealItem[]): Nutrition {
+export function summarizeDailyPlan(meals: (MealItem & { quantity?: number })[]): Nutrition {
   const totals = meals.reduce(
     (totals, meal) => {
       if (meal.nutrition) {
         for (const key of ["calories", "protein", "carbs", "fat"] as const) {
-          totals[key] += meal.nutrition[key];
+          totals[key] += meal.nutrition[key] * (meal.quantity ?? 1);
         }
       }
       return totals;

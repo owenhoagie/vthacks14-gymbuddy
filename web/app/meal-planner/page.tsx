@@ -1,8 +1,9 @@
+import ThemeToggle from "@/components/theme-toggle";
 import MealPlannerCard from "@/components/meal-planner";
 
 export default function MealPlannerPage() {
   return (
-    <main className="meal-planner-page">
+    <div className="meal-planner-page">
       <header className="site-header">
         <a className="wordmark" href="/" aria-label="GymBuddy home">
           <span className="brand-icon">
@@ -25,13 +26,14 @@ export default function MealPlannerPage() {
         </a>
         <div className="header-right">
           <a className="header-link" href="/">Back to home</a>
+          <ThemeToggle />
           <span className="campus-pill">
             <span className="status-dot" />
             Virginia Tech
           </span>
         </div>
       </header>
-      <div className="page-shell">
+      <main className="page-shell">
         <section className="page-intro meal-planner-intro">
           <div>
             <div className="eyebrow">FUEL FOR THE DAY</div>
@@ -42,7 +44,7 @@ export default function MealPlannerPage() {
           </div>
         </section>
         <MealPlannerCard />
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

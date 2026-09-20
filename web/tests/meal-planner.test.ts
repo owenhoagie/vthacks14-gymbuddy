@@ -74,3 +74,32 @@ test("API preserves snapshot dates without upstream requests and rejects unknown
     globalThis.fetch = original;
   }
 });
+
+test("repeat adds increase servings and scale all macros without changing VT data", async () => {
+  const { addMealToPlate, setMealServings } = await import("../lib/meal-planner");
+  const food = getDiningMenu("15")!.meals.find((meal) => meal.recipeId === "141002")!;
+  const before = structuredClone(food);
+  const once = addMealToPlate([], food);
+  const twice = addMealToPlate(once, food);
+  assert.equal(once[0].quantity, 1);
+  assert.equal(twice.length, 1);
+  assert.equal(twice[0].quantity, 2);
+  assert.deepEqual(summarizeDailyPlan(twice), { calories: 434, protein: 13.4, carbs: 63.4, fat: 12.6 });
+  const half = setMealServings(twice, food.id, 0.5);
+  assert.deepEqual(summarizeDailyPlan(half), { calories: 108.5, protein: 3.4, carbs: 15.9, fat: 3.2 });
+  assert.deepEqual(food, before);
+});
+
+test("same names across halls remain distinct and invalid servings cannot change totals", async () => {
+  const { addMealToPlate, setMealServings, MAX_SERVINGS } = await import("../lib/meal-planner");
+  const food = getDiningMenu("15")!.meals.find((meal) => meal.recipeId === "141002")!;
+  const other = { ...food, id: "other-hall-pancakes", hall: "Another hall" };
+  const entries = addMealToPlate(addMealToPlate([], food), other);
+  assert.equal(entries.length, 2);
+  for (const invalid of [0, -1, NaN, Infinity, 0.25, 100]) {
+    assert.deepEqual(setMealServings(entries, food.id, invalid), entries);
+  }
+  const max = setMealServings(entries, food.id, MAX_SERVINGS);
+  assert.equal(addMealToPlate(max, food)[0].quantity, MAX_SERVINGS);
+  assert.deepEqual(addMealToPlate(entries, { ...food, nutrition: null }), entries);
+});

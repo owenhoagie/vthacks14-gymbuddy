@@ -245,3 +245,16 @@ html[data-theme="dark"] .data-mode-switch button {
   background: var(--surface);
   color: var(--ink);
 }
+
+
+html[data-theme="dark"] .header-link { color: var(--orange); }
+html[data-theme="dark"] .meal-planner {
+  --meal-panel: var(--inset);
+  --meal-item: var(--surface);
+  --meal-border: var(--line);
+  --meal-muted: var(--muted);
+  --meal-accent: var(--orange);
+  --meal-selected-bg: var(--inset);
+  --meal-selected-ink: var(--orange);
+}
+html[data-theme="dark"] .meal-planner input::placeholder { color: var(--muted); opacity: .8; }
