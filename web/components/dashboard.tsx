@@ -346,7 +346,7 @@ export default function Dashboard() {
         {!demo && health ? (
           <div className="demo-banner">
             <span className="demo-tag">{health.status === "ok" ? "LIVE" : "LIMITED DATA"}</span>
-            <span>VT observations · Databricks forecasts · Refreshes every minute</span>
+            <span>VT observations · {forecast?.facilities.some((f) => f.forecast_source === "collector_fallback") ? "Collector fallback forecasts · Low confidence" : "Databricks forecasts"} · Refreshes every minute</span>
           </div>
         ) : null}
         {error ? (

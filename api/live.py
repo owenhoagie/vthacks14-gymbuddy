@@ -5,6 +5,7 @@ import logging
 import threading
 from datetime import timedelta
 
+import httpx
 from pydantic import BaseModel, Field, model_validator
 
 from api.databricks import DatabricksConfig, DatabricksRepository
@@ -43,6 +44,7 @@ class LiveRepository:
         self.hours_loader = hours_loader
         config = self.warehouse.config
         identity = f"{config.host}/{config.warehouse_id}/{config.catalog}/{config.schema}"
+        identity += "/" + settings.live_data_source
         suffix = hashlib.sha256(identity.encode()).hexdigest()[:12]
         self.cache_path = settings.occupancy_csv_path.with_name(f"live-snapshot.{suffix}.json")
         self.snapshot = Snapshot()
@@ -94,9 +96,27 @@ class LiveRepository:
 
     def refresh(self):
         try:
-            snapshot = Snapshot(
-                occupancy=self.warehouse.get_occupancy(), forecast=self.warehouse.get_forecast()
-            )
+            if self.settings.live_data_source == "collector_fallback":
+                response = httpx.get(
+                    self.settings.live_fallback_url,
+                    params={"minute": int(utc_now().timestamp() // 60)},
+                    headers={"Cache-Control": "no-cache"},
+                    timeout=8,
+                )
+                response.raise_for_status()
+                if len(response.content) > 1_000_000:
+                    raise ValueError("Fallback snapshot too large")
+                snapshot = Snapshot.model_validate_json(response.content)
+                if (
+                    not snapshot.occupancy
+                    or not snapshot.forecast
+                    or any(row.forecast_source != "collector_fallback" for row in snapshot.forecast)
+                ):
+                    raise ValueError("Invalid collector fallback snapshot")
+            else:
+                snapshot = Snapshot(
+                    occupancy=self.warehouse.get_occupancy(), forecast=self.warehouse.get_forecast()
+                )
             # Disk failures must not discard a successful warehouse read.
             try:
                 atomic_json(self.cache_path, snapshot.model_dump(mode="json"))
@@ -147,7 +167,9 @@ class LiveRepository:
             current = {
                 r.facility_id: r.model_copy(
                     update={
-                        "provenance": "live" if live else "cached",
+                        "provenance": "live"
+                        if live and self.settings.live_data_source == "databricks"
+                        else "cached",
                         "stale": self._stale(r.observed_at, now),
                     }
                 )
@@ -169,7 +191,9 @@ class LiveRepository:
             current = {
                 r.facility_id: r.model_copy(
                     update={
-                        "provenance": "live" if live else "cached",
+                        "provenance": "live"
+                        if live and self.settings.live_data_source == "databricks"
+                        else "cached",
                         "stale": self._stale(r.observed_at, now),
                     }
                 )
@@ -202,7 +226,11 @@ class LiveRepository:
 
         return IntegrationStatus(
             configured=self.settings.databricks_configured,
-            status=("ready" if self._live(now) else "unavailable")
+            status=(
+                "ready"
+                if self._live(now) and self.settings.live_data_source == "databricks"
+                else "unavailable"
+            )
             if self.settings.databricks_configured
             else "not_configured",
         )
@@ -210,6 +238,6 @@ class LiveRepository:
     def ready(self, now):
         return (
             self._live(now)
-            and all(r.provenance == "live" and not r.stale for r in self.occupancy(now))
+            and all(r.observed_at and not r.stale for r in self.occupancy(now))
             and all(r.points and not r.stale for r in self.forecast(now))
         )

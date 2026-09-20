@@ -368,6 +368,21 @@
       },
       "FacilityForecast": {
         "properties": {
+          "forecast_source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "databricks",
+                  "collector_fallback"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forecast Source"
+          },
           "facility_id": {
             "$ref": "#/components/schemas/FacilityId"
           },

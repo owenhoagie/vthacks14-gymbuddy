@@ -14,7 +14,7 @@ on:
         type: string
         required: false
 permissions:
-  contents: read
+  contents: write
   actions: write
 concurrency:
   group: gymbuddy-collector
@@ -59,14 +59,46 @@ jobs:
               Path('data/occupancy_raw.csv').write_bytes(archive.read('occupancy_raw.csv'))
           PY
           fi
-      - name: Fetch VT and update Databricks
+      - name: Restore public fallback history
+        run: |
+          mkdir -p data/fallback
+          if git ls-remote --exit-code --heads origin live-data > /dev/null; then
+            git fetch origin live-data
+            git show FETCH_HEAD:history.csv > data/fallback/history.csv
+          fi
+      - name: Fetch VT and publish real fallback
         env:
+          FALLBACK_DIR: data/fallback
+          # The free warehouse exhausted its daily allowance. Retain every pending row.
+          SKIP_DATABRICKS: 'true'
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
           DATABRICKS_SQL_WAREHOUSE_ID: ${{ secrets.DATABRICKS_SQL_WAREHOUSE_ID }}
           DATABRICKS_CATALOG: ${{ secrets.DATABRICKS_CATALOG }}
           DATABRICKS_SCHEMA: ${{ secrets.DATABRICKS_SCHEMA }}
         run: python -m scripts.cloud_collect
+      - name: Publish public real-data snapshot
+        if: always()
+        run: |
+          if [ ! -f data/fallback/snapshot.json ]; then exit 1; fi
+          destination="$RUNNER_TEMP/gymbuddy-live-data"
+          if git ls-remote --exit-code --heads origin live-data > /dev/null; then
+            git fetch origin live-data
+            git worktree add --detach "$destination" FETCH_HEAD
+          else
+            git worktree add --detach "$destination" HEAD
+            git -C "$destination" switch --orphan live-data
+            git -C "$destination" rm -rf --ignore-unmatch .
+          fi
+          cp data/fallback/snapshot.json data/fallback/history.csv "$destination/"
+          git -C "$destination" config user.name 'github-actions[bot]'
+          git -C "$destination" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          printf '%s\n' '{"git":{"deploymentEnabled":false}}' > "$destination/vercel.json"
+          git -C "$destination" add snapshot.json history.csv vercel.json
+          if ! git -C "$destination" diff --cached --quiet; then
+            git -C "$destination" commit -m 'Update real VT occupancy and fallback forecast'
+            git -C "$destination" push origin HEAD:live-data
+          fi
       - name: Save retry outbox even if upload failed
         id: save
         if: always() && steps.restore.outcome == 'success'

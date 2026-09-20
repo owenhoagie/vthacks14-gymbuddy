@@ -124,6 +124,8 @@ export interface components {
         };
         /** FacilityForecast */
         FacilityForecast: {
+            /** Forecast Source */
+            forecast_source?: ("databricks" | "collector_fallback") | null;
             facility_id: components["schemas"]["FacilityId"];
             /** Facility Name */
             facility_name: string;

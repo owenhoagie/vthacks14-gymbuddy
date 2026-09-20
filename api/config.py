@@ -13,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ROOT / ".env", extra="ignore")
     data_mode: Literal["demo", "live"] = "demo"
+    live_data_source: Literal["databricks", "collector_fallback"] = "databricks"
+    live_fallback_url: str = "https://raw.githubusercontent.com/owenhoagie/vthacks14-gymbuddy/live-data/snapshot.json"
     api_runtime: Literal["persistent", "serverless"] = "persistent"
     gemini_api_key: str = ""
     gemini_model: str = ""

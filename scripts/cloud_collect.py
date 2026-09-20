@@ -24,11 +24,20 @@ def clear_confirmed(path):
             os.unlink(temporary)
 
 
-def run(path, warehouse=None, fetcher=None):
+def run(path, warehouse=None, fetcher=None, fallback_dir=None, skip_warehouse=False):
+    if skip_warehouse and fallback_dir is None:
+        raise ValueError("Skipping Databricks requires a fallback publisher")
     path.parent.mkdir(parents=True, exist_ok=True)
     if not path.exists():
         clear_confirmed(path)
     _, failures = collect_once(path, **({"fetcher": fetcher} if fetcher else {}))
+    if fallback_dir is not None:
+        from collector.fallback import publish
+
+        publish(path, fallback_dir / "history.csv", fallback_dir / "snapshot.json")
+    if skip_warehouse:
+        logging.warning("Databricks paused; real fallback published, upload outbox retained")
+        return 1 if failures else 0
     try:
         result = synchronize(path, warehouse or DatabricksRepository())
         if result["rejected"]:
@@ -44,4 +53,10 @@ def run(path, warehouse=None, fetcher=None):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    raise SystemExit(run(Path(os.getenv("OCCUPANCY_CSV_PATH", "data/occupancy_raw.csv"))))
+    raise SystemExit(
+        run(
+            Path(os.getenv("OCCUPANCY_CSV_PATH", "data/occupancy_raw.csv")),
+            fallback_dir=Path(os.environ["FALLBACK_DIR"]) if os.getenv("FALLBACK_DIR") else None,
+            skip_warehouse=os.getenv("SKIP_DATABRICKS", "false").lower() == "true",
+        )
+    )

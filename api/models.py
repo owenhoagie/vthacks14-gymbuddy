@@ -67,6 +67,7 @@ class ForecastPoint(Contract):
 
 
 class FacilityForecast(Contract):
+    forecast_source: Literal["databricks", "collector_fallback"] | None = None
     facility_id: FacilityId
     facility_name: str
     points: list[ForecastPoint]

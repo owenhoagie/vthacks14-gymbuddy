@@ -111,6 +111,14 @@ def health(settings: SettingsDependency, repository: RepositoryDependency):
         status="ok" if ready else "degraded",
         data_mode=settings.data_mode,
         integrations={
+            "collector_fallback": IntegrationStatus(
+                configured=settings.live_data_source == "collector_fallback",
+                status="ready"
+                if ready and settings.live_data_source == "collector_fallback"
+                else "unavailable"
+                if settings.live_data_source == "collector_fallback"
+                else "not_configured",
+            ),
             "databricks": repository.status(now)
             if hasattr(repository, "status")
             else IntegrationStatus(
@@ -169,6 +177,10 @@ def recommendation(
     result = recommend(
         request, repository.forecast(now), repository.hours(now), now, settings.data_mode
     )
+    if settings.data_mode == "live" and settings.live_data_source == "collector_fallback":
+        result.warnings.append(
+            "Collector fallback estimate from real VT observations; Databricks is paused. Forecast confidence is low."
+        )
     return get_gemini_service(
         settings.gemini_api_key, settings.gemini_model, settings.gemini_timeout_seconds
     ).explain(request, result)
