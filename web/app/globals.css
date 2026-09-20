@@ -1489,3 +1489,9 @@ footer > span:last-child > span {
   .header-right { gap: 10px; }
   .campus-pill { display: none; }
 }
+
+.dining-snapshot-note { font-size: 12px; line-height: 1.6; margin: 12px 0; }
+.dining-snapshot-note a, .dining-source-link { text-decoration: underline; }
+.dining-source-link { font-size: 10px; }
+.dining-nutrition { display: block; margin-top: 4px; }
+.custom-macro-grid label { font-size: 10px; min-width: 0; }

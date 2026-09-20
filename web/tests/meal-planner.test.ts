@@ -1,105 +1,76 @@
-import assert from 'node:assert/strict';
-import test from 'node:test';
-import {buildMealSuggestions, extractMealNamesFromHtml, summarizeDailyPlan, type MealItem} from '../lib/meal-planner';
+import assert from "node:assert/strict";
+import test from "node:test";
+import { getDiningMenu } from "../lib/dining-snapshot";
+import { DINING_HALLS, summarizeDailyPlan, type MealItem } from "../lib/meal-planner";
+import { GET } from "../app/api/foodpro/route";
+import { NextRequest } from "next/server";
 
-test('meal planner extracts likely menu names and ignores section labels', ()=>{
-  const html = `
-    <div class="menu-day">
-      <h3>Lunch</h3>
-      <div class="menu-item">Grilled Chicken Bowl</div>
-      <div class="menu-item">Broccoli & Rice</div>
-      <div class="menu-item">Fruit Cup</div>
-    </div>
-  `;
-  assert.deepEqual(extractMealNamesFromHtml(html), [
-    'Grilled Chicken Bowl',
-    'Broccoli & Rice',
-    'Fruit Cup',
-  ]);
+test("saved menus are hall-specific with real source URLs and valid nutrition", () => {
+  const names = new Set<string>();
+  for (const hall of DINING_HALLS) {
+    const menu = getDiningMenu(hall.id)!;
+    assert.equal(menu.hall, hall.name);
+    assert.deepEqual(getDiningMenu(hall.name), menu);
+    assert.equal(menu.source, "foodpro_snapshot");
+    for (const meal of menu.meals) {
+      assert.equal(meal.hallId, hall.id);
+      assert.equal(meal.hall, hall.name);
+      assert.equal(meal.source, "foodpro");
+      const url = new URL(meal.sourceUrl);
+      assert.equal(url.hostname, "foodpro.students.vt.edu");
+      assert.equal(url.searchParams.get("locationNum"), hall.id);
+      assert.equal(url.searchParams.get("recNumAndPort"), `${meal.recipeId}*${meal.servingSize}`);
+      assert.ok(meal.servingUnit.length > 0);
+      assert.ok(meal.mealPeriods.length > 0);
+      if (meal.nutrition) {
+        for (const value of Object.values(meal.nutrition)) assert.ok(Number.isFinite(value) && value >= 0);
+      }
+      names.add(meal.name);
+    }
+    assert.equal(new Set(menu.meals.map((meal) => meal.id)).size, menu.meals.length);
+  }
+  assert.ok(names.size > 200);
+  assert.equal(getDiningMenu("unrecognized"), null);
 });
 
-test('meal planner ignores site copy and dining hall labels instead of treating them as food', ()=>{
-  const html = `
-    <a href="#main-content">Skip to main content</a>
-    <h1>Find Your Fuel</h1>
-    <p>Explore menus across all Virginia Tech dining locations. Fresh, daily updates right at your fingertips.</p>
-    <div>West End at Cochrane Hall · 24P / 38C / 16F</div>
-    <div>Dining Events (opens in a new tab)</div>
-    <div class="menu-item">Grilled Chicken Bowl</div>
-    <div class="menu-item">Veggie Rice Bowl</div>
-  `;
-  assert.deepEqual(extractMealNamesFromHtml(html), [
-    'Grilled Chicken Bowl',
-    'Veggie Rice Bowl',
-  ]);
+test("pancakes preserve captured VT decimals and serving size", () => {
+  const food = getDiningMenu("15")!.meals.find((meal) => meal.recipeId === "141002")!;
+  assert.equal(food.servingSize, "2");
+  assert.equal(food.servingUnit, "PANCAKES");
+  assert.deepEqual(food.nutrition, { calories: 217, protein: 6.7, carbs: 31.7, fat: 6.3 });
 });
 
-test('menu parser falls back when FoodPro returns only generic site copy', ()=>{
-  const html = `
-    <html>
-      <body>
-        <a href="#main-content">Skip to main content</a>
-        <p>Explore menus across all Virginia Tech dining locations. Fresh, daily updates right at your fingertips.</p>
-        <p>Virginia Polytechnic Institute and State University. All rights reserved.</p>
-      </body>
-    </html>
-  `;
-  const meals = extractMealNamesFromHtml(html);
-  assert.deepEqual(meals, []);
+test("empty menus and missing nutrition never receive synthetic substitutes", () => {
+  const menu = getDiningMenu("09")!;
+  assert.equal(menu.status, "no_menu");
+  assert.deepEqual(menu.meals, []);
+  const missing = DINING_HALLS.flatMap((hall) => getDiningMenu(hall.id)!.meals).filter((meal) => meal.nutrition === null);
+  assert.ok(missing.length > 0);
+  assert.deepEqual(summarizeDailyPlan(missing), { calories: 0, protein: 0, carbs: 0, fat: 0 });
 });
 
-test('meal planner keeps every valid menu item instead of truncating the results', ()=>{
-  const html = `
-    <div class="menu-item">Grilled Chicken Bowl</div>
-    <div class="menu-item">Broccoli & Rice</div>
-    <div class="menu-item">Fruit Cup</div>
-    <div class="menu-item">Turkey Wrap</div>
-    <div class="menu-item">Veggie Pasta</div>
-    <div class="menu-item">Salmon Rice Plate</div>
-    <div class="menu-item">Quinoa Salad</div>
-    <div class="menu-item">Chicken Caesar Wrap</div>
-    <div class="menu-item">Tofu Stir Fry</div>
-    <div class="menu-item">Bean Burrito</div>
-    <div class="menu-item">Oatmeal Bowl</div>
-    <div class="menu-item">Yogurt Parfait</div>
-    <div class="menu-item">Pesto Pasta</div>
-    <div class="menu-item">Burger Slider</div>
-    <div class="menu-item">Smoothie Bowl</div>
-  `;
-
-  const meals = buildMealSuggestions(html, 'D2 at Dietrick Hall');
-  assert.equal(meals.length, 15);
-  assert.deepEqual(
-    meals.map((meal) => meal.name),
-    [
-      'Grilled Chicken Bowl',
-      'Broccoli & Rice',
-      'Fruit Cup',
-      'Turkey Wrap',
-      'Veggie Pasta',
-      'Salmon Rice Plate',
-      'Quinoa Salad',
-      'Chicken Caesar Wrap',
-      'Tofu Stir Fry',
-      'Bean Burrito',
-      'Oatmeal Bowl',
-      'Yogurt Parfait',
-      'Pesto Pasta',
-      'Burger Slider',
-      'Smoothie Bowl',
-    ],
-  );
+test("totals start at zero and sum actual decimals", () => {
+  assert.deepEqual(summarizeDailyPlan([]), { calories: 0, protein: 0, carbs: 0, fat: 0 });
+  const meal: MealItem = { id: "custom", name: "User food", hall: "Entered by you", source: "user_entered", servingSize: "1", servingUnit: "serving", nutrition: { calories: 217, protein: 6.7, carbs: 31.7, fat: 6.3 } };
+  assert.deepEqual(summarizeDailyPlan([meal, meal]), { calories: 434, protein: 13.4, carbs: 63.4, fat: 12.6 });
 });
 
-test('daily macro totals add meal entries without double counting',()=>{
-  const meals: MealItem[] = [
-    {id:'1', name:'Grilled Chicken Bowl', calories: 540, protein: 42, carbs: 42, fat: 18, hall:'Dietrick', source:'fallback'},
-    {id:'2', name:'Quinoa Salad', calories: 350, protein: 12, carbs: 32, fat: 16, hall:'Dietrick', source:'fallback'},
-  ];
-  assert.deepEqual(summarizeDailyPlan(meals), {
-    calories: 890,
-    protein: 54,
-    carbs: 74,
-    fat: 34,
-  });
+test("API preserves snapshot dates without upstream requests and rejects unknown halls", async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error("Unexpected external request"); };
+  try {
+    const first = await GET(new NextRequest("http://localhost/api/foodpro?hall=15"));
+    const second = await GET(new NextRequest("http://localhost/api/foodpro?hall=15"));
+    assert.equal(first.status, 200);
+    const a = await first.json();
+    const b = await second.json();
+    assert.equal(a.menuDate, "2026-09-19");
+    assert.ok(Number.isFinite(Date.parse(a.capturedAt)));
+    assert.equal(a.capturedAt, b.capturedAt);
+    assert.deepEqual(a.meals, b.meals);
+    const invalid = await GET(new NextRequest("http://localhost/api/foodpro?hall=bogus"));
+    assert.equal(invalid.status, 400);
+  } finally {
+    globalThis.fetch = original;
+  }
 });
