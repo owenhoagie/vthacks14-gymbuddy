@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import ForecastChart from "./forecast-chart";
+import ThemeToggle from "./theme-toggle";
 import CalendarImport, { type CalendarHandle } from "./calendar-import";
 import { mergeBusy } from "@/lib/calendar";
 import {
@@ -308,6 +309,7 @@ export default function Dashboard() {
           <span className="brand-period">.</span>
         </a>
         <div className="header-right">
+          <ThemeToggle />
           <span className="campus-label">MADE FOR HOKIES</span>
           <span className="campus-pill">
             <span className="status-dot" />

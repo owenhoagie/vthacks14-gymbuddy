@@ -1,0 +1,253 @@
+/* Dark mode is opt-in. The original production stylesheet remains the light default. */
+
+html[data-theme="dark"] {
+  --paper: #65283e;
+  --surface: #4b1d2f;
+  --inset: #391422;
+  --cream: #fff9f4;
+  --on-light: #65283e;
+  --ink: #fff9f4;
+  --muted: #ffc194;
+  --line: #996477;
+  --orange: #ffad70;
+  --font-sans: var(--font-montserrat), Arial, sans-serif;
+  --chart-primary: var(--ink);
+  --chart-secondary: var(--orange);
+  --chart-grid: var(--line);
+  --chart-window: var(--ink);
+  --chart-window-opacity: .10;
+  color-scheme: dark;
+}
+
+html[data-theme="dark"] button:focus-visible,
+html[data-theme="dark"] a:focus-visible,
+html[data-theme="dark"] input:focus-visible,
+html[data-theme="dark"] .gym-options label:has(input:focus-visible) {
+  outline: 3px solid var(--orange);
+}
+
+html[data-theme="dark"] ::selection,
+html[data-theme="dark"] .gym-icon.orange-icon {
+  background: var(--orange);
+  color: var(--on-light);
+}
+
+html[data-theme="dark"] .brand-icon,
+html[data-theme="dark"] .gym-icon {
+  background: var(--cream);
+  color: var(--on-light);
+}
+
+html[data-theme="dark"] .campus-label,
+html[data-theme="dark"] .eyebrow,
+html[data-theme="dark"] .section-kicker,
+html[data-theme="dark"] .page-intro p,
+html[data-theme="dark"] .today,
+html[data-theme="dark"] .demo-banner button,
+html[data-theme="dark"] .error-banner button,
+html[data-theme="dark"] .section-description,
+html[data-theme="dark"] .planner legend span,
+html[data-theme="dark"] .gym-options label,
+html[data-theme="dark"] .field-note,
+html[data-theme="dark"] .tolerance-options button,
+html[data-theme="dark"] .block-date-label,
+html[data-theme="dark"] .block-date-label input,
+html[data-theme="dark"] .remove-block,
+html[data-theme="dark"] .time-inputs > span,
+html[data-theme="dark"] .form-footnote,
+html[data-theme="dark"] .recommendation-top .section-kicker,
+html[data-theme="dark"] .rec-percent > small,
+html[data-theme="dark"] .workout-time > span,
+html[data-theme="dark"] .rec-chips > span,
+html[data-theme="dark"] .rec-meta,
+html[data-theme="dark"] .recommendation-empty p,
+html[data-theme="dark"] .plan-error,
+html[data-theme="dark"] .recommendation-warnings,
+html[data-theme="dark"] .alternative-label,
+html[data-theme="dark"] .alternative > div > span,
+html[data-theme="dark"] .alternative-percent,
+html[data-theme="dark"] .alternative-percent small,
+html[data-theme="dark"] .alternative > svg,
+html[data-theme="dark"] .row-heading h2 > span,
+html[data-theme="dark"] .text-button,
+html[data-theme="dark"] .occupancy-number small,
+html[data-theme="dark"] .gym-card-bottom,
+html[data-theme="dark"] .fetched-time,
+html[data-theme="dark"] .forecast-card .section-kicker,
+html[data-theme="dark"] .chart-caption,
+html[data-theme="dark"] .window-legend,
+html[data-theme="dark"] .forecast-note,
+html[data-theme="dark"] .chart-placeholder,
+html[data-theme="dark"] .app-shell footer,
+html[data-theme="dark"] .footer-divider,
+html[data-theme="dark"] footer > span:first-child,
+html[data-theme="dark"] .calendar-import .calendar-privacy,
+html[data-theme="dark"] .calendar-source button,
+html[data-theme="dark"] .calendar-disconnect,
+html[data-theme="dark"] .calendar-import .calendar-error,
+html[data-theme="dark"] .data-mode-switch span {
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .campus-pill,
+html[data-theme="dark"] .outline-icon,
+html[data-theme="dark"] .recommendation-status,
+html[data-theme="dark"] .next-hours {
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .status-dot {
+  background: var(--orange);
+  box-shadow: 0 0 0 3px #ffad7020;
+}
+
+html[data-theme="dark"] .page-intro h1,
+html[data-theme="dark"] .section-heading h2,
+html[data-theme="dark"] .recommendation-headline h2,
+html[data-theme="dark"] .recommendation-empty h2,
+html[data-theme="dark"] .forecast-card h2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+html[data-theme="dark"] .page-intro h1 em {
+  font-weight: 700;
+  color: var(--orange);
+  font-style: normal;
+}
+
+html[data-theme="dark"] .today strong,
+html[data-theme="dark"] .remove-block:hover,
+html[data-theme="dark"] .alternative strong {
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .demo-banner,
+html[data-theme="dark"] .error-banner {
+  border: 1px solid var(--line);
+  background: var(--inset);
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .demo-tag,
+html[data-theme="dark"] .crowd-badge,
+html[data-theme="dark"] .crowd-badge.busy,
+html[data-theme="dark"] .crowd-badge.muted {
+  background: var(--inset);
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .add-block:hover {
+  background: var(--surface);
+}
+
+html[data-theme="dark"] .duration-options button {
+  color: var(--ink);
+  background: var(--inset);
+}
+
+html[data-theme="dark"] .duration-options button.active,
+html[data-theme="dark"] .selected .checkbox-mark,
+html[data-theme="dark"] .data-mode-switch button[aria-pressed="true"] {
+  background: var(--cream);
+  color: var(--on-light);
+  border-color: var(--cream);
+}
+
+html[data-theme="dark"] .gym-options label.selected {
+  color: var(--orange);
+  border-color: var(--orange);
+  background: var(--inset);
+}
+
+html[data-theme="dark"] .checkbox-mark {
+  border: 1px solid var(--line);
+}
+
+html[data-theme="dark"] .tolerance-options button.active {
+  color: var(--orange);
+  background: var(--inset);
+  border-color: var(--orange);
+}
+
+html[data-theme="dark"] .time-block,
+html[data-theme="dark"] .calendar-import {
+  border: 1px solid var(--line);
+  background: var(--inset);
+}
+
+html[data-theme="dark"] .time-inputs input {
+  background: var(--inset);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+html[data-theme="dark"] .add-block {
+  border: 1px dashed var(--line);
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .primary-button {
+  background: var(--cream);
+  color: var(--on-light);
+  font-weight: 700;
+  border-color: var(--cream);
+}
+
+html[data-theme="dark"] .primary-button:hover,
+html[data-theme="dark"] .tiny-dot {
+  background: var(--orange);
+}
+
+html[data-theme="dark"] .recommendation-card {
+  background: var(--inset);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+html[data-theme="dark"] .recommendation-card:after {
+  border: 1px solid #ffad7017;
+  box-shadow: 0 0 0 35px #ffad7006, 0 0 0 70px #ffad7003;
+}
+
+html[data-theme="dark"] .recommendation-reason {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .occupancy-bar {
+  background: var(--line);
+}
+
+html[data-theme="dark"] .occupancy-bar > span {
+  background: var(--ink);
+}
+
+html[data-theme="dark"] .occupancy-bar > span.orange {
+  background: var(--orange);
+}
+
+html[data-theme="dark"] .chart-label {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  fill: var(--muted);
+}
+
+html[data-theme="dark"] .legend-dot.primary {
+  background: var(--chart-primary);
+}
+
+html[data-theme="dark"] .calendar-file input::file-selector-button,
+html[data-theme="dark"] .calendar-connect {
+  border: 1px solid var(--line);
+  background: var(--cream);
+  color: var(--on-light);
+}
+
+html[data-theme="dark"] .data-mode-switch button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}

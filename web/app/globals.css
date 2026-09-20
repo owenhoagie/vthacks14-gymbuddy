@@ -1,6 +1,13 @@
 @import "tailwindcss";
+@import "./dark-theme.css";
 
 :root {
+  --chart-primary: #6c263f;
+  --chart-secondary: #c88252;
+  --chart-grid: #eae5df;
+  --chart-window: #6b233f;
+  --chart-window-opacity: .055;
+  color-scheme: light;
   --paper: #f7f6f2;
   --ink: #282b27;
   --muted: #85867e;
@@ -885,8 +892,8 @@ main {
   border-radius: 50%;
   display: inline-block;
 }
-.legend-dot.maroon {
-  background: var(--maroon);
+.legend-dot.primary {
+  background: var(--chart-primary);
 }
 .legend-dot.orange {
   background: var(--orange);
@@ -1290,3 +1297,9 @@ footer > span:last-child > span {
 .data-mode-switch button { border: 1px solid #d8cfc4; border-radius: 7px; padding: 9px 13px; background: white; color: #572036; cursor: pointer; font: inherit; }
 .data-mode-switch button[aria-pressed="true"] { background: #572036; color: white; border-color: #572036; }
 .data-mode-switch button:disabled { opacity: .65; cursor: wait; }
+
+.theme-toggle { display: flex; gap: 3px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; flex-shrink: 0; }
+.theme-toggle button { background: transparent; color: var(--ink); border-radius: 999px; padding: 7px 10px; font-size: 11px; font-weight: 600; }
+.theme-toggle button[aria-pressed="true"] { background: var(--maroon); color: #fff9f4; }
+html[data-theme="dark"] .theme-toggle button[aria-pressed="true"] { background: var(--cream); color: var(--on-light); }
+@media (max-width: 760px) { .header-right { gap: 10px; } .theme-toggle button { padding: 7px 8px; font-size: 10px; } .campus-pill { display: none; } }
