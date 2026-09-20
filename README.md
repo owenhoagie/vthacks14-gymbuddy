@@ -208,3 +208,12 @@ for free/busy permission only. No event titles or offline access are requested.
 Setup, privacy, supported formats, and verification: [docs/CALENDARS.md](docs/CALENDARS.md).
 Set `NEXT_PUBLIC_GOOGLE_CLIENT_ID` on the Vercel **frontend** and rebuild to enable Google.
 Run frontend calendar tests with `cd web && npm test`.
+
+### Dining snapshot demo
+
+The meal planner at `/meal-planner` uses real VT FoodPro menus and per-serving
+nutrition saved for September 19, 2026. Hall selection reads a committed snapshot,
+with no automatic updates or runtime calls to VT. Missing menus and nutrition stay
+unavailable instead of being replaced with guessed food data. See the
+[real dining snapshot guide](docs/dining-snapshot.md) for data sources, coverage,
+and the manual refresh command.
