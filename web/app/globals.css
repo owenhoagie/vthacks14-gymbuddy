@@ -15,7 +15,7 @@
 }
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--maroon);
   color: var(--ink);
   font-family: var(--font-sans);
   font-size: 14px;
