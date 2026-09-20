@@ -202,18 +202,14 @@ html[data-theme="dark"] .tiny-dot {
 }
 
 html[data-theme="dark"] .recommendation-card {
-  background: var(--cream);
+  background: var(--inset);
   color: var(--ink);
-  --ink: #65283e;
-  --muted: #984318;
-  --line: #c8a797;
-  --orange: #984318;
-  color-scheme: light;
+  border: 1px solid var(--line);
 }
 
 html[data-theme="dark"] .recommendation-card:after {
-  border: 1px solid #65283e14;
-  box-shadow: 0 0 0 35px #65283e06, 0 0 0 70px #65283e03;
+  border: 1px solid #ffad7017;
+  box-shadow: 0 0 0 35px #ffad7006, 0 0 0 70px #ffad7003;
 }
 
 html[data-theme="dark"] .recommendation-reason {
