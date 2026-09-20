@@ -1,4 +1,4 @@
-/* Dark mode is opt-in. The original production stylesheet remains the light default. */
+/* Dark mode is opt-in. Typography is shared with the default light theme. */
 
 html[data-theme="dark"] {
   --paper: #65283e;
@@ -10,7 +10,6 @@ html[data-theme="dark"] {
   --muted: #ffc194;
   --line: #996477;
   --orange: #ffad70;
-  --font-sans: var(--font-montserrat), Arial, sans-serif;
   --chart-primary: var(--ink);
   --chart-secondary: var(--orange);
   --chart-grid: var(--line);
@@ -102,19 +101,8 @@ html[data-theme="dark"] .status-dot {
   box-shadow: 0 0 0 3px #ffad7020;
 }
 
-html[data-theme="dark"] .page-intro h1,
-html[data-theme="dark"] .section-heading h2,
-html[data-theme="dark"] .recommendation-headline h2,
-html[data-theme="dark"] .recommendation-empty h2,
-html[data-theme="dark"] .forecast-card h2 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-}
-
 html[data-theme="dark"] .page-intro h1 em {
-  font-weight: 700;
   color: var(--orange);
-  font-style: normal;
 }
 
 html[data-theme="dark"] .today strong,
@@ -230,8 +218,6 @@ html[data-theme="dark"] .occupancy-bar > span.orange {
 }
 
 html[data-theme="dark"] .chart-label {
-  font-family: var(--font-sans);
-  font-weight: 500;
   fill: var(--muted);
 }
 
