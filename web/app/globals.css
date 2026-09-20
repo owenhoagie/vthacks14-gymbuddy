@@ -1558,3 +1558,34 @@ footer > span:last-child > span {
   .meal-planner input { font-size: 16px; }
   .meal-hall-toggle button { flex: 1 1 45%; }
 }
+
+/* Keep the menu out of document flow; only its results scroll. */
+.food-dropdown { position: relative; margin-bottom: 20px; }
+.food-dropdown summary {
+  cursor: pointer;
+  border: 1px solid var(--meal-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--meal-item);
+  color: var(--meal-accent);
+  font-size: 13px;
+}
+.food-dropdown summary span { margin-left: 8px; font-size: 11px; color: var(--meal-muted); }
+.food-dropdown summary:focus-visible { outline: 2px solid var(--meal-accent); outline-offset: 3px; }
+.food-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  inset-inline: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  max-height: min(420px, 60dvh);
+  padding: 10px;
+  border: 1px solid var(--meal-border);
+  border-radius: 10px;
+  background: var(--meal-panel);
+  box-shadow: 0 10px 30px #0003;
+}
+.food-dropdown-menu .meal-search-row { flex-shrink: 0; margin-bottom: 10px; }
+.food-dropdown-menu .meal-suggestion-list { overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
+.food-dropdown-menu .meal-row { flex-shrink: 0; }

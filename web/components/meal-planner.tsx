@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   DINING_HALLS,
   addMealToPlate,
@@ -60,6 +60,7 @@ function ServingControl({ name, quantity, onChange }: { name: string; quantity: 
 }
 
 export default function MealPlannerCard() {
+  const foodDropdown = useRef<HTMLDetailsElement>(null);
   const [hall, setHall] = useState(DINING_HALLS[0].id);
   const [suggestions, setSuggestions] = useState<MealItem[]>([]);
   const [selectedMeals, setSelectedMeals] = useState<PlateEntry[]>([]);
@@ -72,6 +73,16 @@ export default function MealPlannerCard() {
   const [customProtein, setCustomProtein] = useState("");
   const [customCarbs, setCustomCarbs] = useState("");
   const [customFat, setCustomFat] = useState("");
+
+  useEffect(() => {
+    function closeOutside(event: PointerEvent) {
+      if (event.target instanceof Node && foodDropdown.current && !foodDropdown.current.contains(event.target)) {
+        foodDropdown.current.open = false;
+      }
+    }
+    document.addEventListener("pointerdown", closeOutside);
+    return () => document.removeEventListener("pointerdown", closeOutside);
+  }, []);
 
   useEffect(() => {
     let ignore = false;
@@ -228,15 +239,53 @@ export default function MealPlannerCard() {
 
         <div className="meal-list-panel">
           <h3>Search and add food</h3>
-          <div className="meal-search-row">
-            <input
-              type="search"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search for chicken, salad, pasta…"
-              aria-label="Search for foods to add"
-            />
-          </div>
+          <details
+            key={hall}
+            ref={foodDropdown}
+            className="food-dropdown"
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.currentTarget.open = false;
+                event.currentTarget.querySelector("summary")?.focus();
+              }
+            }}
+          >
+            <summary>Choose food <span>{loading ? "Loading…" : `${suggestions.length} foods`}</span></summary>
+            <div className="food-dropdown-menu">
+              <div className="meal-search-row">
+                <input
+                  type="search"
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  placeholder="Search for chicken, salad, pasta…"
+                  aria-label="Search for foods to add"
+                />
+              </div>
+              <div className="meal-suggestion-list">
+                {filteredSuggestions.length === 0 ? (
+                  <p className="empty-state">{loading ? "Loading saved menu…" : error ? "Menu unavailable." : menu?.status === "no_menu" ? "VT returned no menu items for this hall on the snapshot date. Choose another hall or enter your own food." : "No matches for that search. Try a different food or add your own."}</p>
+                ) : (
+                  filteredSuggestions.map((meal) => (
+                    <div key={meal.id} className="meal-row">
+                      <div>
+                        <strong>{meal.name}</strong>
+                        <small>
+                          {meal.servingSize} {meal.servingUnit} · {meal.mealPeriods?.join(", ")}
+                        </small>
+                        <small className="dining-nutrition">
+                          {meal.nutrition ? `${meal.nutrition.calories} kcal · ${meal.nutrition.protein}g protein / ${meal.nutrition.carbs}g carbs / ${meal.nutrition.fat}g fat` : "Nutrition unavailable from VT. Not included in macro totals."}
+                        </small>
+                        <a className="dining-source-link" href={meal.sourceUrl} target="_blank" rel="noopener noreferrer">VT nutrition source</a>
+                      </div>
+                      <button type="button" disabled={!meal.nutrition} onClick={() => addMeal(meal)} aria-label={`Add ${meal.name}`}>
+                        Add
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </details>
 
           <form className="custom-meal-form" onSubmit={handleCustomMealSubmit}>
             <input
@@ -257,29 +306,6 @@ export default function MealPlannerCard() {
             <button type="submit" className="add-custom-button">Add custom meal</button>
           </form>
 
-          <div className="meal-suggestion-list">
-            {filteredSuggestions.length === 0 ? (
-              <p className="empty-state">{loading ? "Loading saved menu…" : error ? "Menu unavailable." : menu?.status === "no_menu" ? "VT returned no menu items for this hall on the snapshot date. Choose another hall or enter your own food." : "No matches for that search. Try a different food or add your own."}</p>
-            ) : (
-              filteredSuggestions.map((meal) => (
-                <div key={meal.id} className="meal-row">
-                  <div>
-                    <strong>{meal.name}</strong>
-                    <small>
-                      {meal.servingSize} {meal.servingUnit} · {meal.mealPeriods?.join(", ")}
-                    </small>
-                    <small className="dining-nutrition">
-                      {meal.nutrition ? `${meal.nutrition.calories} kcal · ${meal.nutrition.protein}g protein / ${meal.nutrition.carbs}g carbs / ${meal.nutrition.fat}g fat` : "Nutrition unavailable from VT. Not included in macro totals."}
-                    </small>
-                    <a className="dining-source-link" href={meal.sourceUrl} target="_blank" rel="noopener noreferrer">VT nutrition source</a>
-                  </div>
-                  <button type="button" disabled={!meal.nutrition} onClick={() => addMeal(meal)} aria-label={`Add ${meal.name}`}>
-                    Add
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
         </div>
       </div>
     </section>
