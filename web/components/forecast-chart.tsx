@@ -34,7 +34,7 @@ export default function ForecastChart({ data, candidate, loading }: Props) {
       <svg
         viewBox="0 0 750 230"
         role="img"
-        aria-label="Predicted gym occupancy over the next four hours. McComas is maroon; War Memorial is orange. The shaded region is your recommended workout."
+        aria-label="Predicted gym occupancy over the next four hours. McComas is white; War Memorial is orange. The shaded region is your recommended workout."
       >
         {[0, 25, 50, 75, 100].map((n) => (
           <g key={n}>
@@ -43,7 +43,7 @@ export default function ForecastChart({ data, candidate, loading }: Props) {
               x2="712"
               y1={y(n)}
               y2={y(n)}
-              stroke="#eae5df"
+              stroke="var(--line)"
               strokeDasharray={n === 0 ? undefined : "3 5"}
             />
             <text x="29" y={y(n) + 4} textAnchor="end" className="chart-label">
@@ -58,8 +58,8 @@ export default function ForecastChart({ data, candidate, loading }: Props) {
             width={x(selectionEnd) - x(selectionStart)}
             height="164"
             rx="6"
-            fill="#6b233f"
-            opacity=".055"
+            fill="var(--ink)"
+            opacity=".10"
           />
         ) : null}
         {facilities.map((f) => (
@@ -72,7 +72,7 @@ export default function ForecastChart({ data, candidate, loading }: Props) {
               )
               .join(" ")}
             fill="none"
-            stroke={f.facility_id === "mccomas" ? "#6c263f" : "#c88252"}
+            stroke={f.facility_id === "mccomas" ? "var(--ink)" : "var(--orange)"}
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -92,7 +92,7 @@ export default function ForecastChart({ data, candidate, loading }: Props) {
       </svg>
       <div className="chart-caption">
         <span>
-          <span className="legend-dot maroon" />
+          <span className="legend-dot primary" />
           McComas Hall
         </span>
         <span>
