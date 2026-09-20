@@ -241,11 +241,6 @@ export default function Dashboard() {
     setNow(at);
     setBlocks(defaults);
     void loadData(at);
-    void makeRecommendation(
-      defaults,
-      { duration: 75, preferred: ["mccomas"], tolerance: "low" },
-      at,
-    );
     const timer = window.setInterval(() => {
       const refreshedAt = new Date();
       setNow(refreshedAt);
@@ -267,10 +262,10 @@ export default function Dashboard() {
     window.history.replaceState(null, "", url);
     setOccupancy(null); setForecast(null); setHealth(null); setResult(null);
     setPlanError(""); setError("");
+    setDirty(false);
     const at = new Date();
     setNow(at);
     void loadData(at);
-    void makeRecommendation(blocks, { duration, preferred, tolerance }, at);
   }
 
   function submit(event: FormEvent) {
@@ -299,11 +294,7 @@ export default function Dashboard() {
     setTolerance("low");
     setNow(at);
     void loadData(at);
-    void makeRecommendation(
-      [],
-      { duration: 75, preferred: ["mccomas"], tolerance: "low" },
-      at,
-    );
+    setDirty(true);
   }
 
   return (
@@ -616,7 +607,7 @@ export default function Dashboard() {
                   </h2>
                   <p>
                     {result?.explanation ||
-                      "Set your routine and we’ll help you find a quieter time to go."}
+                      "Set your routine, then click Find my gym window to get your recommendation."}
                   </p>
                 </div>
               )}

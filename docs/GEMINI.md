@@ -46,6 +46,9 @@ redeploying disables model calls without disabling recommendations.
 
 ## Failure and quota behavior
 
+- The dashboard requests a recommendation only when the user submits **Find my gym window**.
+  Page loads, live/demo switches, schedule resets, and automatic or manual data refreshes
+  do not call Gemini. Occupancy and forecast data continue refreshing independently.
 - No call when credentials are absent, data is stale/unavailable, or no workout fits.
 - At most two model calls per uncached explanation; SDK automatic function execution
   and retries are disabled. Default timeout is 12 seconds per call.

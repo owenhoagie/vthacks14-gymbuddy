@@ -7,6 +7,12 @@ GymBuddy combines Virginia Tech gym occupancy, short-term forecasts, and a stude
 For a nontechnical project overview and presentation talking points, read the
 [team and speech-writing guide](docs/PROJECT_GUIDE.md).
 
+## Cloudforce submission
+
+[Hokie AI agent](https://hokie.ai.vt.edu/chat/83d3fd40-d7e7-453c-856b-0e7107d32dd7)
+
+This is the Hokie AI agent link for our Cloudforce submission.
+
 ## Run locally
 
 Requires Python 3.11+ and Node 20.9+ (Node 22 or 24 recommended).
