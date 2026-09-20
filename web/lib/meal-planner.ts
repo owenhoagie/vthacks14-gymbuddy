@@ -79,7 +79,6 @@ export type DiningMenuResponse = {
 
 export const DINING_HALLS = [
   { id: "15", name: "D2 at Dietrick Hall" },
-  { id: "09", name: "Hokie Grill at Owens" },
   { id: "16", name: "West End at Cochrane Hall" },
   { id: "18", name: "Squires Food Court" },
 ];

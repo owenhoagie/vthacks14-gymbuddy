@@ -71,3 +71,5 @@ Custom entries receive their own IDs and use the same serving controls.
 The meal page supports the same sun/moon theme toggle as the dashboard, and the
 food panels, inputs, and selected states use the matching theme colors. Mobile
 layouts stack the plate and food list and use two-column macro cards/inputs.
+
+The shared header exposes Gym and Food on both pages, with the current section highlighted. Successful workout recommendations also link to the meal planner. Hokie Grill remains in the source snapshot for provenance but is omitted from the user-facing hall selector because its saved menu is empty.

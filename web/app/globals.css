@@ -1544,11 +1544,6 @@ footer > span:last-child > span {
   .meal-plan-layout { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 620px) {
-  .site-header:has(.header-link) { height: auto; min-height: 94px; gap: 12px; padding-top: 10px; padding-bottom: 10px; }
-  .site-header:has(.header-link) .wordmark { font-size: 22px; flex-shrink: 0; }
-  .site-header:has(.header-link) .brand-icon { width: 28px; height: 28px; margin-right: 8px; }
-  .header-right:has(.header-link) { flex-wrap: wrap; justify-content: flex-end; gap: 4px; max-width: 80px; }
-  .header-link { order: 2; width: 100%; text-align: right; font-size: 10px; letter-spacing: .5px; }
   .meal-planner { padding: 18px 12px; }
   .meal-planner-header h2 { font-size: 23px; }
   .meal-planner-header { gap: 14px; }
@@ -1589,3 +1584,25 @@ footer > span:last-child > span {
 .food-dropdown-menu .meal-search-row { flex-shrink: 0; margin-bottom: 10px; }
 .food-dropdown-menu .meal-suggestion-list { overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
 .food-dropdown-menu .meal-row { flex-shrink: 0; }
+
+.section-header { display: grid; grid-template-columns: auto 1fr auto; gap: 28px; }
+.section-nav { display: flex; align-items: center; gap: 4px; }
+.section-nav a {
+  padding: 10px 18px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 650;
+}
+.section-nav a:hover { background: var(--line); color: var(--ink); }
+.section-nav a[aria-current="page"] { background: var(--maroon); color: #fff; }
+.section-nav a:focus-visible, .post-workout-link:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+.post-workout-link { display: inline-flex; align-items: center; gap: 8px; color: var(--maroon); font-size: 13px; font-weight: 650; padding: 12px 0; }
+.post-workout-link:hover { text-decoration: underline; }
+@media (max-width: 620px) {
+  .section-header { grid-template-columns: 1fr auto; height: auto; gap: 8px 12px; padding-top: 12px; padding-bottom: 12px; }
+  .section-header .wordmark { font-size: 24px; }
+  .section-header .header-right { grid-column: 2; grid-row: 1; }
+  .section-nav { grid-column: 1 / -1; grid-row: 2; padding: 3px; border: 1px solid var(--line); border-radius: 10px; }
+  .section-nav a { flex: 1; text-align: center; padding: 9px 14px; }
+}
