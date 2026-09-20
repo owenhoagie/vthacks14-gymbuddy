@@ -139,9 +139,9 @@ html[data-theme="dark"] .duration-options button {
 html[data-theme="dark"] .duration-options button.active,
 html[data-theme="dark"] .selected .checkbox-mark,
 html[data-theme="dark"] .data-mode-switch button[aria-pressed="true"] {
-  background: var(--cream);
-  color: var(--on-light);
-  border-color: var(--cream);
+  background: var(--inset);
+  color: var(--orange);
+  border-color: var(--orange);
 }
 
 html[data-theme="dark"] .gym-options label.selected {
@@ -178,13 +178,16 @@ html[data-theme="dark"] .add-block {
 }
 
 html[data-theme="dark"] .primary-button {
-  background: var(--cream);
-  color: var(--on-light);
+  background: var(--inset);
+  color: var(--orange);
   font-weight: 700;
-  border-color: var(--cream);
+  border: 1px solid var(--orange);
 }
 
-html[data-theme="dark"] .primary-button:hover,
+html[data-theme="dark"] .primary-button:hover {
+  background: var(--surface);
+}
+
 html[data-theme="dark"] .tiny-dot {
   background: var(--orange);
 }
@@ -227,9 +230,14 @@ html[data-theme="dark"] .legend-dot.primary {
 
 html[data-theme="dark"] .calendar-file input::file-selector-button,
 html[data-theme="dark"] .calendar-connect {
-  border: 1px solid var(--line);
-  background: var(--cream);
-  color: var(--on-light);
+  border: 1px solid var(--orange);
+  background: var(--inset);
+  color: var(--orange);
+}
+
+html[data-theme="dark"] .calendar-file input::file-selector-button:hover,
+html[data-theme="dark"] .calendar-connect:hover {
+  background: var(--surface);
 }
 
 html[data-theme="dark"] .data-mode-switch button {
