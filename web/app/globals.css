@@ -1,6 +1,13 @@
 @import "tailwindcss";
+@import "./dark-theme.css";
 
 :root {
+  --chart-primary: #6c263f;
+  --chart-secondary: #c88252;
+  --chart-grid: #eae5df;
+  --chart-window: #6b233f;
+  --chart-window-opacity: .055;
+  color-scheme: light;
   --paper: #f7f6f2;
   --ink: #282b27;
   --muted: #85867e;
@@ -8,7 +15,7 @@
   --maroon: #65283e;
   --orange: #c98050;
   --green: #537557;
-  --font-sans: Arial, Helvetica, sans-serif;
+  --font-sans: var(--font-montserrat), Arial, sans-serif;
 }
 * {
   box-sizing: border-box;
@@ -162,13 +169,12 @@ main {
 }
 .page-intro h1 {
   font:
-    normal 43px/1.15 Georgia,
-    "Times New Roman",
-    serif;
+    700 43px/1.15 var(--font-sans);
   letter-spacing: -1.45px;
 }
 .page-intro h1 em {
-  font-weight: 400;
+  font-weight: 700;
+  font-style: normal;
   color: var(--maroon);
 }
 .page-intro p {
@@ -267,8 +273,7 @@ main {
 }
 .section-heading h2 {
   font:
-    normal 27px Georgia,
-    serif;
+    700 27px var(--font-sans);
   margin-top: 8px;
   letter-spacing: -0.6px;
 }
@@ -570,8 +575,7 @@ main {
 }
 .recommendation-headline h2 {
   font:
-    normal 34px Georgia,
-    serif;
+    700 34px var(--font-sans);
   letter-spacing: -0.65px;
 }
 .rec-percent {
@@ -651,8 +655,7 @@ main {
 }
 .recommendation-empty h2 {
   font:
-    normal 33px/1.15 Georgia,
-    serif;
+    700 33px/1.15 var(--font-sans);
   letter-spacing: -0.6px;
 }
 .recommendation-empty p {
@@ -845,8 +848,7 @@ main {
 }
 .forecast-card h2 {
   font:
-    normal 22px Georgia,
-    serif;
+    700 22px var(--font-sans);
   letter-spacing: -0.4px;
   margin-top: 6px;
 }
@@ -868,8 +870,7 @@ main {
 }
 .chart-label {
   font:
-    9px Arial,
-    sans-serif;
+    500 9px var(--font-sans);
   fill: #a49d8f;
 }
 .chart-caption {
@@ -892,8 +893,8 @@ main {
   border-radius: 50%;
   display: inline-block;
 }
-.legend-dot.maroon {
-  background: var(--maroon);
+.legend-dot.primary {
+  background: var(--chart-primary);
 }
 .legend-dot.orange {
   background: var(--orange);
@@ -1467,3 +1468,24 @@ footer > span:last-child > span {
 .data-mode-switch button { border: 1px solid #d8cfc4; border-radius: 7px; padding: 9px 13px; background: white; color: #572036; cursor: pointer; font: inherit; }
 .data-mode-switch button[aria-pressed="true"] { background: #572036; color: white; border-color: #572036; }
 .data-mode-switch button:disabled { opacity: .65; cursor: wait; }
+
+/* Show the destination theme as a single accessible icon button. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.theme-toggle:hover { background: var(--line); }
+.theme-toggle svg { width: 22px; height: 22px; }
+@media (max-width: 760px) {
+  .header-right { gap: 10px; }
+  .campus-pill { display: none; }
+}
