@@ -1,6 +1,4 @@
 facility_id,facility_name,source_facility_id,occupancy,remaining,capacity,occupancy_pct,observed_at,source_updated_at,source
-mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,115,485,600,19.17,2026-09-20T22:00:31.840744+00:00,,vt_recsports
-war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,300,900,1200,25.0,2026-09-20T22:00:31.981323+00:00,,vt_recsports
 mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,115,485,600,19.17,2026-09-20T22:05:34.829241+00:00,,vt_recsports
 war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,314,886,1200,26.17,2026-09-20T22:05:34.942480+00:00,,vt_recsports
 mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,115,485,600,19.17,2026-09-20T22:10:27.471820+00:00,,vt_recsports
@@ -1151,3 +1149,5 @@ mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,276,324,600,46.0,2026-
 war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,567,633,1200,47.25,2026-09-22T21:50:36.409039+00:00,,vt_recsports
 mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,277,323,600,46.17,2026-09-22T21:55:35.561367+00:00,,vt_recsports
 war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,566,634,1200,47.17,2026-09-22T21:55:35.643202+00:00,,vt_recsports
+mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,267,333,600,44.5,2026-09-22T22:00:32.424739+00:00,,vt_recsports
+war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,561,639,1200,46.75,2026-09-22T22:00:32.470667+00:00,,vt_recsports
