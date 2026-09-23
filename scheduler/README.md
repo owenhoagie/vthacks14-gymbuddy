@@ -1,5 +1,14 @@
 # Free automatic collection
 
+**Stopped September 23, 2026 after the hackathon.** The deployed Cloudflare
+Worker has no Cron Triggers and GitHub's `Collect live occupancy` workflow is
+disabled. Existing data is retained. Live observations will become stale;
+the explicitly labeled historical demo remains available.
+
+To resume deliberately, restore `triggers.crons` to `["*/5 * * * *"]`, deploy the
+Worker, and run `gh workflow enable collect.yml`. Verify the scheduler token is
+still valid before resuming. The behavior below describes the enabled setup.
+
 Cloudflare's `gymbuddy-collector-scheduler` Worker runs `*/5 * * * *` in UTC.
 It dispatches only `collect.yml` on `owenhoagie/vthacks14-gymbuddy`'s `main` branch.
 The GitHub job still fetches VT, preserves its retry outbox, uploads to Bronze,
