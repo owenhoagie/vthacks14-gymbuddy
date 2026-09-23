@@ -1,8 +1,4 @@
 facility_id,facility_name,source_facility_id,occupancy,remaining,capacity,occupancy_pct,observed_at,source_updated_at,source
-mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,208,392,600,34.67,2026-09-21T20:15:35.682740+00:00,,vt_recsports
-war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,520,680,1200,43.33,2026-09-21T20:15:35.797472+00:00,,vt_recsports
-mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,206,394,600,34.33,2026-09-21T20:20:33.049134+00:00,,vt_recsports
-war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,504,696,1200,42.0,2026-09-21T20:20:33.207969+00:00,,vt_recsports
 mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,220,380,600,36.67,2026-09-21T20:25:32.906315+00:00,,vt_recsports
 war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,533,667,1200,44.42,2026-09-21T20:25:33.018577+00:00,,vt_recsports
 mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,222,378,600,37.0,2026-09-21T20:30:34.277029+00:00,,vt_recsports
@@ -1153,3 +1149,7 @@ mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,181,419,600,30.17,2026
 war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,473,727,1200,39.42,2026-09-23T20:10:36.930434+00:00,,vt_recsports
 mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,177,423,600,29.5,2026-09-23T20:15:32.403283+00:00,,vt_recsports
 war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,471,729,1200,39.25,2026-09-23T20:15:32.464877+00:00,,vt_recsports
+mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,186,414,600,31.0,2026-09-23T20:20:31.257451+00:00,,vt_recsports
+war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,484,716,1200,40.33,2026-09-23T20:20:31.305388+00:00,,vt_recsports
+mccomas,McComas Hall,232d714e-5b3e-4b0d-9936-e6a738150ec4,184,416,600,30.67,2026-09-23T20:25:29.622790+00:00,,vt_recsports
+war_memorial,War Memorial Hall,55069633-b56e-43b7-a68a-64d79364988d,487,713,1200,40.58,2026-09-23T20:25:29.672291+00:00,,vt_recsports
